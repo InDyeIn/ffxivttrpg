@@ -1,0 +1,14 @@
+{
+    "FFXIVGEN.Settings.ApiKey.Name": "OpenAI API Key",
+    "FFXIVGEN.Settings.ApiKey.Hint": "Your OpenAI API Key. Required to generate NPCs from descriptions/images.",
+    "FFXIVGEN.Settings.Model.Name": "AI Model",
+    "FFXIVGEN.Settings.Model.Hint": "Choose the OpenAI model to use.",
+    "FFXIVGEN.UI.GenerateButton": "Generate NPC via AI",
+    "FFXIVGEN.Dialog.Title": "Generate FFXIV NPC",
+    "FFXIVGEN.Dialog.PromptLabel": "NPC Description or Prompt:",
+    "FFXIVGEN.Dialog.ImageUrlLabel": "(Optional) Image URL:",
+    "FFXIVGEN.Dialog.Submit": "Generate",
+    "FFXIVGEN.Dialog.Cancel": "Cancel",
+    "FFXIVGEN.Dialog.Generating": "Generating NPC with AI... Please wait.",
+    "FFXIVGEN.Error.NoApiKey": "You must configure an OpenAI API Key in the module settings first."
+}

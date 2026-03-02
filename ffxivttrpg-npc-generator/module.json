@@ -1,0 +1,31 @@
+{
+  "id": "ffxivttrpg-npc-generator",
+  "title": "FFXIV TTRPG AI NPC Generator",
+  "description": "Generates NPCs for the FFXIV TTRPG system using AI interpretations of text or image prompts.",
+  "version": "1.0.0",
+  "library": false,
+  "manifestPlusVersion": "1.2.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "13",
+    "maximum": "13"
+  },
+  "authors": [
+    {
+      "name": "Game Master"
+    }
+  ],
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/style.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ]
+}
