@@ -29,6 +29,6 @@
     }
   ],
   "url": "https://github.com/InDyeIn/ffxivttrpg",
-  "manifest": "https://raw.githubusercontent.com/InDyeIn/ffxivttrpg/main/ffxivttrpg-npc-generator/module.json",
-  "download": "https://raw.githubusercontent.com/InDyeIn/ffxivttrpg/main/ffxivttrpg-npc-generator/ffxivttrpg-npc-generator.zip"
+  "manifest": "https://raw.githubusercontent.com/InDyeIn/ffxivttrpg/main/module.json",
+  "download": "https://raw.githubusercontent.com/InDyeIn/ffxivttrpg/main/ffxivttrpg-npc-generator.zip"
 }
