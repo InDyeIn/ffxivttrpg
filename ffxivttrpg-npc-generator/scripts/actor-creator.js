@@ -43,7 +43,7 @@ export async function createActorFromData(npcData) {
     const newActor = await Actor.create(actorData);
 
     if (newActor) {
-        console.log(\`FFXIV TTRPG Generator | Successfully created Actor '\${newActor.name}' [\${newActor.id}]\`);
+        console.log(`FFXIV TTRPG Generator | Successfully created Actor '${newActor.name}' [${newActor.id}]`);
         // Optionally open the sheet immediately
         newActor.sheet.render(true);
     } else {

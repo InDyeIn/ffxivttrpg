@@ -63,7 +63,7 @@ export async function generateNpcWithAi(promptText, imageUrl) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": \`Bearer \${apiKey}\`
+            "Authorization": `Bearer ${apiKey}`
         },
         body: JSON.stringify({
             model: model,
@@ -74,16 +74,16 @@ export async function generateNpcWithAi(promptText, imageUrl) {
 
     if (!response.ok) {
         const errortext = await response.text();
-        throw new Error(\`OpenAI API Error: \${response.status} - \${errortext}\`);
+        throw new Error(`OpenAI API Error: ${response.status} - ${errortext}`);
     }
 
     const data = await response.json();
     let responseText = data.choices[0].message.content.trim();
-    
+
     // Clean up potential markdown JSON wrapping
-    if(responseText.startsWith("\`\`\`json")) responseText = responseText.replace("\`\`\`json", "");
-    if(responseText.startsWith("\`\`\`")) responseText = responseText.replace("\`\`\`", "");
-    if(responseText.endsWith("\`\`\`")) responseText = responseText.substring(0, responseText.length - 3).trim();
+    if (responseText.startsWith("```json")) responseText = responseText.replace("```json", "");
+    if (responseText.startsWith("```")) responseText = responseText.replace("```", "");
+    if (responseText.endsWith("```")) responseText = responseText.substring(0, responseText.length - 3).trim();
 
     try {
         const npcData = JSON.parse(responseText);
