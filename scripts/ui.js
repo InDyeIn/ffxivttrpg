@@ -3,20 +3,18 @@ import { generateNpcWithAi } from "./ai-handler.js";
 export function setupUI(app, html, data) {
     if (!game.user.isGM) return; // Only allow GM to generate NPCs
 
+    const buttonText = game.i18n.localize("FFXIVGEN.UI.GenerateButton");
     const buttonHtml = `
-        <div class="action-buttons flexrow">
-            <button class="ffxiv-generate-npc" type="button">
-                <i class="fas fa-robot"></i> ${game.i18n.localize("FFXIVGEN.UI.GenerateButton")}
-            </button>
-        </div>
+        <button class="ffxiv-generate-npc" type="button" style="flex: 0 0 100%; margin-top: 5px;">
+            <i class="fas fa-robot"></i> ${buttonText}
+        </button>
     `;
 
-    // Try finding the directory header to inject the button
-    const header = html.find('.directory-header');
-    if (header.length > 0) {
-        header.append(buttonHtml);
+    const headerActions = html.find('.directory-header .header-actions');
+    if (headerActions.length > 0) {
+        headerActions.append(buttonHtml);
     } else {
-        html.find('.header-actions').append(buttonHtml); // fallback
+        html.find('.directory-header').append(`<div class="header-actions action-buttons flexrow">${buttonHtml}</div>`);
     }
 
     html.on('click', '.ffxiv-generate-npc', (ev) => {
