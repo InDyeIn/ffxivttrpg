@@ -29,30 +29,22 @@ new Dialog({
             label: "Sim, Excluir Tudo",
             callback: async () => {
                 ui.notifications.info(`Iniciando purgação do compêndio ${PACK_NAME}...`);
-
-                // Desbloqueia mod
                 await pack.configure({ locked: false });
 
-                // 1. Apagar Itens
-                const documents = await pack.getDocuments();
-                if (documents.length > 0) {
-                    const docIds = documents.map(d => d.id);
+                const docs = await pack.getDocuments();
+                if (docs.length > 0) {
+                    const docIds = docs.map(d => d.id);
                     await Item.deleteDocuments(docIds, { pack: PACK_NAME });
-                    console.log(`FFXIV TTRPG | Deletados ${docIds.length} Itens do compêndio.`);
                 }
 
-                // 2. Apagar Pastas
-                const folders = pack.folders.contents;
-                if (folders.length > 0) {
-                    const folderIds = folders.map(f => f.id);
+                const folderIds = Array.from(pack.folders.keys());
+                if (folderIds.length > 0) {
                     await Folder.deleteDocuments(folderIds, { pack: PACK_NAME });
-                    console.log(`FFXIV TTRPG | Deletadas ${folderIds.length} Pastas do compêndio.`);
                 }
 
-                // Bloqueia novamente
                 await pack.configure({ locked: true });
-
-                ui.notifications.info(`✅ Compêndio limpo! ${documents.length} itens e ${folders.length} pastas removidos.`);
+                ui.notifications.info(`✅ Compêndio limpo! ${docs.length} itens e ${folderIds.length} pastas removidos.`);
+                console.log(`FFXIV TTRPG | Limpeza: ${docs.length} Itens e ${folderIds.length} Pastas removidas.`);
             }
         },
         no: {
