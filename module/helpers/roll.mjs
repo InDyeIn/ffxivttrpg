@@ -6,7 +6,67 @@
 export class FFXIVRoll {
 
     /**
-     * Rola uma habilidade de um ator
+     * Pings a habilidade no chat, sem rolar dados e sem gastar recursos.
+     * Gera um card de descritivo com o botão de Roll.
+     */
+    static async pingAbility(ability, actor) {
+        const templateData = {
+            ability: ability,
+            actor: actor,
+            itemUuid: ability.uuid,
+            actorUuid: actor.uuid,
+            FFXIV: CONFIG.FFXIV,
+        };
+
+        const content = await renderTemplate(
+            "systems/ffxivttrpg/templates/chat/ability-ping.hbs",
+            templateData
+        );
+
+        const speaker = ChatMessage.getSpeaker({ actor });
+
+        await ChatMessage.create({
+            speaker,
+            content,
+            type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            flags: {
+                ffxivttrpg: {
+                    type: "ability-ping",
+                    abilityId: ability.id,
+                    actorId: actor.id,
+                },
+            },
+        });
+    }
+
+    /**
+     * Intercepta o clique no chat gerado pelo pingAbility
+     */
+    static activateChatListeners(html) {
+        html.on("click", ".ffxiv-roll-action", async (ev) => {
+            ev.preventDefault();
+            const btn = ev.currentTarget;
+            const itemUuid = btn.dataset.itemUuid;
+            const actorUuid = btn.dataset.actorUuid;
+
+            const actor = await fromUuid(actorUuid);
+            if (!actor || !actor.isOwner) {
+                ui.notifications.warn("Você não tem permissão para rolar as habilidades deste Personagem!");
+                return;
+            }
+
+            const item = await fromUuid(itemUuid);
+            if (!item) {
+                ui.notifications.error("Habilidade não encontrada. Ela pode ter sido apagada.");
+                return;
+            }
+
+            await FFXIVRoll.rollAbility(item, actor);
+        });
+    }
+
+    /**
+     * Rola uma habilidade de um ator (Efetiva uso e Gasto de MP/Gauge)
      * @param {Item} ability - A habilidade sendo usada
      * @param {Actor} actor - O ator usando a habilidade
      * @param {Object} options - Opções extras

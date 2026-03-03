@@ -1,0 +1,29 @@
+<div class="ffxiv-chat-card ability-ping">
+    <header class="card-header flexrow">
+        <img src="{{ability.img}}" title="{{ability.name}}" width="36" height="36" />
+        <h3 class="item-name">{{ability.name}}</h3>
+    </header>
+
+    <div class="card-content">
+        {{{ability.system.description}}}
+    </div>
+
+    <div class="card-properties">
+        <span class="tag">RNG: {{ability.system.range}}</span>
+        {{#if (gt ability.system.cost.mp 0)}}
+        <span class="tag cost-mp">MP: {{ability.system.cost.mp}}</span>
+        {{/if}}
+        {{#if (gt ability.system.cost.gauge 0)}}
+        <span class="tag cost-gauge">Gauge: {{ability.system.cost.gauge}}</span>
+        {{/if}}
+        {{#if (gt ability.system.cost.limitBreak 0)}}
+        <span class="tag cost-lb">LB: {{ability.system.cost.limitBreak}}</span>
+        {{/if}}
+    </div>
+
+    <div class="card-buttons">
+        <button class="ffxiv-roll-action" data-item-uuid="{{itemUuid}}" data-actor-uuid="{{actorUuid}}">
+            <i class="fas fa-dice-d20"></i> Utilizar Habilidade
+        </button>
+    </div>
+</div>

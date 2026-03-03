@@ -153,8 +153,8 @@ export class FFXIVAdventurerSheet extends HandlebarsApplicationMixin(ActorSheetV
             if (!li) return;
             const item = this.document.items.get(li.dataset.itemId);
             if (item) {
-                try { await FFXIVRoll.rollAbility(item, this.document); }
-                catch (e) { console.error("FFXIV | Roll error:", e); }
+                try { await FFXIVRoll.pingAbility(item, this.document); }
+                catch (e) { console.error("FFXIV | Roll ping error:", e); }
             }
         });
 

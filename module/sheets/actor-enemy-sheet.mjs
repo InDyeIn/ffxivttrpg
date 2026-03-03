@@ -71,7 +71,7 @@ export class FFXIVEnemySheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             const li = event.currentTarget.closest("[data-item-id]");
             const itemId = li.dataset.itemId;
             const item = this.document.items.get(itemId);
-            if (item) await FFXIVRoll.rollAbility(item, this.document);
+            if (item) await FFXIVRoll.pingAbility(item, this.document);
         });
 
         // Editar habilidade

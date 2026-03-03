@@ -114,6 +114,11 @@ Hooks.on("combatTurnChange", async (combat) => {
     FFXIVCombatHUD.getOrCreate().render(true);
 });
 
+// Intercepta e ativa listeners no chat para rolagens pós-ping
+Hooks.on("renderChatMessage", (message, html, data) => {
+    FFXIVRoll.activateChatListeners(html);
+});
+
 /* -------------------------------------------- */
 /*  Hotbar Drop                                  */
 /* -------------------------------------------- */
@@ -200,5 +205,5 @@ async function rollItemMacro(uuid) {
     if (!actor) actor = game.actors.get(speaker.actor);
     if (!actor) return ui.notifications.warn(game.i18n.localize("FFXIV.MacroNoActor"));
 
-    return FFXIVRoll.rollAbility(item, actor);
+    return FFXIVRoll.pingAbility(item, actor);
 }
