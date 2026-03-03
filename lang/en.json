@@ -1,4 +1,12 @@
 {
+    "TYPES.Actor.adventurer": "Adventurer",
+    "TYPES.Actor.enemy": "Enemy",
+    "TYPES.Item.ability": "Ability",
+    "TYPES.Item.weapon": "Weapon",
+    "TYPES.Item.armor": "Armor",
+    "TYPES.Item.consumable": "Consumable",
+    "TYPES.Item.trait": "Trait",
+    "TYPES.Item.status": "Status Effect",
     "FFXIV.SheetAdventurer": "FFXIV TTRPG - Adventurer",
     "FFXIV.SheetEnemy": "FFXIV TTRPG - Enemy",
     "FFXIV.SheetAbility": "FFXIV TTRPG - Ability",

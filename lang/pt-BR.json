@@ -1,4 +1,12 @@
 {
+    "TYPES.Actor.adventurer": "Aventureiro",
+    "TYPES.Actor.enemy": "Inimigo",
+    "TYPES.Item.ability": "Habilidade",
+    "TYPES.Item.weapon": "Arma",
+    "TYPES.Item.armor": "Armadura",
+    "TYPES.Item.consumable": "Consumível",
+    "TYPES.Item.trait": "Traço Racial",
+    "TYPES.Item.status": "Efeito de Status",
     "FFXIV.SheetAdventurer": "FFXIV TTRPG - Aventureiro",
     "FFXIV.SheetEnemy": "FFXIV TTRPG - Inimigo",
     "FFXIV.SheetAbility": "FFXIV TTRPG - Habilidade",
