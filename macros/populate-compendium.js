@@ -11,7 +11,7 @@
  */
 
 // Importação dinâmica do arquivo de dados
-const { ABILITIES_DATA } = await import("systems/ffxivttrpg/module/data/abilities-data.mjs");
+const { ABILITIES_DATA } = await import("/systems/ffxivttrpg/module/data/abilities-data.mjs");
 
 // Nome do compêndio onde as habilidades serão salvas
 const PACK_NAME = "ffxivttrpg.abilities";
