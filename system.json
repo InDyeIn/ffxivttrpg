@@ -29,38 +29,10 @@
     ],
     "packs": [
         {
-            "name": "races",
-            "label": "Raças",
-            "path": "packs/races.json",
-            "type": "Item",
-            "system": "ffxivttrpg"
-        },
-        {
-            "name": "jobs",
-            "label": "Jobs",
-            "path": "packs/jobs.json",
-            "type": "Item",
-            "system": "ffxivttrpg"
-        },
-        {
             "name": "abilities",
             "label": "Habilidades",
             "path": "packs/abilities.json",
             "type": "Item",
-            "system": "ffxivttrpg"
-        },
-        {
-            "name": "status-effects",
-            "label": "Efeitos de Status",
-            "path": "packs/status-effects.json",
-            "type": "Item",
-            "system": "ffxivttrpg"
-        },
-        {
-            "name": "enemies",
-            "label": "Inimigos",
-            "path": "packs/enemies.json",
-            "type": "Actor",
             "system": "ffxivttrpg"
         }
     ],
@@ -73,7 +45,7 @@
         "verified": "13",
         "maximum": "13"
     },
-    "url": "",
-    "manifest": "",
-    "download": ""
+    "url": "https://github.com/InDyeIn/ffxivttrpg",
+    "manifest": "https://raw.githubusercontent.com/InDyeIn/ffxivttrpg/main/system.json",
+    "download": "https://github.com/InDyeIn/ffxivttrpg/archive/refs/heads/main.zip"
 }
