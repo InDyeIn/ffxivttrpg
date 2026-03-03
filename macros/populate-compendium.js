@@ -37,55 +37,54 @@ const JOB_ROLES = {
 // Heurística visual para ícones pré-instalados no Foundry
 function getIconForAbility(job, name, desc) {
     const n = name.toLowerCase();
-    const d = desc.toLowerCase();
 
     // 1. Palavras Chave Específicas
     if (n.includes("cure") || n.includes("heal") || n.includes("medica") || n.includes("benefic") || n.includes("adloquium"))
-        return "icons/magic/life/cross-yellow-green.webp";
+        return "icons/svg/heal.svg";
     if (n.includes("raise") || n.includes("resurrection") || n.includes("ascend"))
-        return "icons/magic/life/heart-cross-blue.webp";
+        return "icons/svg/angel.svg";
     if (n.includes("shield") || n.includes("rampart") || n.includes("wall") || n.includes("barrier") || n.includes("succor"))
-        return "icons/magic/defensive/shield-barrier-blue.webp";
+        return "icons/svg/shield.svg";
     if (n.includes("fire") || n.includes("fira") || n.includes("flare"))
-        return "icons/magic/fire/projectile-meteor-salvo-strong-red.webp";
+        return "icons/svg/fire.svg";
     if (n.includes("blizzard") || n.includes("freeze"))
-        return "icons/magic/water/projectile-ice-snowball.webp";
+        return "icons/svg/ice-aura.svg";
     if (n.includes("thunder") || n.includes("lightning"))
-        return "icons/magic/lightning/bolt-strike-blue.webp";
+        return "icons/svg/lightning.svg";
     if (n.includes("aero") || n.includes("stone") || n.includes("glare") || n.includes("holy") || n.includes("ruin"))
-        return "icons/magic/light/projectile-star-yellow.webp";
+        return "icons/svg/sun.svg";
     if (n.includes("provoke") || n.includes("enmity") || n.includes("taunt"))
-        return "icons/skills/social/intimidation-impressing.webp";
+        return "icons/svg/target.svg";
     if (n.includes("limit break") || n.includes("lb"))
-        return "icons/magic/light/explosion-star-glow-yellow-green.webp";
+        return "icons/svg/explosion.svg";
 
     // 2. Baseado no Job/Role
     const role = JOB_ROLES[job];
-    if (role === "Tank") return "icons/skills/melee/strike-sword-steel-yellow.webp";
-    if (role === "Healer") return "icons/magic/life/cross-yellow-green.webp";
-    if (role === "Melee DPS") {
-        if (job === "Monk") return "icons/skills/melee/unarmed-punch-fist.webp";
-        if (job === "Dragoon") return "icons/weapons/polearms/spear-flared-steel.webp";
-        return "icons/skills/melee/strike-blade-assassin-blue.webp"; // Ninja/Samurai
-    }
-    if (role === "Ranged DPS") {
-        if (job === "Bard") return "icons/weapons/bows/shortbow-recurve-blue.webp";
-        if (job === "Machinist") return "icons/weapons/guns/gun-pistol-flintlock-brown.webp";
-    }
-    if (role === "Magic DPS") return "icons/magic/fire/projectile-fireball-red.webp";
+    if (role === "Tank") return "icons/svg/sword.svg";
+    if (role === "Healer") return "icons/svg/regen.svg";
+    if (role === "Melee DPS") return "icons/svg/combat.svg";
+    if (role === "Ranged DPS") return "icons/svg/target.svg";
+    if (role === "Magic DPS") return "icons/svg/daze.svg";
 
-    return "icons/svg/combat.svg"; // Fallback final
+    return "icons/svg/item-bag.svg"; // Fallback final
 }
 
-// 1. Criar estrutura de Pastas no Compêndio
+// 1. Criar estrutura de Pastas no Compêndio (Agora com Subpastas por Nível)
 const existingFoldersArray = pack.folders.contents;
 const folderCache = new Map(existingFoldersArray.map(f => [f.name, f.id]));
 
-const getOrCreateFolder = async (folderName) => {
-    if (folderCache.has(folderName)) return folderCache.get(folderName);
+const getOrCreateFolder = async (folderName, parentFolderId = null) => {
+    // Definimos uma chave única para o cache pra evitar colisão de "Lv. 1" de Jobs diferentes se a lógica explodir
+    const cacheKey = parentFolderId ? `${parentFolderId}_${folderName}` : folderName;
+    if (folderCache.has(cacheKey)) return folderCache.get(cacheKey);
 
-    const f = await Folder.create({ name: folderName, type: "Item" }, { pack: PACK_NAME });
-    folderCache.set(folderName, f.id);
+    const f = await Folder.create({
+        name: folderName,
+        type: "Item",
+        folder: parentFolderId // ID da pasta pai no V11/V12/V13
+    }, { pack: PACK_NAME });
+
+    folderCache.set(cacheKey, f.id);
     return f.id;
 };
 
@@ -100,12 +99,18 @@ for (const [job, abilities] of Object.entries(ABILITIES_DATA)) {
     }
 }
 
-ui.notifications.info(`📚 Populando ${allAbilities.length} habilidades e organizando em pastas...`);
+ui.notifications.info(`📚 Populando ${allAbilities.length} habilidades e organizando em subpastas de níveis...`);
 
 for (const ability of allAbilities) {
     try {
-        const folderId = await getOrCreateFolder(ability.job);
+        // 1. Pega ou cria a pasta do Job
+        const jobFolderId = await getOrCreateFolder(ability.job);
 
+        // 2. Pega ou cria a subpasta do Level (ex: "Lv. 1", "Lv. 5", etc)
+        const lvlStr = `Lv. ${ability.level || 1}`;
+        const levelFolderId = await getOrCreateFolder(lvlStr, jobFolderId);
+
+        // 3. Define ícone
         let iconToUse = ability.img;
         if (!iconToUse || iconToUse === "icons/svg/mystery-man.svg" || iconToUse === "") {
             iconToUse = getIconForAbility(ability.job, ability.name, ability.description || "");
@@ -115,7 +120,7 @@ for (const ability of allAbilities) {
             name: ability.name,
             type: "ability",
             img: iconToUse,
-            folder: folderId,
+            folder: levelFolderId, // Associa à subpasta de level final
             system: {
                 job: ability.job || "",
                 level: ability.level || 1,
