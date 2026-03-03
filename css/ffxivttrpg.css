@@ -35,6 +35,9 @@
   border: 1px solid var(--ffxiv-border);
   border-radius: var(--ffxiv-radius-lg);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .ffxiv-sheet input,
@@ -346,7 +349,9 @@
 .sheet-body {
   padding: 10px;
   background: var(--ffxiv-bg-mid);
-  min-height: 200px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* ---- Ability Lists ---- */
