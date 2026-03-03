@@ -78,12 +78,14 @@ function getIconForAbility(job, name, desc) {
 }
 
 // 1. Criar estrutura de Pastas no Compêndio
-const existingFolders = pack.folders.contents;
+const existingFoldersArray = pack.folders.contents;
+const folderCache = new Map(existingFoldersArray.map(f => [f.name, f.id]));
+
 const getOrCreateFolder = async (folderName) => {
-    let f = existingFolders.find(x => x.name === folderName);
-    if (!f) {
-        f = await Folder.create({ name: folderName, type: "Item" }, { pack: PACK_NAME });
-    }
+    if (folderCache.has(folderName)) return folderCache.get(folderName);
+
+    const f = await Folder.create({ name: folderName, type: "Item" }, { pack: PACK_NAME });
+    folderCache.set(folderName, f.id);
     return f.id;
 };
 
