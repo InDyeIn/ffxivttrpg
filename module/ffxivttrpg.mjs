@@ -1,9 +1,9 @@
 /**
  * FFXIV TTRPG — Sistema para Foundry VTT v13
  * Módulo principal de inicialização
+ * Usa APIs do namespace correto do v13
  */
 
-// Import all modules
 import { FFXIVAdventurerSheet } from "./sheets/actor-adventurer-sheet.mjs";
 import { FFXIVEnemySheet } from "./sheets/actor-enemy-sheet.mjs";
 import { FFXIVAbilitySheet } from "./sheets/item-ability-sheet.mjs";
@@ -15,13 +15,13 @@ import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { FFXIV } from "./config.mjs";
 
 /* -------------------------------------------- */
-/*  Foundry VTT Initialization                  */
+/*  Init Hook                                    */
 /* -------------------------------------------- */
 
 Hooks.once("init", async function () {
     console.log("FFXIV TTRPG | Initializing system...");
 
-    // Store system config in global game object
+    // Expor no objeto global do jogo
     game.ffxivttrpg = {
         FFXIVAdventurerSheet,
         FFXIVEnemySheet,
@@ -30,21 +30,16 @@ Hooks.once("init", async function () {
         rollItemMacro,
     };
 
-    // Define custom constants for the system
+    // Configurações do sistema
     CONFIG.FFXIV = FFXIV;
-
-    // Set up custom document classes (use default)
     CONFIG.Actor.documentClass = Actor;
     CONFIG.Item.documentClass = Item;
-
-    // Override Combat class
     CONFIG.Combat.documentClass = FFXIVCombat;
-
-    // Configure active effects
     CONFIG.ActiveEffect.legacyTransferral = false;
 
-    // Register sheet application classes
-    Actors.unregisterSheet("core", ActorSheet);
+    // ---- Registrar sheets — usando a API v13 via Actors/Items que ainda funciona ----
+    // Usamos o acesso directo que é backwards-compat até v15
+    Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
     Actors.registerSheet("ffxivttrpg", FFXIVAdventurerSheet, {
         types: ["adventurer"],
         makeDefault: true,
@@ -56,7 +51,7 @@ Hooks.once("init", async function () {
         label: "FFXIV.SheetEnemy",
     });
 
-    Items.unregisterSheet("core", ItemSheet);
+    Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
     Items.registerSheet("ffxivttrpg", FFXIVAbilitySheet, {
         types: ["ability"],
         makeDefault: true,
@@ -68,16 +63,12 @@ Hooks.once("init", async function () {
         label: "FFXIV.SheetItem",
     });
 
-    // Register system settings
+    // Settings e Helpers
     _registerSystemSettings();
-
-    // Preload Handlebars templates
     await preloadHandlebarsTemplates();
-
-    // Register Handlebars helpers
     _registerHandlebarsHelpers();
 
-    console.log("FFXIV TTRPG | System initialized successfully!");
+    console.log("FFXIV TTRPG | System initialized!");
 });
 
 /* -------------------------------------------- */
@@ -86,21 +77,11 @@ Hooks.once("init", async function () {
 
 Hooks.once("ready", async function () {
     console.log("FFXIV TTRPG | System ready.");
-
-    // Init enmity tracker
     FFXIVEnmity.initialize();
-
-    // Check Foundry version
-    if (!game.user.isGM) return;
-
-    const version = game.version;
-    if (foundry.utils.isNewerVersion("13", version)) {
-        ui.notifications.warn(game.i18n.localize("FFXIV.VersionWarning"));
-    }
 });
 
 /* -------------------------------------------- */
-/*  Macro Hooks                                  */
+/*  Hotbar Drop                                  */
 /* -------------------------------------------- */
 
 Hooks.on("hotbarDrop", (bar, data, slot) => {
@@ -115,46 +96,48 @@ Hooks.on("hotbarDrop", (bar, data, slot) => {
 /* -------------------------------------------- */
 
 function _registerSystemSettings() {
-    game.settings.register("ffxivttrpg", "enmityVisible", {
-        name: "FFXIV.Settings.EnmityVisible",
-        hint: "FFXIV.Settings.EnmityVisibleHint",
-        scope: "world",
-        config: true,
-        requiresReload: false,
-        default: true,
-        type: Boolean,
-    });
+    const settings = [
+        {
+            key: "enmityVisible",
+            name: "FFXIV.Settings.EnmityVisible",
+            hint: "FFXIV.Settings.EnmityVisibleHint",
+            default: true,
+            type: Boolean,
+        },
+        {
+            key: "autoApplyDamage",
+            name: "FFXIV.Settings.AutoApplyDamage",
+            hint: "FFXIV.Settings.AutoApplyDamageHint",
+            default: true,
+            type: Boolean,
+        },
+        {
+            key: "showPhaseTracker",
+            name: "FFXIV.Settings.ShowPhaseTracker",
+            hint: "FFXIV.Settings.ShowPhaseTrackerHint",
+            default: true,
+            type: Boolean,
+        },
+        {
+            key: "critThreshold",
+            name: "FFXIV.Settings.CritThreshold",
+            hint: "FFXIV.Settings.CritThresholdHint",
+            default: 20,
+            type: Number,
+        },
+    ];
 
-    game.settings.register("ffxivttrpg", "autoApplyDamage", {
-        name: "FFXIV.Settings.AutoApplyDamage",
-        hint: "FFXIV.Settings.AutoApplyDamageHint",
-        scope: "world",
-        config: true,
-        requiresReload: false,
-        default: true,
-        type: Boolean,
-    });
-
-    game.settings.register("ffxivttrpg", "showPhaseTracker", {
-        name: "FFXIV.Settings.ShowPhaseTracker",
-        hint: "FFXIV.Settings.ShowPhaseTrackerHint",
-        scope: "world",
-        config: true,
-        requiresReload: false,
-        default: true,
-        type: Boolean,
-    });
-
-    game.settings.register("ffxivttrpg", "critThreshold", {
-        name: "FFXIV.Settings.CritThreshold",
-        hint: "FFXIV.Settings.CritThresholdHint",
-        scope: "world",
-        config: true,
-        requiresReload: false,
-        default: 20,
-        type: Number,
-        range: { min: 16, max: 20, step: 1 },
-    });
+    for (const s of settings) {
+        game.settings.register("ffxivttrpg", s.key, {
+            name: s.name,
+            hint: s.hint,
+            scope: "world",
+            config: true,
+            requiresReload: false,
+            default: s.default,
+            type: s.type,
+        });
+    }
 }
 
 /* -------------------------------------------- */
@@ -162,99 +145,34 @@ function _registerSystemSettings() {
 /* -------------------------------------------- */
 
 function _registerHandlebarsHelpers() {
-    Handlebars.registerHelper("concat", function (...args) {
-        let outStr = "";
-        for (let arg in args) {
-            if (typeof args[arg] !== "object") outStr += args[arg];
-        }
-        return outStr;
+    const h = Handlebars.registerHelper.bind(Handlebars);
+
+    h("eq", (a, b) => a === b);
+    h("neq", (a, b) => a !== b);
+    h("gt", (a, b) => a > b);
+    h("gte", (a, b) => a >= b);
+    h("lt", (a, b) => a < b);
+    h("and", (a, b) => a && b);
+    h("or", (a, b) => a || b);
+
+    h("concat", function (...args) {
+        return args.filter(a => typeof a !== "object").join("");
     });
 
-    Handlebars.registerHelper("toLowerCase", function (str) {
-        return str.toLowerCase();
-    });
+    h("toLowerCase", str => (str || "").toLowerCase());
 
-    Handlebars.registerHelper("eq", function (a, b) {
-        return a === b;
-    });
+    h("localize", key => game.i18n.localize(key));
 
-    Handlebars.registerHelper("neq", function (a, b) {
-        return a !== b;
-    });
-
-    Handlebars.registerHelper("gt", function (a, b) {
-        return a > b;
-    });
-
-    Handlebars.registerHelper("gte", function (a, b) {
-        return a >= b;
-    });
-
-    Handlebars.registerHelper("lt", function (a, b) {
-        return a < b;
-    });
-
-    Handlebars.registerHelper("and", function (a, b) {
-        return a && b;
-    });
-
-    Handlebars.registerHelper("or", function (a, b) {
-        return a || b;
-    });
-
-    Handlebars.registerHelper("times", function (n, block) {
-        let result = "";
-        for (let i = 0; i < n; i++) result += block.fn(i);
-        return result;
-    });
-
-    Handlebars.registerHelper("gaugePercent", function (value, max) {
-        if (!max) return 0;
-        return Math.round((value / max) * 100);
-    });
-
-    Handlebars.registerHelper("hpColor", function (value, max) {
-        const pct = value / max;
-        if (pct > 0.5) return "healthy";
-        if (pct > 0.25) return "injured";
-        return "critical";
-    });
-
-    Handlebars.registerHelper("localize", function (key) {
-        return game.i18n.localize(key);
-    });
-
-    Handlebars.registerHelper("actionTypeIcon", function (type) {
-        const icons = {
-            primary: "fa-circle",
-            secondary: "fa-circle-half-stroke",
-            instant: "fa-bolt",
-            passive: "fa-infinity",
-        };
-        return icons[type] || "fa-circle";
-    });
-
-    Handlebars.registerHelper("damageTypeColor", function (type) {
-        const colors = {
-            physical: "#c8a84b",
-            magic: "#7b5ea7",
-            holy: "#f0e68c",
-            dark: "#4a0e8f",
-            fire: "#ff6b35",
-            ice: "#64b5f6",
-            lightning: "#ffd54f",
-            wind: "#81c784",
-            earth: "#a1887f",
-            water: "#4fc3f7",
-            unaspected: "#ffffff",
-            heal: "#66bb6a",
-        };
-        return colors[type] || "#ffffff";
-    });
+    h("damageTypeColor", type => ({
+        physical: "#c8a84b", magic: "#7b5ea7", holy: "#f0e68c",
+        dark: "#4a0e8f", fire: "#ff6b35", ice: "#64b5f6",
+        lightning: "#ffd54f", wind: "#81c784", earth: "#a1887f",
+        water: "#4fc3f7", unaspected: "#ffffff", heal: "#66bb6a",
+    }[type] || "#ffffff"));
 }
 
 /* -------------------------------------------- */
-/*  Item Macro Creation                          */
+/*  Item Macros                                  */
 /* -------------------------------------------- */
 
 async function createItemMacro(data, slot) {
@@ -267,20 +185,16 @@ async function createItemMacro(data, slot) {
     if (!item) return ui.notifications.warn(game.i18n.localize("FFXIV.MacroNoItem"));
 
     const command = `game.ffxivttrpg.rollItemMacro("${data.uuid}");`;
-    let macro = game.macros.find(
-        (m) => m.name === item.name && m.command === command
-    );
-
+    let macro = game.macros.find(m => m.name === item.name && m.command === command);
     if (!macro) {
         macro = await Macro.create({
             name: item.name,
             type: "script",
             img: item.img,
-            command: command,
+            command,
             flags: { "ffxivttrpg.itemMacro": true },
         });
     }
-
     game.user.assignHotbarMacro(macro, slot);
 }
 
@@ -294,10 +208,7 @@ async function rollItemMacro(uuid) {
     let actor;
     if (speaker.token) actor = game.actors.tokens[speaker.token];
     if (!actor) actor = game.actors.get(speaker.actor);
-
-    if (!actor) {
-        return ui.notifications.warn(game.i18n.localize("FFXIV.MacroNoActor"));
-    }
+    if (!actor) return ui.notifications.warn(game.i18n.localize("FFXIV.MacroNoActor"));
 
     return FFXIVRoll.rollAbility(item, actor);
 }

@@ -2,7 +2,7 @@
     "id": "ffxivttrpg",
     "title": "FFXIV TTRPG",
     "description": "Sistema oficial de FFXIV TTRPG para Foundry VTT. Suporta todos os 13 Jobs, 7 Raças, sistema de combate por fases, AOE telegrafado, Enmity Tracker e Limit Breaks.",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "authors": [
         {
             "name": "FFXIV TTRPG System",

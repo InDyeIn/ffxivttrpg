@@ -2,7 +2,7 @@
  * FFXIV TTRPG — Actor Sheet: Adventurer (v2 — simplificado e à prova de falhas)
  */
 
-export class FFXIVAdventurerSheet extends ActorSheet {
+export class FFXIVAdventurerSheet extends foundry.appv1.sheets.ActorSheet {
 
     /** @override */
     static get defaultOptions() {

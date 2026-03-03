@@ -2,7 +2,7 @@
  * FFXIV TTRPG — Item Sheet: Genérico
  * Usado para: weapon, armor, consumable, trait, status
  */
-export class FFXIVItemSheet extends ItemSheet {
+export class FFXIVItemSheet extends foundry.appv1.sheets.ItemSheet {
 
     /** @override */
     static get defaultOptions() {

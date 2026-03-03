@@ -2,7 +2,7 @@
  * FFXIV TTRPG — Actor Sheet: Enemy
  */
 
-export class FFXIVEnemySheet extends ActorSheet {
+export class FFXIVEnemySheet extends foundry.appv1.sheets.ActorSheet {
 
     /** @override */
     static get defaultOptions() {
@@ -93,8 +93,9 @@ export class FFXIVEnemySheet extends ActorSheet {
      * Coloca marcador de AOE no canvas para visualização dos players
      */
     async _placeAOEMarker(type) {
-        const tokenDoc = this.actor.token;
-        if (!tokenDoc) {
+        // Verifica se o actor tem um token ativo no canvas
+        const tokenDoc = this.actor.isToken ? this.actor.token : canvas.tokens?.controlled?.[0]?.document ?? null;
+        if (!tokenDoc || !canvas.scene) {
             ui.notifications.warn(game.i18n.localize("FFXIV.EnemyNotOnScene"));
             return;
         }
