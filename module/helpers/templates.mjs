@@ -11,6 +11,7 @@ export async function preloadHandlebarsTemplates() {
         "systems/ffxivttrpg/templates/items/item-generic-sheet.hbs",
         // Chat
         "systems/ffxivttrpg/templates/chat/ability-card.hbs",
+        "systems/ffxivttrpg/templates/chat/ability-ping.hbs",
         // Apps
         "systems/ffxivttrpg/templates/apps/limit-break.hbs",
         // HUD

@@ -45,7 +45,7 @@ Hooks.once("init", async function () {
     CONFIG.ActiveEffect.legacyTransferral = false;
 
     // Sheets
-    Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
+    Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("ffxivttrpg", FFXIVAdventurerSheet, {
         types: ["adventurer"], makeDefault: true, label: "FFXIV.SheetAdventurer",
     });
@@ -53,7 +53,7 @@ Hooks.once("init", async function () {
         types: ["enemy"], makeDefault: true, label: "FFXIV.SheetEnemy",
     });
 
-    Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
+    Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("ffxivttrpg", FFXIVAbilitySheet, {
         types: ["ability"], makeDefault: true, label: "FFXIV.SheetAbility",
     });
@@ -179,6 +179,13 @@ function _registerHandlebarsHelpers() {
         lightning: "#ffd54f", wind: "#81c784", earth: "#a1887f",
         water: "#4fc3f7", unaspected: "#ffffff", heal: "#66bb6a",
     }[type] || "#ffffff"));
+
+    h("actionTypeIcon", type => ({
+        primary: "crosshairs",
+        secondary: "star-half-stroke",
+        instant: "bolt",
+        passive: "infinity"
+    }[type] || "circle"));
 }
 
 /* -------------------------------------------- */

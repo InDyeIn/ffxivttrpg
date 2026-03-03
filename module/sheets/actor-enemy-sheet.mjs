@@ -131,6 +131,13 @@ export class FFXIVEnemySheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             flags: { ffxivttrpg: { type: "aoe_warning", resolves: "roundup" } },
         }]);
     }
+
+    /** @override */
+    _processSubmitData(event, form, formData) {
+        const submitData = foundry.utils.expandObject(formData.object);
+        this.document.update(submitData);
+        return submitData;
+    }
 }
 
 // Lazy imports

@@ -140,14 +140,14 @@ export class FFXIVAdventurerSheet extends HandlebarsApplicationMixin(ActorSheetV
         }
 
         // Rolar atributo ao clicar no modificador
-        html.on("click", ".attribute-roll", async (ev) => {
+        html.off("click", ".attribute-roll").on("click", ".attribute-roll", async (ev) => {
             ev.preventDefault();
             const attrKey = ev.currentTarget.dataset.attr;
             if (attrKey) this._rollAttribute(attrKey);
         });
 
         // Usar habilidade ao clicar no nome
-        html.on("click", ".ability-use", async (ev) => {
+        html.off("click", ".ability-use").on("click", ".ability-use", async (ev) => {
             ev.preventDefault();
             const li = ev.currentTarget.closest("[data-item-id]");
             if (!li) return;
@@ -159,28 +159,28 @@ export class FFXIVAdventurerSheet extends HandlebarsApplicationMixin(ActorSheetV
         });
 
         // Editar item
-        html.on("click", ".item-edit", (ev) => {
+        html.off("click", ".item-edit").on("click", ".item-edit", (ev) => {
             ev.preventDefault();
             const li = ev.currentTarget.closest("[data-item-id]");
             if (li) this.document.items.get(li.dataset.itemId)?.sheet?.render(true);
         });
 
         // Deletar item
-        html.on("click", ".item-delete", (ev) => {
+        html.off("click", ".item-delete").on("click", ".item-delete", (ev) => {
             ev.preventDefault();
             const li = ev.currentTarget.closest("[data-item-id]");
             if (li) this.document.items.get(li.dataset.itemId)?.delete();
         });
 
         // Criar item
-        html.on("click", ".item-create", async (ev) => {
+        html.off("click", ".item-create").on("click", ".item-create", async (ev) => {
             ev.preventDefault();
             const type = ev.currentTarget.dataset.type || "ability";
             await Item.create({ name: "Novo Item", type }, { parent: this.document });
         });
 
         // Toggle efeito
-        html.on("click", ".effect-toggle", async (ev) => {
+        html.off("click", ".effect-toggle").on("click", ".effect-toggle", async (ev) => {
             ev.preventDefault();
             const id = ev.currentTarget.closest("[data-effect-id]")?.dataset.effectId;
             const eff = this.document.effects.get(id);
@@ -188,14 +188,14 @@ export class FFXIVAdventurerSheet extends HandlebarsApplicationMixin(ActorSheetV
         });
 
         // Deletar efeito
-        html.on("click", ".effect-delete", async (ev) => {
+        html.off("click", ".effect-delete").on("click", ".effect-delete", async (ev) => {
             ev.preventDefault();
             const id = ev.currentTarget.closest("[data-effect-id]")?.dataset.effectId;
             this.document.effects.get(id)?.delete();
         });
 
         // Botão de rest
-        html.on("click", ".rest-button", () => this._onRest());
+        html.off("click", ".rest-button").on("click", ".rest-button", () => this._onRest());
     }
 
     async _rollAttribute(attrKey) {
@@ -207,6 +207,13 @@ export class FFXIVAdventurerSheet extends HandlebarsApplicationMixin(ActorSheetV
             speaker: ChatMessage.getSpeaker({ actor: this.document }),
             flavor: `${this.document.name} — Check de ${labels[attrKey] || attrKey}`,
         });
+    }
+
+    /** @override */
+    _processSubmitData(event, form, formData) {
+        const submitData = foundry.utils.expandObject(formData.object);
+        this.document.update(submitData);
+        return submitData;
     }
 
     async _onRest() {

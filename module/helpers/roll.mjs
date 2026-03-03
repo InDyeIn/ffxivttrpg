@@ -43,7 +43,7 @@ export class FFXIVRoll {
      * Intercepta o clique no chat gerado pelo pingAbility
      */
     static activateChatListeners(html) {
-        html.on("click", ".ffxiv-roll-action", async (ev) => {
+        html.off("click", ".ffxiv-roll-action").on("click", ".ffxiv-roll-action", async (ev) => {
             ev.preventDefault();
             const btn = ev.currentTarget;
             const itemUuid = btn.dataset.itemUuid;
@@ -174,13 +174,15 @@ export class FFXIVRoll {
         if (targetType === "self") return [actor.token || actor];
         if (targetType === "single") {
             if (gameTargets.length === 0) {
-                ui.notifications.warn(game.i18n.localize("FFXIV.NoTarget"));
-                return null;
+                // If no target is selected, return a dummy array with null so the roll still happens
+                return [null];
             }
             return [gameTargets[0]];
         }
-        if (targetType.includes("all")) return gameTargets;
-        return gameTargets;
+        if (targetType.includes("all")) {
+            return gameTargets.length > 0 ? gameTargets : [null];
+        }
+        return gameTargets.length > 0 ? gameTargets : [null];
     }
 
     /**

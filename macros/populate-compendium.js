@@ -37,36 +37,37 @@ const JOB_ROLES = {
 // Heurística visual para ícones pré-instalados no Foundry
 function getIconForAbility(job, name, desc) {
     const n = name.toLowerCase();
+    const basePath = "systems/ffxivttrpg/assets/tokens/";
 
     // 1. Palavras Chave Específicas
     if (n.includes("cure") || n.includes("heal") || n.includes("medica") || n.includes("benefic") || n.includes("adloquium"))
-        return "icons/svg/heal.svg";
+        return basePath + "healing.png";
     if (n.includes("raise") || n.includes("resurrection") || n.includes("ascend"))
-        return "icons/svg/angel.svg";
+        return basePath + "angel-wings.png";
     if (n.includes("shield") || n.includes("rampart") || n.includes("wall") || n.includes("barrier") || n.includes("succor"))
-        return "icons/svg/shield.svg";
+        return basePath + "shield.png";
     if (n.includes("fire") || n.includes("fira") || n.includes("flare"))
-        return "icons/svg/fire.svg";
+        return basePath + "fire.png";
     if (n.includes("blizzard") || n.includes("freeze"))
-        return "icons/svg/ice-aura.svg";
+        return basePath + "ice-bolt.png";
     if (n.includes("thunder") || n.includes("lightning"))
-        return "icons/svg/lightning.svg";
+        return basePath + "lightning-storm.png";
     if (n.includes("aero") || n.includes("stone") || n.includes("glare") || n.includes("holy") || n.includes("ruin"))
-        return "icons/svg/sun.svg";
+        return basePath + "magic-swirl.png";
     if (n.includes("provoke") || n.includes("enmity") || n.includes("taunt"))
-        return "icons/svg/target.svg";
+        return basePath + "bullseye.png";
     if (n.includes("limit break") || n.includes("lb"))
-        return "icons/svg/explosion.svg";
+        return basePath + "bright-explosion.png";
 
     // 2. Baseado no Job/Role
     const role = JOB_ROLES[job];
-    if (role === "Tank") return "icons/svg/sword.svg";
-    if (role === "Healer") return "icons/svg/regen.svg";
-    if (role === "Melee DPS") return "icons/svg/combat.svg";
-    if (role === "Ranged DPS") return "icons/svg/target.svg";
-    if (role === "Magic DPS") return "icons/svg/daze.svg";
+    if (role === "Tank") return basePath + "broadsword.png";
+    if (role === "Healer") return basePath + "health-potion.png";
+    if (role === "Melee DPS") return basePath + "crossed-swords.png";
+    if (role === "Ranged DPS") return basePath + "bow-arrow.png";
+    if (role === "Magic DPS") return basePath + "crystal-wand.png";
 
-    return "icons/svg/item-bag.svg"; // Fallback final
+    return basePath + "knapsack.png"; // Fallback final
 }
 
 // 1. Criar estrutura de Pastas no Compêndio (Agora com Subpastas por Nível)
