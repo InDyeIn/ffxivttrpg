@@ -1,0 +1,11 @@
+{
+  "name": "Lalafell",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "Raça base: Lalafell"
+  },
+  "_id": "46a5fb7d11f3f7eb",
+  "_key": "!items!46a5fb7d11f3f7eb"
+}

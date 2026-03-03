@@ -1,0 +1,11 @@
+{
+  "name": "Roegadyn — Hellsguard",
+  "type": "subclass",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "classIdentifier": "roegadyn",
+    "description": "**Sub-raça:** Hellsguard\n\n**STATUS:** FOR 10, DES 9, VIT 11, INT 9, MEN 10\n\n**TRAITS:**\n- **Casca Vulcânica**: Reduz qualquer dano de Fogo sofrido em 2."
+  },
+  "_id": "834e41fd723ef892",
+  "_key": "!items!834e41fd723ef892"
+}

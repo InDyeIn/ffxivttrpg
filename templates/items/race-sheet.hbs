@@ -1,0 +1,44 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+    <header class="sheet-header item-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}"
+                    placeholder="Nome da Raça / Tribo" /></h1>
+            <div class="item-subtitle">
+                <span>Raça Base | FFXIV TTRPG</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="sheet-body">
+        <div class="form-group stacked">
+            <label>Descrição do Povo</label>
+            <textarea name="system.description" style="height: 100px;">{{system.description}}</textarea>
+        </div>
+
+        <h3 style="margin-top: 15px; border-bottom: 1px solid var(--ffxiv-gold);">Ajustes de Atributo Raciais</h3>
+        <p class="notes" style="font-size: 11px;">(Bonus base concedido apenas ao equipar. Tribes/Sub-classes usam
+            Features separadas.)</p>
+
+        <div class="form-group">
+            <label>FOR</label>
+            <input type="number" name="system.baseAttributeBonus.str" value="{{system.baseAttributeBonus.str}}" />
+        </div>
+        <div class="form-group">
+            <label>DES</label>
+            <input type="number" name="system.baseAttributeBonus.dex" value="{{system.baseAttributeBonus.dex}}" />
+        </div>
+        <div class="form-group">
+            <label>VIT</label>
+            <input type="number" name="system.baseAttributeBonus.vit" value="{{system.baseAttributeBonus.vit}}" />
+        </div>
+        <div class="form-group">
+            <label>INT</label>
+            <input type="number" name="system.baseAttributeBonus.int" value="{{system.baseAttributeBonus.int}}" />
+        </div>
+        <div class="form-group">
+            <label>MEN</label>
+            <input type="number" name="system.baseAttributeBonus.mnd" value="{{system.baseAttributeBonus.mnd}}" />
+        </div>
+    </section>
+</form>

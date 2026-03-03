@@ -1,0 +1,26 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+    <header class="sheet-header item-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Nome da Feature" />
+            </h1>
+            <div class="item-subtitle">
+                <span>Passiva / Habilidade / Trait | FFXIV TTRPG</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="sheet-body">
+        <div class="form-group stacked">
+            <label>Efeito / Descrição</label>
+            <textarea name="system.description" style="height: 180px;">{{system.description}}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Identificador da Classe (Opcional)</label>
+            <input type="text" name="system.classIdentifier" value="{{system.classIdentifier}}"
+                placeholder="ex: paladin" />
+            <p class="notes">Usado para associar esta Sub-raça ou Feature a uma root class.</p>
+        </div>
+    </section>
+</form>

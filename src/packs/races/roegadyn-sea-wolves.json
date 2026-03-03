@@ -1,0 +1,11 @@
+{
+  "name": "Roegadyn (Sea Wolves)",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "STATUS: +2 STR, +1 VIT\n\nTRAITS:\n- **Corpo de Ferro**: +3 HP máximo permanente.\n- **Rugido de Guerra**: Vantagem em intimidação. Aliados ganham +1 Vantagem na próxima jogada."
+  },
+  "_id": "a3240b85e81fc83d",
+  "_key": "!items!a3240b85e81fc83d"
+}

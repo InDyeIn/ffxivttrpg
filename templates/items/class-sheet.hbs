@@ -1,0 +1,59 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+    <header class="sheet-header item-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Nome do Job" /></h1>
+            <div class="item-subtitle">
+                <span>Lv. {{system.levels}} | {{system.role}} | FFXIV TTRPG</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="description">Descrição</a>
+        <a class="item" data-tab="details">Atributos & XP</a>
+        <a class="item" data-tab="advancement">Evolução</a>
+    </nav>
+
+    <section class="sheet-body">
+        <div class="tab description active" data-group="primary" data-tab="description">
+            <div class="form-group stacked">
+                <label>Visão Global do Job</label>
+                <textarea name="system.description">{{system.description}}</textarea>
+            </div>
+        </div>
+
+        <div class="tab details" data-group="primary" data-tab="details">
+            <div class="form-group">
+                <label>Role / Função</label>
+                <input type="text" name="system.role" value="{{system.role}}" />
+            </div>
+            <div class="form-group">
+                <label>Atributo Principal</label>
+                <input type="text" name="system.primaryStat" value="{{system.primaryStat}}"
+                    placeholder="str, dex, int, mnd" />
+            </div>
+            <div class="form-group">
+                <label>Fórmula de HP</label>
+                <input type="text" name="system.hpFormula" value="{{system.hpFormula}}" placeholder="Ex: 1d10 + @vit" />
+            </div>
+            <div class="form-group">
+                <label>Nível Atual</label>
+                <input type="number" name="system.levels" value="{{system.levels}}" min="1" max="50" />
+            </div>
+            <div class="form-group">
+                <label>Experiência (XP)</label>
+                <div class="form-fields">
+                    <input type="number" name="system.xp.value" value="{{system.xp.value}}" /> /
+                    <input type="number" name="system.xp.max" value="{{system.xp.max}}" />
+                </div>
+            </div>
+        </div>
+
+        <div class="tab advancement" data-group="primary" data-tab="advancement">
+            <h3>Habilidades Destrancadas por Level</h3>
+            <p class="notes">O sistema Drop-based Leveling futuramente preencherá esta área com botões interativos para
+                Drag-and-Drop de Traits. (Previsto para v2.5)</p>
+        </div>
+    </section>
+</form>

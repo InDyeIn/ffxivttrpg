@@ -60,7 +60,7 @@ Hooks.once("init", async function () {
         types: ["ability"], makeDefault: true, label: "FFXIV.SheetAbility",
     });
     Items.registerSheet("ffxivttrpg", FFXIVItemSheet, {
-        types: ["weapon", "armor", "consumable", "trait", "status"],
+        types: ["weapon", "armor", "consumable", "trait", "status", "class", "subclass", "race", "feature"],
         makeDefault: true, label: "FFXIV.SheetItem",
     });
 

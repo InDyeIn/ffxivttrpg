@@ -1,0 +1,19 @@
+{
+  "name": "Paladin",
+  "type": "class",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "description": "Os cavaleiros juramentados de Ul'dah. Especialistas em mitigar dano e proteger os fracos com magia sagrada.",
+    "role": "tank",
+    "levels": 1,
+    "xp": {
+      "value": 0,
+      "max": 1000
+    },
+    "primaryStat": "str",
+    "hpFormula": "1d10 + @vit",
+    "gaugeType": "none"
+  },
+  "_id": "2ed7327236db3d6b",
+  "_key": "!items!2ed7327236db3d6b"
+}

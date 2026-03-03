@@ -1,0 +1,19 @@
+{
+  "name": "Kite Shield",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "armorType": "shield",
+    "roles": [
+      "paladin"
+    ],
+    "defense": 2,
+    "magicDefense": 0,
+    "speed": 0,
+    "price": 100,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "87954eb15cc77631",
+  "_key": "!items!87954eb15cc77631"
+}

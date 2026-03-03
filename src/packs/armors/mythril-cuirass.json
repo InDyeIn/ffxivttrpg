@@ -1,0 +1,21 @@
+{
+  "name": "Mythril Cuirass",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "armorType": "heavy",
+    "roles": [
+      "paladin",
+      "warrior",
+      "darkknight"
+    ],
+    "defense": 6,
+    "magicDefense": 2,
+    "speed": -2,
+    "price": 400,
+    "rarity": "uncommon",
+    "equipped": false
+  },
+  "_id": "217ff02d4b6b824b",
+  "_key": "!items!217ff02d4b6b824b"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Viera (Veena)",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "STATUS: +1 DEX, +1 INT\n\nTRAITS:\n- **Toque da Natureza**: Vantagem em Checks de sobrevivência e naturalismo.\n- **Ligação Arcana**: Vantagem na identificação de magias e leitura arcana."
+  },
+  "_id": "b3135cdc5de59d64",
+  "_key": "!items!b3135cdc5de59d64"
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Leather Jacket",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "armorType": "light",
+    "roles": [
+      "melee",
+      "ranged"
+    ],
+    "defense": 1,
+    "magicDefense": 1,
+    "speed": 0,
+    "price": 100,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "d035abbe48ed412d",
+  "_key": "!items!d035abbe48ed412d"
+}

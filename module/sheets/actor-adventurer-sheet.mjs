@@ -72,16 +72,15 @@ export class FFXIVAdventurerSheet extends HandlebarsApplicationMixin(ActorSheetV
         context.magicDefense = context.system.derived?.magicDefense?.value ?? 10;
         context.speed = context.system.derived?.speed?.value ?? 3;
 
-        // ---- Informações do job / raça ----
-        context.jobName = context.system.job?.name ?? "";
-        context.jobLevel = context.system.job?.level ?? 1;
-        context.raceName = context.system.race?.name ?? "";
-        context.raceTribe = context.system.race?.tribe ?? "";
-
         // ---- Separar itens por tipo ----
         context.abilities = { primary: [], secondary: [], instant: [], passive: [] };
         context.weapons = [];
         context.consumables = [];
+
+        // Novos Arrays V2: Classes, Races, Features e Traits
+        context.classes = [];
+        context.races = [];
+        context.features = [];
         context.traits = [];
 
         for (const item of this.document.items) {
@@ -90,8 +89,12 @@ export class FFXIVAdventurerSheet extends HandlebarsApplicationMixin(ActorSheetV
                 const at = d.system?.actionType || "primary";
                 if (context.abilities[at]) context.abilities[at].push(d);
                 else context.abilities.primary.push(d);
-            } else if (item.type === "weapon") { context.weapons.push(d); }
+            }
+            else if (item.type === "weapon") { context.weapons.push(d); }
             else if (item.type === "consumable") { context.consumables.push(d); }
+            else if (item.type === "class") { context.classes.push(d); } // Job Model
+            else if (item.type === "race") { context.races.push(d); } // Race Model
+            else if (item.type === "feature") { context.features.push(d); } // Feature Model
             else if (item.type === "trait") { context.traits.push(d); }
         }
 

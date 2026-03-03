@@ -1,0 +1,23 @@
+{
+  "name": "Lilith Rod",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "rod",
+    "roles": [
+      "blackmage"
+    ],
+    "damage": {
+      "formula": "1d6",
+      "type": "physical",
+      "attribute": "int"
+    },
+    "defense": 0,
+    "speed": 0,
+    "price": 500,
+    "rarity": "rare",
+    "equipped": false
+  },
+  "_id": "aff6883c83e2843f",
+  "_key": "!items!aff6883c83e2843f"
+}

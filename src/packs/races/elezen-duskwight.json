@@ -1,0 +1,11 @@
+{
+  "name": "Elezen — Duskwight",
+  "type": "subclass",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "classIdentifier": "elezen",
+    "description": "**Sub-raça:** Duskwight\n\n**STATUS:** FOR 10, DES 10, VIT 9, INT 11, MEN 9\n\n**TRAITS:**\n- **Audição Apurada**: Vantagem em testes de Percepção em locais escuros."
+  },
+  "_id": "610b30a029de52f7",
+  "_key": "!items!610b30a029de52f7"
+}

@@ -1,4 +1,4 @@
-{{!-- FFXIV TTRPG — Adventurer Sheet v3 (sem helpers custom, dados pré-computados) --}}
+{{!-- FFXIV TTRPG — Adventurer Sheet V2 (Modular & Item-Based) --}}
 <form class="{{cssClass}} ffxiv-sheet ffxiv-adventurer" autocomplete="off">
 
   {{!-- == HEADER == --}}
@@ -6,26 +6,41 @@
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="" />
     <div class="header-info">
       <h1 class="charname">
-        <input name="name" type="text" value="{{actor.name}}" placeholder="Nome do Aventureiro" />
+        <input name="name" type="text" value="{{actor.name}}" placeholder="Nome do Personagem" />
       </h1>
-      <div class="header-meta">
-        <span class="meta-field"><label>Job</label>
-          <input name="system.job.name" type="text" value="{{jobName}}" placeholder="ex: Paladin" /></span>
-        <span class="meta-field"><label>Raça</label>
-          <input name="system.race.name" type="text" value="{{raceName}}" placeholder="ex: Hyur" /></span>
-        <span class="meta-field"><label>Lv</label>
-          <input name="system.job.level" type="number" value="{{jobLevel}}" min="1" max="60"
-            class="level-input" /></span>
+
+      <div class="header-classes-races">
+        {{!-- Mostra Raca Equipada --}}
+        <div class="header-slot race-slot" title="Arraste uma Raça do Compêndio">
+          <label>Raça</label>
+          {{#if races.length}}
+          {{#each races as |r|}}
+          <span class="equipped-name item" data-item-id="{{r._id}}">{{r.name}}</span>
+          {{/each}}
+          {{else}}
+          <span class="empty-slot">Sem Raça</span>
+          {{/if}}
+        </div>
+
+        {{!-- Mostra Job/Class Equipado e Level --}}
+        <div class="header-slot class-slot" title="Arraste um Job (Classe) do Compêndio">
+          <label>Job & Level</label>
+          {{#if classes.length}}
+          {{#each classes as |c|}}
+          <span class="equipped-name item" data-item-id="{{c._id}}">{{c.name}} (Lv. {{c.system.levels}})</span>
+          {{/each}}
+          {{else}}
+          <span class="empty-slot">Sem Classe</span>
+          {{/if}}
+        </div>
       </div>
     </div>
-    <button type="button" class="rest-button ffxiv-btn-small" title="Descansar (recupera HP/MP)">
-      🌙
-    </button>
+
+    <button type="button" class="rest-button ffxiv-btn-small" title="Descansar (Recupera HP/MP)">🌙</button>
   </header>
 
   {{!-- == VITAIS: HP / MP / GAUGE == --}}
   <section class="vitals-section">
-
     <div class="vital-group">
       <span class="vital-label">❤ HP</span>
       <div class="vital-bar-container">
@@ -34,7 +49,7 @@
       <input type="number" name="system.derived.hp.value" class="vital-val" value="{{hpValue}}" min="0"
         max="{{hpMax}}" />
       <span class="vital-sep">/</span>
-      <input type="number" name="system.derived.hp.max" class="vital-val" value="{{hpMax}}" min="1" />
+      <span class="vital-val" title="HP Máximo derivado de (VIT × 10)">{{hpMax}}</span>
     </div>
 
     <div class="vital-group">
@@ -45,7 +60,7 @@
       <input type="number" name="system.derived.mp.value" class="vital-val" value="{{mpValue}}" min="0"
         max="{{mpMax}}" />
       <span class="vital-sep">/</span>
-      <input type="number" name="system.derived.mp.max" class="vital-val" value="{{mpMax}}" min="0" />
+      <span class="vital-val" title="MP Máximo gerido pelo Job atual">{{mpMax}}</span>
     </div>
 
     {{#if hasGauge}}
@@ -60,68 +75,72 @@
       <span class="vital-val">{{gaugeMax}}</span>
     </div>
     {{/if}}
-
   </section>
 
-  {{!-- == ATRIBUTOS PRIMÁRIOS == --}}
-  <section class="attributes-section">
-    {{#each attributes as |attr key|}}
-    <div class="attribute-box">
-      <label class="attr-label">{{attr.label}}</label>
-      <input type="number" name="system.attributes.{{key}}.value" value="{{attr.value}}" class="attr-input" min="1"
-        max="30" />
-      <span class="attr-mod attribute-roll" data-attr="{{key}}" title="Rolar {{attr.label}}">{{attr.modifierStr}}</span>
+  {{!-- == ATRIBUTOS PRIMÁRIOS E DERIVADOS == --}}
+  <section class="stats-panel">
+    <div class="attributes-section">
+      {{#each attributes as |attr key|}}
+      <div class="attribute-box" title="Bônus Base Racial: {{attr.baseBonus}}">
+        <label class="attr-label">{{attr.label}}</label>
+        {{!-- Total final derivado pelo JS --}}
+        <span class="attr-total">{{attr.value}}</span>
+        <div class="attr-inputs">
+          <span class="attr-mod attribute-roll" data-attr="{{key}}"
+            title="Rolar {{attr.label}}">{{attr.modifierStr}}</span>
+          <input type="number" name="system.attributes.{{key}}.bonus" value="{{attr.bonus}}" title="Pontos Gastos/Extra"
+            class="attr-bonus-input" min="0" />
+        </div>
+      </div>
+      {{/each}}
     </div>
-    {{/each}}
-  </section>
 
-  {{!-- == DERIVADOS == --}}
-  <section class="derived-section">
-    <div class="derived-item">
-      <label>Defesa</label>
-      <input type="number" name="system.derived.defense.value" value="{{defense}}" />
-    </div>
-    <div class="derived-item">
-      <label>Def. Mag.</label>
-      <input type="number" name="system.derived.magicDefense.value" value="{{magicDefense}}" />
-    </div>
-    <div class="derived-item">
-      <label>Vel.</label>
-      <input type="number" name="system.derived.speed.value" value="{{speed}}" />
+    <div class="derived-section">
+      <div class="derived-item" title="Defesa = STR/5 + 5 (Modificáveis por Atributo)">
+        <label>Defesa Físi.</label>
+        <span class="derived-val">{{defense}}</span>
+      </div>
+      <div class="derived-item" title="Defesa Mágica = MND/5 + 5">
+        <label>Defesa Mag.</label>
+        <span class="derived-val">{{magicDefense}}</span>
+      </div>
+      <div class="derived-item" title="Tiles de movimentação base">
+        <label>Move (Speed)</label>
+        <span class="derived-val">{{speed}}</span>
+      </div>
     </div>
   </section>
 
   {{!-- == TABS == --}}
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="combat">⚔ Combate</a>
+    <a class="item" data-tab="combat">⚔ Habilidades Core</a>
+    <a class="item" data-tab="features">⭐ Traits & Features</a>
     <a class="item" data-tab="inventory">🎒 Inventário</a>
-    <a class="item" data-tab="effects">✨ Efeitos</a>
-    <a class="item" data-tab="bio">📜 Perfil</a>
+    <a class="item" data-tab="effects">✨ Efeitos Ativos</a>
+    <a class="item" data-tab="bio">📜 Biografia</a>
   </nav>
 
   <section class="sheet-body">
 
-    {{!-- TAB: COMBATE --}}
+    {{!-- TAB: COMBATE (Habilidades ATIVAS de Job) --}}
     <div class="tab" data-tab="combat">
-
       {{#if hasCombo}}
       <div class="combo-indicator">🔗 Combo ativo: <strong>{{lastCombo}}</strong></div>
       {{/if}}
 
       {{#if abilities.primary.length}}
-      <h3 class="category-header primary-header">● Ação Primária</h3>
+      <h3 class="category-header primary-header">● Ações Primárias (Ataques/Magias)</h3>
       <ol class="items-list">
         {{#each abilities.primary as |a|}}
         <li class="item" data-item-id="{{a._id}}">
           <img class="item-image" src="{{a.img}}" alt="{{a.name}}" />
           <div class="item-name ability-use">
-            <h4>{{a.name}}</h4>
-            <small>Lv.{{a.system.level}}{{#if a.system.cost.mp}} | <span class="mp-cost">{{a.system.cost.mp}}
-                MP</span>{{/if}}</small>
+            <h4>{{a.name}}</h4><small>Lv.{{a.system.level}}{{#if a.system.cost.mp}} | <span
+                class="mp-cost">{{a.system.cost.mp}} MP</span>{{/if}}</small>
           </div>
           <div class="item-controls">
-            <a class="item-control item-edit" title="Editar">✏</a>
-            <a class="item-control item-delete" title="Deletar">🗑</a>
+            <a class="item-control item-edit" title="Editar Item">✏️</a>
+            <a class="item-control item-delete" title="Deletar Item">🗑️</a>
           </div>
         </li>
         {{/each}}
@@ -129,17 +148,17 @@
       {{/if}}
 
       {{#if abilities.secondary.length}}
-      <h3 class="category-header secondary-header">◑ Ação Secundária</h3>
+      <h3 class="category-header secondary-header">◑ Ações Secundárias (Buffs/Suportes)</h3>
       <ol class="items-list">
         {{#each abilities.secondary as |a|}}
         <li class="item" data-item-id="{{a._id}}">
           <img class="item-image" src="{{a.img}}" alt="{{a.name}}" />
           <div class="item-name ability-use">
-            <h4>{{a.name}}</h4>
+            <h4>{{a.name}}</h4><small>Lv.{{a.system.level}}</small>
           </div>
           <div class="item-controls">
-            <a class="item-control item-edit">✏</a>
-            <a class="item-control item-delete">🗑</a>
+            <a class="item-control item-edit">✏️</a>
+            <a class="item-control item-delete">🗑️</a>
           </div>
         </li>
         {{/each}}
@@ -147,111 +166,119 @@
       {{/if}}
 
       {{#if abilities.instant.length}}
-      <h3 class="category-header instant-header">⚡ Instant</h3>
+      <h3 class="category-header instant-header">⚡ Instants (Reações)</h3>
       <ol class="items-list">
         {{#each abilities.instant as |a|}}
         <li class="item" data-item-id="{{a._id}}">
           <img class="item-image" src="{{a.img}}" alt="{{a.name}}" />
           <div class="item-name ability-use">
-            <h4>{{a.name}}</h4>
+            <h4>{{a.name}}</h4><small>Lv.{{a.system.level}}</small>
           </div>
           <div class="item-controls">
-            <a class="item-control item-edit">✏</a>
-            <a class="item-control item-delete">🗑</a>
+            <a class="item-control item-edit">✏️</a>
+            <a class="item-control item-delete">🗑️</a>
           </div>
         </li>
         {{/each}}
       </ol>
       {{/if}}
+    </div>
 
-      {{#if abilities.passive.length}}
-      <h3 class="category-header passive-header">∞ Passivo</h3>
+    {{!-- TAB: FEATURES (Traits, Passivas Raciais da Progressão) --}}
+    <div class="tab" data-tab="features">
+      <h3 class="category-header passive-header">∞ Traços e Características (Features)</h3>
       <ol class="items-list">
-        {{#each abilities.passive as |a|}}
-        <li class="item" data-item-id="{{a._id}}">
-          <img class="item-image" src="{{a.img}}" alt="{{a.name}}" />
-          <div class="item-name">
-            <h4>{{a.name}}</h4>
+        {{#each features as |f|}}
+        <li class="item" data-item-id="{{f._id}}">
+          <img class="item-image" src="{{f.img}}" alt="{{f.name}}" />
+          <div class="item-name item-edit">
+            <h4>{{f.name}}</h4>
+            <small>{{f.system.featureType}}</small>
           </div>
           <div class="item-controls">
-            <a class="item-control item-edit">✏</a>
-            <a class="item-control item-delete">🗑</a>
+            <a class="item-control item-edit">✏️</a>
+            <a class="item-control item-delete">🗑️</a>
           </div>
         </li>
         {{/each}}
-      </ol>
-      {{/if}}
 
-      <div class="item-add-row">
-        <button type="button" class="item-create ffxiv-btn-small" data-type="ability">+ Habilidade</button>
-      </div>
+        {{#unless features.length}}
+        <li class="item disabled">
+          <div class="item-name">
+            <h4>Arraste passivas do compêndio para cá.</h4>
+          </div>
+        </li>
+        {{/unless}}
+      </ol>
+
+      {{!-- Raças e Classes Ocultadas na listagem massiva de debug, gerenciadas no cabeçalho --}}
     </div>
 
     {{!-- TAB: INVENTÁRIO --}}
     <div class="tab" data-tab="inventory">
-      {{#if weapons.length}}
-      <h3 class="category-header">⚔ Armas</h3>
+      <h3 class="category-header">⚔ Armas e Equipamentos</h3>
       <ol class="items-list">
         {{#each weapons as |w|}}
         <li class="item" data-item-id="{{w._id}}">
           <img class="item-image" src="{{w.img}}" alt="{{w.name}}" />
-          <div class="item-name">
+          <div class="item-name item-edit">
             <h4>{{w.name}}</h4>
+            <small>{{w.system.damage.formula}} {{w.system.damage.type}}</small>
           </div>
           <div class="item-controls">
-            <a class="item-control item-edit">✏</a>
-            <a class="item-control item-delete">🗑</a>
+            <a class="item-control item-edit">✏️</a>
+            <a class="item-control item-delete">🗑️</a>
           </div>
         </li>
         {{/each}}
       </ol>
-      {{/if}}
-      {{#if consumables.length}}
-      <h3 class="category-header">🧪 Consumíveis</h3>
+
+      <h3 class="category-header">🧪 Consumíveis & Outros</h3>
       <ol class="items-list">
         {{#each consumables as |c|}}
         <li class="item" data-item-id="{{c._id}}">
           <img class="item-image" src="{{c.img}}" alt="{{c.name}}" />
-          <div class="item-name">
-            <h4>{{c.name}}</h4><small>x{{c.system.quantity}}</small>
+          <div class="item-name item-edit">
+            <h4>{{c.name}}</h4>
+            <small>Qtd: {{c.system.quantity}}</small>
           </div>
           <div class="item-controls">
-            <a class="item-control item-edit">✏</a>
-            <a class="item-control item-delete">🗑</a>
+            <a class="item-control item-edit">✏️</a>
+            <a class="item-control item-delete">🗑️</a>
           </div>
         </li>
         {{/each}}
       </ol>
-      {{/if}}
-      <div class="item-add-row">
-        <button type="button" class="item-create ffxiv-btn-small" data-type="weapon">+ Arma</button>
-        <button type="button" class="item-create ffxiv-btn-small" data-type="consumable">+ Consumível</button>
-      </div>
     </div>
 
-    {{!-- TAB: EFEITOS --}}
+    {{!-- TAB: EFEITOS ATIVOS --}}
     <div class="tab" data-tab="effects">
-      <ol class="effects-list">
+      <ol class="effects-list items-list">
         {{#each effects as |e|}}
-        <li class="effect-item" data-effect-id="{{e.id}}">
-          <img class="effect-icon" src="{{e.icon}}" alt="{{e.label}}" />
-          <div class="effect-info">
-            <span class="effect-name">{{e.label}}</span>
-            {{#if e.rounds}}<span class="effect-duration"> ({{e.rounds}} rounds)</span>{{/if}}
+        <li class="effect-item item" data-effect-id="{{e.id}}">
+          <img class="effect-icon item-image" src="{{e.icon}}" alt="{{e.label}}" />
+          <div class="effect-info item-name">
+            <h4>{{e.label}}</h4>
+            {{#if e.rounds}}<small>Duração: {{e.rounds}} rounds</small>{{/if}}
           </div>
           <div class="item-controls">
-            <a class="item-control effect-toggle">👁</a>
-            <a class="item-control effect-delete">🗑</a>
+            <a class="item-control effect-toggle" title="Desativar/Ativar">👁️</a>
+            <a class="item-control effect-delete" title="Remover Regra">🗑️</a>
           </div>
         </li>
         {{/each}}
+
         {{#unless effects.length}}
-        <li class="no-effects">✅ Nenhum efeito ativo</li>
+        <li class="disabled item">
+          <div class="item-name">
+            <h4>Sem Buffs ou Debuffs ativos no momento.</h4>
+          </div>
+        </li>
         {{/unless}}
       </ol>
     </div>
 
-    {{!-- TAB: PERFIL --}}
+    {{!-- TAB: BIO --}}
     <div class="tab" data-tab="bio">
       <div class="profile-grid">
         <div class="profile-field">
@@ -271,9 +298,9 @@
           <input type="text" name="system.profile.homeland" value="{{profileHomeland}}" />
         </div>
       </div>
-      <div class="biography-field">
-        <label>Biografia</label>
-        <textarea name="system.biography" rows="8">{{biography}}</textarea>
+      <div class="biography-field mt-2">
+        <label>Anotações do Fichário e História</label>
+        <textarea name="system.profile.notes" rows="10">{{profileNotes}}</textarea>
       </div>
     </div>
 

@@ -1,0 +1,11 @@
+{
+  "name": "Elezen — Wildwood",
+  "type": "subclass",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "classIdentifier": "elezen",
+    "description": "**Sub-raça:** Wildwood\n\n**STATUS:** FOR 9, DES 11, VIT 9, INT 11, MEN 9\n\n**TRAITS:**\n- **Visão Florestal**: Você pode atirar ou usar magias com +1 de alcance máximo."
+  },
+  "_id": "79a378e7e2857b47",
+  "_key": "!items!79a378e7e2857b47"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Steel Axe",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "axe",
+    "roles": [
+      "warrior"
+    ],
+    "damage": {
+      "formula": "1d8",
+      "type": "physical",
+      "attribute": "str"
+    },
+    "defense": 0,
+    "speed": 0,
+    "price": 150,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "de2972f3c4c97bb4",
+  "_key": "!items!de2972f3c4c97bb4"
+}

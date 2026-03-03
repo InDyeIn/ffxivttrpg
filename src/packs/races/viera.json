@@ -1,0 +1,11 @@
+{
+  "name": "Viera",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "Raça base: Viera"
+  },
+  "_id": "7c969a65fb336e64",
+  "_key": "!items!7c969a65fb336e64"
+}

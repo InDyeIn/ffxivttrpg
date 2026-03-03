@@ -1,0 +1,23 @@
+{
+  "name": "Uchigatana",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "katana",
+    "roles": [
+      "samurai"
+    ],
+    "damage": {
+      "formula": "1d8",
+      "type": "physical",
+      "attribute": "str"
+    },
+    "defense": 0,
+    "speed": 1,
+    "price": 220,
+    "rarity": "uncommon",
+    "equipped": false
+  },
+  "_id": "ca872c1534cf4421",
+  "_key": "!items!ca872c1534cf4421"
+}

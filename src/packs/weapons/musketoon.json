@@ -1,0 +1,23 @@
+{
+  "name": "Musketoon",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "firearm",
+    "roles": [
+      "machinist"
+    ],
+    "damage": {
+      "formula": "1d8",
+      "type": "physical",
+      "attribute": "dex"
+    },
+    "defense": 0,
+    "speed": 0,
+    "price": 200,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "428065dc845f6c76",
+  "_key": "!items!428065dc845f6c76"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Hrothgar",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "Raça base: Hrothgar"
+  },
+  "_id": "f01b0c8f59167f02",
+  "_key": "!items!f01b0c8f59167f02"
+}

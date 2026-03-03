@@ -1,0 +1,11 @@
+{
+  "name": "Hrothgar (The Lost)",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "STATUS: +1 STR, +1 DEX, +1 VIT\n\nTRAITS:\n- **Sobrevivente nato**: Vantagem ao sobreviver em ambientes hostis extremos.\n- **Garras de Predador**: Pode usar ataques desarmados como arma de 1d4 Physical."
+  },
+  "_id": "259736ce2a8e755c",
+  "_key": "!items!259736ce2a8e755c"
+}

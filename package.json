@@ -1,0 +1,25 @@
+{
+  "name": "ffxivttrpg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build-packs.mjs",
+    "source": "node build-source.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InDyeIn/ffxivttrpg.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/InDyeIn/ffxivttrpg/issues"
+  },
+  "homepage": "https://github.com/InDyeIn/ffxivttrpg#readme",
+  "devDependencies": {
+    "@foundryvtt/foundryvtt-cli": "^3.0.3"
+  }
+}

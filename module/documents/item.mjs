@@ -9,6 +9,50 @@ export class FFXIVItem extends Item {
         super.prepareData();
     }
 
+    /** @override */
+    async _onCreate(data, options, userId) {
+        super._onCreate(data, options, userId);
+        if (userId !== game.user.id || !this.parent) return;
+
+        // Auto-cria efeitos para itens do tipo 'feature' (ex: traits raciais ou stances de job)
+        if (this.type === "feature" || this.type === "class" || this.type === "race" || this.type === "trait") {
+            const effects = [];
+
+            // Exemplo hardcoded temporário para Traits específicos enquanto a compilação não suportar effects
+            if (this.name.includes("Highlander")) {
+                effects.push({
+                    name: "Constituição Robusta",
+                    icon: this.img,
+                    changes: [{ key: "system.derived.hp.max", mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: "2" }]
+                });
+            } else if (this.name.includes("Sword Oath")) {
+                effects.push({
+                    name: "Sword Oath",
+                    icon: this.img,
+                    changes: [
+                        { key: "system.attributes.str.value", mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: "2" },
+                        { key: "system.derived.defense.value", mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: "1" }
+                    ]
+                });
+            } else if (this.name.includes("Darkside")) {
+                effects.push({
+                    name: "Darkside",
+                    icon: this.img,
+                    changes: [{ key: "system.attributes.str.value", mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: "3" }]
+                });
+            }
+
+            if (effects.length > 0) {
+                await this.createEmbeddedDocuments("ActiveEffect", effects.map(e => ({
+                    ...e,
+                    origin: this.uuid,
+                    transfer: true // Transfere para o Actor pai
+                })));
+                ui.notifications.info(`[FFXIV] Active Effect instanciado para: ${this.name}`);
+            }
+        }
+    }
+
     /* -------------------------------------------- */
     /*  Método Principal de Uso                      */
     /* -------------------------------------------- */

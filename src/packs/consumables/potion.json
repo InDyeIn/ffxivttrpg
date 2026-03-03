@@ -1,0 +1,18 @@
+{
+  "name": "Potion",
+  "type": "consumable",
+  "img": "icons/svg/potion.svg",
+  "system": {
+    "consumableType": "potion",
+    "effect": "Recupera 1d6 + 2 HP",
+    "price": 50,
+    "quantity": 1,
+    "uses": {
+      "value": 1,
+      "max": 1,
+      "autoDestroy": true
+    }
+  },
+  "_id": "ac7cfe3a59630b9b",
+  "_key": "!items!ac7cfe3a59630b9b"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Hyur",
+  "type": "race",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "baseAttributeBonus": {
+      "str": 0,
+      "dex": 0,
+      "vit": 0,
+      "int": 0,
+      "mnd": 0
+    },
+    "description": "Raça Base: Hyur"
+  },
+  "_id": "3f2646b09a474285",
+  "_key": "!items!3f2646b09a474285"
+}

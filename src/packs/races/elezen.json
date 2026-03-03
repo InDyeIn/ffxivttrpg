@@ -1,0 +1,17 @@
+{
+  "name": "Elezen",
+  "type": "race",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "baseAttributeBonus": {
+      "str": 0,
+      "dex": 0,
+      "vit": 0,
+      "int": 0,
+      "mnd": 0
+    },
+    "description": "Raça Base: Elezen"
+  },
+  "_id": "6cd66a3a1610b570",
+  "_key": "!items!6cd66a3a1610b570"
+}

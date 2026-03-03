@@ -1,0 +1,11 @@
+{
+  "name": "Lalafell (Dunesfolk)",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "STATUS: +1 DEX, +1 INT\n\nTRAITS:\n- **Resistência Arcana**: Reduz o dano de magias recebidas em 1.\n- **Leitura das Estrelas**: Vantagem em interpretação de astrologia e textos antigos."
+  },
+  "_id": "d98a923f9dc4780f",
+  "_key": "!items!d98a923f9dc4780f"
+}

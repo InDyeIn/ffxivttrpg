@@ -1,0 +1,23 @@
+{
+  "name": "Steel Daggers",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "daggers",
+    "roles": [
+      "ninja"
+    ],
+    "damage": {
+      "formula": "1d4",
+      "type": "physical",
+      "attribute": "dex"
+    },
+    "defense": 0,
+    "speed": 2,
+    "price": 140,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "a56d18c04a39a5a1",
+  "_key": "!items!a56d18c04a39a5a1"
+}

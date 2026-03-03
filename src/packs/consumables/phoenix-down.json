@@ -1,0 +1,18 @@
+{
+  "name": "Phoenix Down",
+  "type": "consumable",
+  "img": "icons/svg/potion.svg",
+  "system": {
+    "consumableType": "revive",
+    "effect": "Revive um aliado alvo com 1 HP.",
+    "price": 300,
+    "quantity": 1,
+    "uses": {
+      "value": 1,
+      "max": 1,
+      "autoDestroy": true
+    }
+  },
+  "_id": "1efe8a69602570b2",
+  "_key": "!items!1efe8a69602570b2"
+}

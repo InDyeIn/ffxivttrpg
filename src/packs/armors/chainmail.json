@@ -1,0 +1,23 @@
+{
+  "name": "Chainmail",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "armorType": "heavy",
+    "roles": [
+      "paladin",
+      "warrior",
+      "darkknight",
+      "dragoon",
+      "samurai"
+    ],
+    "defense": 4,
+    "magicDefense": 1,
+    "speed": -1,
+    "price": 150,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "6b048895633484a0",
+  "_key": "!items!6b048895633484a0"
+}

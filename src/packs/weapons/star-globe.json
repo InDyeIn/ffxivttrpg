@@ -1,0 +1,23 @@
+{
+  "name": "Star Globe",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "globe",
+    "roles": [
+      "astrologian"
+    ],
+    "damage": {
+      "formula": "1d4",
+      "type": "physical",
+      "attribute": "mnd"
+    },
+    "defense": 0,
+    "speed": 0,
+    "price": 250,
+    "rarity": "uncommon",
+    "equipped": false
+  },
+  "_id": "470c4e5cdcbf0a13",
+  "_key": "!items!470c4e5cdcbf0a13"
+}

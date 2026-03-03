@@ -1,0 +1,17 @@
+{
+  "name": "Roegadyn",
+  "type": "race",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "baseAttributeBonus": {
+      "str": 0,
+      "dex": 0,
+      "vit": 0,
+      "int": 0,
+      "mnd": 0
+    },
+    "description": "Raça Base: Roegadyn"
+  },
+  "_id": "749a49547995d22c",
+  "_key": "!items!749a49547995d22c"
+}

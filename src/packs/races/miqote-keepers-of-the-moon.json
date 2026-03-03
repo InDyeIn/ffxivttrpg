@@ -1,0 +1,11 @@
+{
+  "name": "Miqo'te (Keepers of the Moon)",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "STATUS: +1 DEX, +1 MND\n\nTRAITS:\n- **Visão Noturna**: Imunidade a penalidades de escuridão.\n- **Laços do Grupo**: Vantagem em Checks de empatia com a party."
+  },
+  "_id": "2cc1d275e0b2bf0a",
+  "_key": "!items!2cc1d275e0b2bf0a"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Yew Bow",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "bow",
+    "roles": [
+      "bard"
+    ],
+    "damage": {
+      "formula": "1d6",
+      "type": "physical",
+      "attribute": "dex"
+    },
+    "defense": 0,
+    "speed": 0,
+    "price": 150,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "b4b457580eb53c7f",
+  "_key": "!items!b4b457580eb53c7f"
+}

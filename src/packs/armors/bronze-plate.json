@@ -1,0 +1,19 @@
+{
+  "name": "Bronze Plate",
+  "type": "armor",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "armorType": "heavy",
+    "roles": [
+      "tank"
+    ],
+    "defense": 3,
+    "magicDefense": 0,
+    "speed": -1,
+    "price": 150,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "2344875f9d015a20",
+  "_key": "!items!2344875f9d015a20"
+}

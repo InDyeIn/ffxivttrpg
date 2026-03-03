@@ -15,9 +15,19 @@ export class FFXIVItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     };
 
     /** @override */
-    static PARTS = {
-        sheet: { template: "systems/ffxivttrpg/templates/items/item-generic-sheet.hbs" }
-    };
+    _configureRenderOptions(options) {
+        super._configureRenderOptions(options);
+        // Em ApplicationV2, injetamos dinamicamente as partes dependendo do tipo de item
+        if (this.document.type === "class") {
+            options.parts = { sheet: { template: "systems/ffxivttrpg/templates/items/class-sheet.hbs" } };
+        } else if (this.document.type === "race" || this.document.type === "subclass") {
+            options.parts = { sheet: { template: "systems/ffxivttrpg/templates/items/race-sheet.hbs" } };
+        } else if (this.document.type === "feature" || this.document.type === "trait") {
+            options.parts = { sheet: { template: "systems/ffxivttrpg/templates/items/feature-sheet.hbs" } };
+        } else {
+            options.parts = { sheet: { template: "systems/ffxivttrpg/templates/items/item-generic-sheet.hbs" } };
+        }
+    }
 
     /** @override */
     async _prepareContext(options) {

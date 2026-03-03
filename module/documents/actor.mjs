@@ -18,49 +18,73 @@ export class FFXIVActor extends Actor {
 
     /**
      * Calcula valores derivados do Adventurer:
-     * HP max = VIT × 10, MP max por job, Defense a partir de equipamentos
+     * Busca raça e classe (job) equipados para derivar estatísticas
      */
     _prepareAdventurerData(sys) {
-        const vit = sys.attributes?.vit?.value ?? 10;
-        const mnd = sys.attributes?.mnd?.value ?? 10;
-        const str = sys.attributes?.str?.value ?? 10;
+        // Inicializa defaults se não existirem
+        sys.derived = sys.derived || {};
+        sys.attributes = sys.attributes || { str: { value: 0 }, dex: { value: 0 }, vit: { value: 0 }, int: { value: 0 }, mnd: { value: 0 } };
 
-        // HP máximo = VIT × 10
-        if (!sys.derived) sys.derived = {};
+        let basePath = { str: 10, dex: 10, vit: 10, int: 10, mnd: 10 };
+        let activeJob = null;
+        let activeRace = null;
+
+        // 1. Procurar por Items Ativos (Race e Class)
+        for (let item of this.items) {
+            if (item.type === "class") activeJob = item;
+            if (item.type === "race") activeRace = item;
+        }
+
+        // 2. Aplicar bônus da Raça
+        if (activeRace && activeRace.system.baseAttributeBonus) {
+            basePath.str += activeRace.system.baseAttributeBonus.str || 0;
+            basePath.dex += activeRace.system.baseAttributeBonus.dex || 0;
+            basePath.vit += activeRace.system.baseAttributeBonus.vit || 0;
+            basePath.int += activeRace.system.baseAttributeBonus.int || 0;
+            basePath.mnd += activeRace.system.baseAttributeBonus.mnd || 0;
+        }
+
+        // 3. Mesclar com os pontos gastos pelo jogador na ficha
+        sys.attributes.str.value = basePath.str + (sys.attributes.str.bonus || 0);
+        sys.attributes.dex.value = basePath.dex + (sys.attributes.dex.bonus || 0);
+        sys.attributes.vit.value = basePath.vit + (sys.attributes.vit.bonus || 0);
+        sys.attributes.int.value = basePath.int + (sys.attributes.int.bonus || 0);
+        sys.attributes.mnd.value = basePath.mnd + (sys.attributes.mnd.bonus || 0);
+
+        // 4. Calcular Nível (Level) derivado da Classe ativa
+        sys.profile.level = activeJob ? activeJob.system.levels : 1;
+        sys.profile.job = activeJob ? activeJob.name : "Adventurer";
+        sys.profile.race = activeRace ? activeRace.name : "Unknown";
+
+        // 5. HP máximo = VIT × 10
         if (!sys.derived.hp) sys.derived.hp = { value: 20, max: 20 };
-        sys.derived.hp.max = Math.max(1, vit * 10);
+        sys.derived.hp.max = Math.max(1, sys.attributes.vit.value * 10);
 
-        // MP máximo: Healers e casters têm mais MP
-        const job = sys.job?.name?.toLowerCase() ?? "";
-        const mpByRole = {
-            paladin: 5, warrior: 3, "dark knight": 5, darkknight: 5,
-            "white mage": 8, whitemage: 8,
-            scholar: 8, astrologian: 8,
-            monk: 3, dragoon: 3, ninja: 4, samurai: 3,
-            bard: 5, machinist: 4,
-            "black mage": 10, blackmage: 10,
-            summoner: 9,
-        };
+        // 6. MP máximo: 5 por padrão, modificadores podem mudar via classe no futuro
         if (!sys.derived.mp) sys.derived.mp = { value: 5, max: 5 };
-        sys.derived.mp.max = mpByRole[job] ?? 5;
+        const role = activeJob ? activeJob.system.role : "melee";
+        if (role === "healer") sys.derived.mp.max = 8;
+        else if (role === "magical") sys.derived.mp.max = 10;
+        else sys.derived.mp.max = 5;
 
-        // Defense base = STR / 5 (arredondado), mínimo 5
+        // 7. Defense base = STR / 5 (arredondado), mínimo 5
         if (!sys.derived.defense) sys.derived.defense = { value: 5 };
-        sys.derived.defense.value = Math.max(5, Math.floor(str / 5) + 5);
+        sys.derived.defense.value = Math.max(5, Math.floor(sys.attributes.str.value / 5) + 5);
 
-        // Magic Defense base = MND / 5 + 5
+        // 8. Magic Defense base = MND / 5 + 5
         if (!sys.derived.magicDefense) sys.derived.magicDefense = { value: 5 };
-        sys.derived.magicDefense.value = Math.max(5, Math.floor(mnd / 5) + 5);
+        sys.derived.magicDefense.value = Math.max(5, Math.floor(sys.attributes.mnd.value / 5) + 5);
 
-        // Speed: padrão 3
+        // 9. Speed: padrão 3
         if (!sys.derived.speed) sys.derived.speed = { value: 3 };
 
-        // Gauge do Job
-        this._prepareJobGauge(sys, job);
+        // 10. Gauge do Job
+        const jobConfigName = activeJob ? activeJob.name.toLowerCase() : "";
+        this._prepareJobGauge(sys, jobConfigName);
     }
 
     /**
-     * Configura o gauge visual baseado no job
+     * Configura o gauge visual baseado no job (Nomes normalizados)
      */
     _prepareJobGauge(sys, job) {
         if (!sys.gauge) sys.gauge = { current: 0, max: 0, label: "", type: "bar" };
@@ -68,20 +92,16 @@ export class FFXIVActor extends Actor {
         const gaugeConfig = {
             warrior: { max: 100, label: "Beast Gauge", type: "bar", color: "#e07820" },
             "dark knight": { max: 100, label: "Blood Gauge", type: "bar", color: "#8b0066" },
-            darkknight: { max: 100, label: "Blood Gauge", type: "bar", color: "#8b0066" },
             monk: { max: 5, label: "Chakra", type: "spheres", color: "#ffd700" },
             ninja: { max: 100, label: "Ninki Gauge", type: "bar", color: "#2ecc71" },
             samurai: { max: 100, label: "Kenki Gauge", type: "bar", color: "#c0392b" },
             bard: { max: 100, label: "Soul Voice", type: "bar", color: "#3498db" },
             machinist: { max: 100, label: "Heat Gauge", type: "bar", color: "#f39c12" },
             "black mage": { max: 6, label: "Elemental", type: "element", color: "#2980b9" },
-            blackmage: { max: 6, label: "Elemental", type: "element", color: "#2980b9" },
             summoner: { max: 100, label: "Aethercharge", type: "bar", color: "#9b59b6" },
             scholar: { max: 3, label: "Aetherflow", type: "spheres", color: "#27ae60" },
             astrologian: { max: 3, label: "Arcanum", type: "spheres", color: "#f1c40f" },
-            "white mage": { max: 3, label: "Lily Gauge", type: "spheres", color: "#e74c3c" },
-            whitemage: { max: 3, label: "Lily Gauge", type: "spheres", color: "#e74c3c" },
-            paladin: { max: 0, label: "", type: "none", color: "" },
+            "white mage": { max: 3, label: "Lily Gauge", type: "spheres", color: "#e74c3c" }
         };
 
         const cfg = gaugeConfig[job] ?? { max: 0, label: "", type: "none", color: "" };
@@ -90,7 +110,6 @@ export class FFXIVActor extends Actor {
         sys.gauge.type = cfg.type;
         sys.gauge.color = cfg.color;
 
-        // Manter valor atual dentro do range
         if (sys.gauge.current > sys.gauge.max) sys.gauge.current = sys.gauge.max;
         if (sys.gauge.current < 0) sys.gauge.current = 0;
     }
@@ -191,5 +210,59 @@ export class FFXIVActor extends Actor {
             "system.actions.instant": true,
             "system.actions.movement": true,
         });
+    }
+
+    /* -------------------------------------------- */
+    /*  Database Hooks (Item Validation)             */
+    /* -------------------------------------------- */
+
+    /** @override */
+    _preCreateEmbeddedDocuments(embeddedName, result, options, userId) {
+        super._preCreateEmbeddedDocuments(embeddedName, result, options, userId);
+
+        if (embeddedName !== "Item" || this.type !== "adventurer") return;
+
+        // Limita a 1 Class e 1 Race por Actor (DnD5e logic block)
+        let hasNewClass = false;
+        let hasNewRace = false;
+
+        for (let itemData of result) {
+            if (itemData.type === "class") hasNewClass = true;
+            if (itemData.type === "race") hasNewRace = true;
+        }
+
+        if (hasNewClass) {
+            const existingClasses = this.items.filter(i => i.type === "class").map(i => i.id);
+            if (existingClasses.length > 0) {
+                // Deletar os antigos sincronicamente não rola bem no preCreate, 
+                // então delegamos para o onCreate/onDrop, mas registramos aqui.
+                options.replaceClassIds = existingClasses;
+            }
+        }
+
+        if (hasNewRace) {
+            const existingRaces = this.items.filter(i => i.type === "race").map(i => i.id);
+            if (existingRaces.length > 0) {
+                options.replaceRaceIds = existingRaces;
+            }
+        }
+    }
+
+    /** @override */
+    _onCreateEmbeddedDocuments(embeddedName, documents, result, options, userId) {
+        super._onCreateEmbeddedDocuments(embeddedName, documents, result, options, userId);
+        if (userId !== game.user.id || embeddedName !== "Item") return;
+
+        // Cleanup Classes/Races antigas ao dropar uma nova
+        if (options.replaceClassIds?.length) {
+            this.deleteEmbeddedDocuments("Item", options.replaceClassIds).then(() => {
+                ui.notifications.info("Job Substituído.");
+            });
+        }
+        if (options.replaceRaceIds?.length) {
+            this.deleteEmbeddedDocuments("Item", options.replaceRaceIds).then(() => {
+                ui.notifications.info("Raça Substituída.");
+            });
+        }
     }
 }

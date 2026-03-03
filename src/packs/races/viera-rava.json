@@ -1,0 +1,11 @@
+{
+  "name": "Viera (Rava)",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "STATUS: +2 DEX, +1 MND\n\nTRAITS:\n- **Passo Silencioso**: Vantagem em Stealth e ignora penalidade de movimento furtivo.\n- **Ouvidos das Selvas**: Percepção auditiva a distâncias dobradas."
+  },
+  "_id": "a4691b66806568fc",
+  "_key": "!items!a4691b66806568fc"
+}

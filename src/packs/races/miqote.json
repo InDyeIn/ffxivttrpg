@@ -1,0 +1,11 @@
+{
+  "name": "Miqo'te",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "Raça base: Miqo'te"
+  },
+  "_id": "f7510be838ed40a3",
+  "_key": "!items!f7510be838ed40a3"
+}

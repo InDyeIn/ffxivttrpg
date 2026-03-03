@@ -1,0 +1,24 @@
+{
+  "name": "Grimoire of Erudition",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "grimoire",
+    "roles": [
+      "scholar",
+      "summoner"
+    ],
+    "damage": {
+      "formula": "1d6",
+      "type": "physical",
+      "attribute": "int"
+    },
+    "defense": 0,
+    "speed": 0,
+    "price": 250,
+    "rarity": "uncommon",
+    "equipped": false
+  },
+  "_id": "7a33814dbf3e807c",
+  "_key": "!items!7a33814dbf3e807c"
+}

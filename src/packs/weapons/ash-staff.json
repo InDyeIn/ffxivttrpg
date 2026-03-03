@@ -1,0 +1,23 @@
+{
+  "name": "Ash Staff",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "staff",
+    "roles": [
+      "magical"
+    ],
+    "damage": {
+      "formula": "1d6",
+      "type": "physical",
+      "attribute": "int"
+    },
+    "defense": 0,
+    "speed": 0,
+    "price": 90,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "09e711e4654a572f",
+  "_key": "!items!09e711e4654a572f"
+}

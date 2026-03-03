@@ -1,0 +1,23 @@
+{
+  "name": "Maple Wand",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "cane",
+    "roles": [
+      "healer"
+    ],
+    "damage": {
+      "formula": "1d4",
+      "type": "physical",
+      "attribute": "mnd"
+    },
+    "defense": 0,
+    "speed": 0,
+    "price": 80,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "71fe83e8de0afbe9",
+  "_key": "!items!71fe83e8de0afbe9"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Heavy Greatsword",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "greatsword",
+    "roles": [
+      "darkknight"
+    ],
+    "damage": {
+      "formula": "2d6",
+      "type": "physical",
+      "attribute": "str"
+    },
+    "defense": 0,
+    "speed": -1,
+    "price": 300,
+    "rarity": "uncommon",
+    "equipped": false
+  },
+  "_id": "8a452768c9e9ecb5",
+  "_key": "!items!8a452768c9e9ecb5"
+}

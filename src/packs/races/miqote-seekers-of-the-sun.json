@@ -1,0 +1,11 @@
+{
+  "name": "Miqo'te (Seekers of the Sun)",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "STATUS: +1 STR, +1 DEX\n\nTRAITS:\n- **Instinto Predatório**: Vantagem em rastreamento e detecção.\n- **Garras Afiadas**: Pode usar ataques desarmados como arma de 1d4 Physical."
+  },
+  "_id": "30fdf56cb4dafd08",
+  "_key": "!items!30fdf56cb4dafd08"
+}

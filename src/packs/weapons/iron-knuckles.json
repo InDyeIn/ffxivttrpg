@@ -1,0 +1,23 @@
+{
+  "name": "Iron Knuckles",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "knuckles",
+    "roles": [
+      "monk"
+    ],
+    "damage": {
+      "formula": "1d6",
+      "type": "physical",
+      "attribute": "str"
+    },
+    "defense": 0,
+    "speed": 1,
+    "price": 120,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "281c4c2b358e3f88",
+  "_key": "!items!281c4c2b358e3f88"
+}

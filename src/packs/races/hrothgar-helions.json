@@ -1,0 +1,11 @@
+{
+  "name": "Hrothgar (Helions)",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "STATUS: +2 STR, +1 VIT\n\nTRAITS:\n- **Carga do Leão**: Vantagem em Checks físicos como derrubar/empurrar alvos médios.\n- **Brado Territorial**: Vantagem em checks de intimidação em seus próprios territórios."
+  },
+  "_id": "f796e4ac595919b7",
+  "_key": "!items!f796e4ac595919b7"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Mythril Spear",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "spear",
+    "roles": [
+      "dragoon"
+    ],
+    "damage": {
+      "formula": "1d8",
+      "type": "physical",
+      "attribute": "str"
+    },
+    "defense": 0,
+    "speed": 0,
+    "price": 180,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "aa4000ee40cea945",
+  "_key": "!items!aa4000ee40cea945"
+}

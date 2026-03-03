@@ -54,11 +54,6 @@
                 }
             },
             "profile": {
-                "race": "",
-                "tribe": "",
-                "job": "",
-                "level": 1,
-                "xp": 0,
                 "age": "",
                 "height": "",
                 "weight": "",
@@ -66,15 +61,6 @@
                 "deity": "",
                 "homeland": "",
                 "notes": ""
-            },
-            "traits": [],
-            "limitBreak": {
-                "value": 0,
-                "max": 3
-            },
-            "enmity": {
-                "active": false,
-                "target": null
             },
             "statusEffects": [],
             "actions": {
@@ -117,18 +103,20 @@
             "size": "medium",
             "enemyType": "humanoid",
             "aoeMarkers": [],
-            "abilities": [],
             "enmityList": {},
             "loot": []
         }
     },
     "Item": {
         "types": [
+            "class",
+            "subclass",
+            "race",
+            "feature",
             "ability",
             "weapon",
             "armor",
             "consumable",
-            "trait",
             "status"
         ],
         "htmlFields": [
@@ -139,6 +127,45 @@
                 "description": "",
                 "source": ""
             }
+        },
+        "class": {
+            "templates": [
+                "description"
+            ],
+            "levels": 1,
+            "xp": {
+                "value": 0,
+                "max": 1000
+            },
+            "role": "tank",
+            "primaryStat": "str",
+            "gaugeType": "none",
+            "hpFormula": "1d10 + @vit"
+        },
+        "subclass": {
+            "templates": [
+                "description"
+            ],
+            "classIdentifier": ""
+        },
+        "race": {
+            "templates": [
+                "description"
+            ],
+            "baseAttributeBonus": {
+                "str": 0,
+                "dex": 0,
+                "vit": 0,
+                "int": 0,
+                "mnd": 0
+            }
+        },
+        "feature": {
+            "templates": [
+                "description"
+            ],
+            "featureType": "racial",
+            "requirements": ""
         },
         "ability": {
             "templates": [
@@ -192,9 +219,6 @@
             "conditions": {
                 "requires": "",
                 "trigger": ""
-            },
-            "chat": {
-                "flavor": ""
             }
         },
         "weapon": {
@@ -239,16 +263,6 @@
             },
             "effect": "",
             "price": 0
-        },
-        "trait": {
-            "templates": [
-                "description"
-            ],
-            "traitType": "racial",
-            "race": "",
-            "tribe": "",
-            "passive": true,
-            "effect": ""
         },
         "status": {
             "templates": [

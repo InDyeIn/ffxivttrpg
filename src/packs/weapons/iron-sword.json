@@ -1,0 +1,24 @@
+{
+  "name": "Iron Sword",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "weaponType": "sword",
+    "roles": [
+      "tank",
+      "melee"
+    ],
+    "damage": {
+      "formula": "1d6",
+      "type": "physical",
+      "attribute": "str"
+    },
+    "defense": 0,
+    "speed": 0,
+    "price": 100,
+    "rarity": "common",
+    "equipped": false
+  },
+  "_id": "38658edad50ac716",
+  "_key": "!items!38658edad50ac716"
+}

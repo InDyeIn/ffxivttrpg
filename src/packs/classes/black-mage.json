@@ -1,0 +1,19 @@
+{
+  "name": "Black Mage",
+  "type": "class",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "description": "Mestres da destruição e da feitiçaria profana de Mhach. Inigualáveis na arte de explodir coisas.",
+    "role": "magical",
+    "levels": 1,
+    "xp": {
+      "value": 0,
+      "max": 1000
+    },
+    "primaryStat": "int",
+    "hpFormula": "1d6 + @vit",
+    "gaugeType": "element"
+  },
+  "_id": "43cf75c28b496fb6",
+  "_key": "!items!43cf75c28b496fb6"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Lalafell (Plainsfolk)",
+  "type": "trait",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "traitType": "racial",
+    "effect": "STATUS: +1 DEX, +1 MND\n\nTRAITS:\n- **Ágil como o Vento**: Vantagem em Checks acrobáticos e de escape.\n- **Perspicácia Comercial**: Vantagem em Checks de avaliação e persuasão."
+  },
+  "_id": "7e43b88851b7befb",
+  "_key": "!items!7e43b88851b7befb"
+}

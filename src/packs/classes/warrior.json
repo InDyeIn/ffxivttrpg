@@ -1,0 +1,19 @@
+{
+  "name": "Warrior",
+  "type": "class",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "description": "Bárbaros furiosos que descendem das montanhas de Abalathia. Eles não usam magia, apenas fúria contida.",
+    "role": "tank",
+    "levels": 1,
+    "xp": {
+      "value": 0,
+      "max": 1000
+    },
+    "primaryStat": "str",
+    "hpFormula": "1d12 + @vit",
+    "gaugeType": "bar"
+  },
+  "_id": "b2eddac4595be85f",
+  "_key": "!items!b2eddac4595be85f"
+}

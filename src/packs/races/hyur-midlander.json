@@ -1,0 +1,11 @@
+{
+  "name": "Hyur — Midlander",
+  "type": "subclass",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "classIdentifier": "hyur",
+    "description": "**Sub-raça:** Midlander\n\n**STATUS:** FOR 10, DES 10, VIT 9, INT 10, MEN 10\n\n**TRAITS:**\n- **Povo Instruído**: Você recebe +1 em testes de Inteligência e Sabedoria."
+  },
+  "_id": "21995acf280a254c",
+  "_key": "!items!21995acf280a254c"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Roegadyn — Sea Wolf",
+  "type": "subclass",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "classIdentifier": "roegadyn",
+    "description": "**Sub-raça:** Sea Wolf\n\n**STATUS:** FOR 11, DES 9, VIT 11, INT 8, MEN 10\n\n**TRAITS:**\n- **Vigor dos Mares**: Reduz qualquer dano de Água sofrido em 2."
+  },
+  "_id": "4e4b54f4ad8d60e7",
+  "_key": "!items!4e4b54f4ad8d60e7"
+}
