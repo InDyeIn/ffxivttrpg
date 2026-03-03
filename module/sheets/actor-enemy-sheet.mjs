@@ -1,30 +1,27 @@
 /**
- * FFXIV TTRPG — Actor Sheet: Enemy
+ * FFXIV TTRPG — Actor Sheet: Enemy (Application V2)
  */
+const { ActorSheetV2 } = foundry.applications.sheets;
+const { HandlebarsApplicationMixin } = foundry.applications.api;
 
-export class FFXIVEnemySheet extends foundry.appv1.sheets.ActorSheet {
-
-    /** @override */
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ["ffxivttrpg", "sheet", "actor", "enemy"],
-            template: "systems/ffxivttrpg/templates/actors/enemy-sheet.hbs",
-            width: 620,
-            height: 520,
-            tabs: [
-                {
-                    navSelector: ".sheet-tabs",
-                    contentSelector: ".sheet-body",
-                    initial: "main",
-                },
-            ],
-        });
-    }
+export class FFXIVEnemySheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     /** @override */
-    async getData() {
-        const context = await super.getData();
-        const actorData = this.actor.toObject(false);
+    static DEFAULT_OPTIONS = {
+        classes: ["ffxivttrpg", "sheet", "actor", "enemy"],
+        position: { width: 620, height: 520 },
+        form: { submitOnChange: true, closeOnSubmit: false }
+    };
+
+    /** @override */
+    static PARTS = {
+        sheet: { template: "systems/ffxivttrpg/templates/actors/enemy-sheet.hbs" }
+    };
+
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options);
+        const actorData = this.document.toObject(false);
         context.system = actorData.system;
         context.config = CONFIG.FFXIV;
         context.isGM = game.user.isGM;
@@ -38,47 +35,63 @@ export class FFXIVEnemySheet extends foundry.appv1.sheets.ActorSheet {
         context.tierConfig = CONFIG.FFXIV.enemyTiers?.[actorData.system.tier] || {};
 
         // Habilidades do inimigo
-        context.abilities = this.actor.items.filter(i => i.type === "ability").map(i => i.toObject(false));
+        context.abilities = this.document.items.filter(i => i.type === "ability").map(i => i.toObject(false));
 
         // Tabela de Enmity (quem está gerando mais aggro)
-        context.enmityTable = FFXIVEnmity.getEnmityTable(this.actor);
-        context.currentTarget = FFXIVEnmity.getHighestEnmityTarget(this.actor);
+        context.enmityTable = FFXIVEnmity.getEnmityTable(this.document);
+        context.currentTarget = FFXIVEnmity.getHighestEnmityTarget(this.document);
 
         return context;
     }
 
     /** @override */
-    activateListeners(html) {
-        super.activateListeners(html);
+    _onRender(context, options) {
+        super._onRender(context, options);
         if (!this.isEditable) return;
+
+        const html = $(this.element);
+
+        // Fallback robusto para abas (Tabs) no V2 sem alterar os templates V1
+        const nav = html.find('.sheet-tabs');
+        if (nav.length) {
+            nav.on('click', '.item', (ev) => {
+                ev.preventDefault();
+                nav.find('.item').removeClass('active');
+                $(ev.currentTarget).addClass('active');
+                const tabName = ev.currentTarget.dataset.tab;
+                html.find('.tab').removeClass('active');
+                html.find(`.tab[data-tab="${tabName}"]`).addClass('active');
+            });
+            if (!nav.find('.item.active').length) nav.find('.item').first().click();
+        }
 
         // Usar habilidade do inimigo (GM only)
         html.on("click", ".ability-use", async (event) => {
             event.preventDefault();
             const li = event.currentTarget.closest("[data-item-id]");
             const itemId = li.dataset.itemId;
-            const item = this.actor.items.get(itemId);
-            if (item) await FFXIVRoll.rollAbility(item, this.actor);
+            const item = this.document.items.get(itemId);
+            if (item) await FFXIVRoll.rollAbility(item, this.document);
         });
 
         // Editar habilidade
         html.on("click", ".item-edit", (event) => {
             event.preventDefault();
             const li = event.currentTarget.closest("[data-item-id]");
-            this.actor.items.get(li.dataset.itemId)?.sheet?.render(true);
+            this.document.items.get(li.dataset.itemId)?.sheet?.render(true);
         });
 
         // Deletar habilidade
         html.on("click", ".item-delete", (event) => {
             event.preventDefault();
             const li = event.currentTarget.closest("[data-item-id]");
-            this.actor.items.get(li.dataset.itemId)?.delete();
+            this.document.items.get(li.dataset.itemId)?.delete();
         });
 
         // Adicionar habilidade
         html.on("click", ".item-create", async (event) => {
             event.preventDefault();
-            await Item.create({ name: "Nova Habilidade", type: "ability" }, { parent: this.actor });
+            await Item.create({ name: "Nova Habilidade", type: "ability" }, { parent: this.document });
         });
 
         // Colocar AOE (marcador visual no mapa)
@@ -94,7 +107,7 @@ export class FFXIVEnemySheet extends foundry.appv1.sheets.ActorSheet {
      */
     async _placeAOEMarker(type) {
         // Verifica se o actor tem um token ativo no canvas
-        const tokenDoc = this.actor.isToken ? this.actor.token : canvas.tokens?.controlled?.[0]?.document ?? null;
+        const tokenDoc = this.document.isToken ? this.document.token : canvas.tokens?.controlled?.[0]?.document ?? null;
         if (!tokenDoc || !canvas.scene) {
             ui.notifications.warn(game.i18n.localize("FFXIV.EnemyNotOnScene"));
             return;

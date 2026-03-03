@@ -1,33 +1,30 @@
 /**
- * FFXIV TTRPG — Actor Sheet: Adventurer (v2 — simplificado e à prova de falhas)
+ * FFXIV TTRPG — Actor Sheet: Adventurer (Application V2)
  */
+const { ActorSheetV2 } = foundry.applications.sheets;
+const { HandlebarsApplicationMixin } = foundry.applications.api;
 
-export class FFXIVAdventurerSheet extends foundry.appv1.sheets.ActorSheet {
-
-    /** @override */
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ["ffxivttrpg", "sheet", "actor", "adventurer"],
-            template: "systems/ffxivttrpg/templates/actors/adventurer-sheet.hbs",
-            width: 720,
-            height: 640,
-            tabs: [
-                {
-                    navSelector: ".sheet-tabs",
-                    contentSelector: ".sheet-body",
-                    initial: "combat",
-                },
-            ],
-        });
-    }
+export class FFXIVAdventurerSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     /** @override */
-    async getData() {
+    static DEFAULT_OPTIONS = {
+        classes: ["ffxivttrpg", "sheet", "actor", "adventurer"],
+        position: { width: 720, height: 640 },
+        form: { submitOnChange: true, closeOnSubmit: false }
+    };
+
+    /** @override */
+    static PARTS = {
+        sheet: { template: "systems/ffxivttrpg/templates/actors/adventurer-sheet.hbs" }
+    };
+
+    /** @override */
+    async _prepareContext(options) {
         // Pegar contexto base do Foundry
-        const context = await super.getData();
+        const context = await super._prepareContext(options);
 
         // Dados do actor como plain object
-        const actorData = this.actor.toObject(false);
+        const actorData = this.document.toObject(false);
         context.system = actorData.system || {};
         context.flags = actorData.flags || {};
         context.config = CONFIG.FFXIV || {};
@@ -87,7 +84,7 @@ export class FFXIVAdventurerSheet extends foundry.appv1.sheets.ActorSheet {
         context.consumables = [];
         context.traits = [];
 
-        for (const item of this.actor.items) {
+        for (const item of this.document.items) {
             const d = item.toObject(false);
             if (item.type === "ability") {
                 const at = d.system?.actionType || "primary";
@@ -99,7 +96,7 @@ export class FFXIVAdventurerSheet extends foundry.appv1.sheets.ActorSheet {
         }
 
         // ---- Active Effects ----
-        context.effects = this.actor.effects.map(e => ({
+        context.effects = this.document.effects.map(e => ({
             id: e.id,
             label: e.label,
             icon: e.icon,
@@ -122,9 +119,25 @@ export class FFXIVAdventurerSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /** @override */
-    activateListeners(html) {
-        super.activateListeners(html);
+    _onRender(context, options) {
+        super._onRender(context, options);
         if (!this.isEditable) return;
+
+        const html = $(this.element);
+
+        // Fallback robusto para abas (Tabs) no V2 sem alterar os templates V1
+        const nav = html.find('.sheet-tabs');
+        if (nav.length) {
+            nav.on('click', '.item', (ev) => {
+                ev.preventDefault();
+                nav.find('.item').removeClass('active');
+                $(ev.currentTarget).addClass('active');
+                const tabName = ev.currentTarget.dataset.tab;
+                html.find('.tab').removeClass('active');
+                html.find(`.tab[data-tab="${tabName}"]`).addClass('active');
+            });
+            if (!nav.find('.item.active').length) nav.find('.item').first().click();
+        }
 
         // Rolar atributo ao clicar no modificador
         html.on("click", ".attribute-roll", async (ev) => {
@@ -138,9 +151,9 @@ export class FFXIVAdventurerSheet extends foundry.appv1.sheets.ActorSheet {
             ev.preventDefault();
             const li = ev.currentTarget.closest("[data-item-id]");
             if (!li) return;
-            const item = this.actor.items.get(li.dataset.itemId);
+            const item = this.document.items.get(li.dataset.itemId);
             if (item) {
-                try { await FFXIVRoll.rollAbility(item, this.actor); }
+                try { await FFXIVRoll.rollAbility(item, this.document); }
                 catch (e) { console.error("FFXIV | Roll error:", e); }
             }
         });
@@ -149,28 +162,28 @@ export class FFXIVAdventurerSheet extends foundry.appv1.sheets.ActorSheet {
         html.on("click", ".item-edit", (ev) => {
             ev.preventDefault();
             const li = ev.currentTarget.closest("[data-item-id]");
-            if (li) this.actor.items.get(li.dataset.itemId)?.sheet?.render(true);
+            if (li) this.document.items.get(li.dataset.itemId)?.sheet?.render(true);
         });
 
         // Deletar item
         html.on("click", ".item-delete", (ev) => {
             ev.preventDefault();
             const li = ev.currentTarget.closest("[data-item-id]");
-            if (li) this.actor.items.get(li.dataset.itemId)?.delete();
+            if (li) this.document.items.get(li.dataset.itemId)?.delete();
         });
 
         // Criar item
         html.on("click", ".item-create", async (ev) => {
             ev.preventDefault();
             const type = ev.currentTarget.dataset.type || "ability";
-            await Item.create({ name: "Novo Item", type }, { parent: this.actor });
+            await Item.create({ name: "Novo Item", type }, { parent: this.document });
         });
 
         // Toggle efeito
         html.on("click", ".effect-toggle", async (ev) => {
             ev.preventDefault();
             const id = ev.currentTarget.closest("[data-effect-id]")?.dataset.effectId;
-            const eff = this.actor.effects.get(id);
+            const eff = this.document.effects.get(id);
             if (eff) await eff.update({ disabled: !eff.disabled });
         });
 
@@ -178,7 +191,7 @@ export class FFXIVAdventurerSheet extends foundry.appv1.sheets.ActorSheet {
         html.on("click", ".effect-delete", async (ev) => {
             ev.preventDefault();
             const id = ev.currentTarget.closest("[data-effect-id]")?.dataset.effectId;
-            this.actor.effects.get(id)?.delete();
+            this.document.effects.get(id)?.delete();
         });
 
         // Botão de rest
@@ -186,13 +199,13 @@ export class FFXIVAdventurerSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     async _rollAttribute(attrKey) {
-        const val = this.actor.system.attributes?.[attrKey]?.value ?? 10;
+        const val = this.document.system.attributes?.[attrKey]?.value ?? 10;
         const mod = Math.floor((val - 10) / 2);
         const labels = { str: "FOR", dex: "DES", vit: "VIT", int: "INT", mnd: "MEN" };
         const roll = await new Roll(`1d20 + ${mod}`).evaluate();
         roll.toMessage({
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            flavor: `${this.actor.name} — Check de ${labels[attrKey] || attrKey}`,
+            speaker: ChatMessage.getSpeaker({ actor: this.document }),
+            flavor: `${this.document.name} — Check de ${labels[attrKey] || attrKey}`,
         });
     }
 
@@ -201,17 +214,17 @@ export class FFXIVAdventurerSheet extends foundry.appv1.sheets.ActorSheet {
             ui.notifications.warn("Não é possível descansar durante o combate!");
             return;
         }
-        const maxHP = this.actor.system.derived?.hp?.max ?? 20;
-        const maxMP = this.actor.system.derived?.mp?.max ?? 5;
-        await this.actor.update({
+        const maxHP = this.document.system.derived?.hp?.max ?? 20;
+        const maxMP = this.document.system.derived?.mp?.max ?? 5;
+        await this.document.update({
             "system.derived.hp.value": maxHP,
             "system.derived.mp.value": maxMP,
             "system.comboState.lastAbility": "",
             "system.comboState.enabled": [],
         });
         ChatMessage.create({
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            content: `<div class="ffxiv-rest-message">🌙 <strong>${this.actor.name}</strong> descansou! HP e MP recuperados.</div>`,
+            speaker: ChatMessage.getSpeaker({ actor: this.document }),
+            content: `<div class="ffxiv-rest-message">🌙 <strong>${this.document.name}</strong> descansou! HP e MP recuperados.</div>`,
         });
     }
 }
