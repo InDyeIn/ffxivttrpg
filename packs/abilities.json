@@ -1,0 +1,716 @@
+[
+    {
+        "_id": "pal001",
+        "name": "Fast Blade",
+        "type": "ability",
+        "img": "icons/skills/melee/strike-sword-steel-yellow.webp",
+        "system": {
+            "description": "<p>Ataque básico com a espada. Starter do combo do Paladino.</p>",
+            "source": "Paladin Lv.1",
+            "job": "paladin",
+            "actionType": "primary",
+            "level": 1,
+            "tags": [
+                "physical",
+                "melee",
+                "combo-starter"
+            ],
+            "cost": {
+                "mp": 0,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "melee",
+            "rangeValue": 1,
+            "target": "single",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "1d8",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "none",
+                "label": "",
+                "duration": 0,
+                "value": ""
+            },
+            "combo": {
+                "requires": "",
+                "enables": [
+                    "Riot Blade"
+                ],
+                "isOpener": true
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "Corta o inimigo com precisão."
+            }
+        }
+    },
+    {
+        "_id": "pal002",
+        "name": "Riot Blade",
+        "type": "ability",
+        "img": "icons/skills/melee/strike-sword-blue-fire.webp",
+        "system": {
+            "description": "<p>Golpe poderoso. Deve ser precedido por Fast Blade. Recupera MP ao atingir.</p>",
+            "source": "Paladin Lv.4",
+            "job": "paladin",
+            "actionType": "primary",
+            "level": 4,
+            "tags": [
+                "physical",
+                "melee",
+                "combo"
+            ],
+            "cost": {
+                "mp": 0,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "melee",
+            "rangeValue": 1,
+            "target": "single",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "2d8",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "buff",
+                "label": "MP Recovery",
+                "duration": 1,
+                "value": "2"
+            },
+            "combo": {
+                "requires": "Fast Blade",
+                "enables": [
+                    "Royal Authority"
+                ],
+                "isOpener": false
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "Golpe que brilha com a luz da vitória."
+            }
+        }
+    },
+    {
+        "_id": "pal003",
+        "name": "Royal Authority",
+        "type": "ability",
+        "img": "icons/skills/melee/strike-sword-holy.webp",
+        "system": {
+            "description": "<p>Finalização poderosa do combo. Geração alta de Enmity. Requer Fast Blade → Riot Blade.</p>",
+            "source": "Paladin Lv.26",
+            "job": "paladin",
+            "actionType": "primary",
+            "level": 26,
+            "tags": [
+                "physical",
+                "melee",
+                "combo",
+                "enmity"
+            ],
+            "cost": {
+                "mp": 0,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "melee",
+            "rangeValue": 1,
+            "target": "single",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "3d8+4",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "none",
+                "label": "",
+                "duration": 0,
+                "value": ""
+            },
+            "combo": {
+                "requires": "Riot Blade",
+                "enables": [],
+                "isOpener": false
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "O golpe definitivo do Paladino — honra e dever."
+            }
+        }
+    },
+    {
+        "_id": "pal004",
+        "name": "Shield Lob",
+        "type": "ability",
+        "img": "icons/skills/ranged/throw-shield-blue.webp",
+        "system": {
+            "description": "<p>Atira o escudo no inimigo à distância. Alta geração de Enmity. Útil para puxar inimigos.</p>",
+            "source": "Paladin Lv.15",
+            "job": "paladin",
+            "actionType": "primary",
+            "level": 15,
+            "tags": [
+                "physical",
+                "ranged",
+                "enmity"
+            ],
+            "cost": {
+                "mp": 0,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "medium",
+            "rangeValue": 6,
+            "target": "single",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "1d6",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "none",
+                "label": "",
+                "duration": 0,
+                "value": ""
+            },
+            "combo": {
+                "requires": "",
+                "enables": [],
+                "isOpener": false
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "O escudo voa e retorna ao seu mestre."
+            }
+        }
+    },
+    {
+        "_id": "pal005",
+        "name": "Sentinel",
+        "type": "ability",
+        "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
+        "system": {
+            "description": "<p>Postura defensiva — reduz dano recebido em 30% por 1 round. Aumenta Enmity.</p>",
+            "source": "Paladin Lv.38",
+            "job": "paladin",
+            "actionType": "secondary",
+            "level": 38,
+            "tags": [
+                "defensive",
+                "buff"
+            ],
+            "cost": {
+                "mp": 1,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "self",
+            "rangeValue": 0,
+            "target": "self",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "buff",
+                "label": "Sentinel",
+                "duration": 1,
+                "value": "damage_reduction_30"
+            },
+            "combo": {
+                "requires": "",
+                "enables": [],
+                "isOpener": false
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "A luz da Hydaelyn protege o guardião."
+            }
+        }
+    },
+    {
+        "_id": "war001",
+        "name": "Heavy Swing",
+        "type": "ability",
+        "img": "icons/skills/melee/strikes-cluster-impact-red.webp",
+        "system": {
+            "description": "<p>Golpe pesado com machado. Starter do combo do Warrior. Ganha 10 Beast Gauge no combo.</p>",
+            "source": "Warrior Lv.1",
+            "job": "warrior",
+            "actionType": "primary",
+            "level": 1,
+            "tags": [
+                "physical",
+                "melee",
+                "combo-starter"
+            ],
+            "cost": {
+                "mp": 0,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "melee",
+            "rangeValue": 1,
+            "target": "single",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "1d10",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "none",
+                "label": "",
+                "duration": 0,
+                "value": ""
+            },
+            "combo": {
+                "requires": "",
+                "enables": [
+                    "Maim"
+                ],
+                "isOpener": true
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "O machado corta o ar com força bruta."
+            }
+        }
+    },
+    {
+        "_id": "war002",
+        "name": "Fell Cleave",
+        "type": "ability",
+        "img": "icons/skills/melee/strike-axe-red.webp",
+        "system": {
+            "description": "<p>Golpe devastador que consome 50 Beast Gauge. Dano altíssimo.</p>",
+            "source": "Warrior Lv.54",
+            "job": "warrior",
+            "actionType": "primary",
+            "level": 54,
+            "tags": [
+                "physical",
+                "melee",
+                "beast-gauge"
+            ],
+            "cost": {
+                "mp": 0,
+                "gauge": 50,
+                "gaugeType": "beast"
+            },
+            "range": "melee",
+            "rangeValue": 1,
+            "target": "single",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "4d10+8",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "none",
+                "label": "",
+                "duration": 0,
+                "value": ""
+            },
+            "combo": {
+                "requires": "",
+                "enables": [],
+                "isOpener": false
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "beast_gauge_50",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "A besta interior libera toda sua fúria!"
+            }
+        }
+    },
+    {
+        "_id": "whm001",
+        "name": "Cure",
+        "type": "ability",
+        "img": "icons/magic/life/heart-green.webp",
+        "system": {
+            "description": "<p>Cura básica com a magia da luz. Restaura HP de um aliado.</p>",
+            "source": "White Mage Lv.1",
+            "job": "whiteMage",
+            "actionType": "primary",
+            "level": 1,
+            "tags": [
+                "healing",
+                "single",
+                "magical"
+            ],
+            "cost": {
+                "mp": 2,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "medium",
+            "rangeValue": 6,
+            "target": "single",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "2d6+MND",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "none",
+                "label": "",
+                "duration": 0,
+                "value": ""
+            },
+            "combo": {
+                "requires": "",
+                "enables": [],
+                "isOpener": false
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "A luz sagrada flui para curar as feridas."
+            }
+        }
+    },
+    {
+        "_id": "whm002",
+        "name": "Medica",
+        "type": "ability",
+        "img": "icons/magic/life/cross-area-green.webp",
+        "system": {
+            "description": "<p>Cura em área ao redor do conjurador. Cura todos os aliados próximos.</p>",
+            "source": "White Mage Lv.10",
+            "job": "whiteMage",
+            "actionType": "primary",
+            "level": 10,
+            "tags": [
+                "healing",
+                "aoe",
+                "magical"
+            ],
+            "cost": {
+                "mp": 3,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "self",
+            "rangeValue": 0,
+            "target": "all_allies",
+            "aoe": {
+                "shape": "circle",
+                "size": 4
+            },
+            "damage": {
+                "formula": "",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "1d6+MND",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "none",
+                "label": "",
+                "duration": 0,
+                "value": ""
+            },
+            "combo": {
+                "requires": "",
+                "enables": [],
+                "isOpener": false
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "Uma onda de pura energia curativa envolve a todos."
+            }
+        }
+    },
+    {
+        "_id": "mnk001",
+        "name": "Bootshine",
+        "type": "ability",
+        "img": "icons/skills/melee/unarmed-strike-blue.webp",
+        "system": {
+            "description": "<p>Chute rápido que inicia o combo do Monge. Crítico automático se atacado pela retaguarda.</p>",
+            "source": "Monk Lv.1",
+            "job": "monk",
+            "actionType": "primary",
+            "level": 1,
+            "tags": [
+                "physical",
+                "melee",
+                "combo-starter"
+            ],
+            "cost": {
+                "mp": 0,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "melee",
+            "rangeValue": 1,
+            "target": "single",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "1d6",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "none",
+                "label": "",
+                "duration": 0,
+                "value": ""
+            },
+            "combo": {
+                "requires": "",
+                "enables": [
+                    "True Strike"
+                ],
+                "isOpener": true
+            },
+            "positional": {
+                "flank": "",
+                "rear": "auto_crit"
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "Rápido como o vento, certeiro como o trovão."
+            }
+        }
+    },
+    {
+        "_id": "blm001",
+        "name": "Fire",
+        "type": "ability",
+        "img": "icons/magic/fire/flame-burning-hand-orange.webp",
+        "system": {
+            "description": "<p>Magia de fogo básica. Núcleo do sistema de Astral Fire do Mago Negro.</p>",
+            "source": "Black Mage Lv.1",
+            "job": "blackMage",
+            "actionType": "primary",
+            "level": 1,
+            "tags": [
+                "magic",
+                "fire",
+                "single"
+            ],
+            "cost": {
+                "mp": 2,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "long",
+            "rangeValue": 10,
+            "target": "single",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "2d6+INT",
+                "type": "fire",
+                "attribute": "int"
+            },
+            "healing": {
+                "formula": "",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "buff",
+                "label": "Astral Fire I",
+                "duration": 3,
+                "value": "astral_fire_1"
+            },
+            "combo": {
+                "requires": "",
+                "enables": [
+                    "Fire III"
+                ],
+                "isOpener": false
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": "As chamas do éter ganham forma sob sua vontade."
+            }
+        }
+    }
+]

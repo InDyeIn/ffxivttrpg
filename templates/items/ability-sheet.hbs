@@ -1,0 +1,183 @@
+{{!-- FFXIV TTRPG — Item Sheet: Ability --}}
+<form class="{{cssClass}} ffxiv-sheet ffxiv-item ability-item" autocomplete="off">
+
+    <header class="sheet-header item-header">
+        <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <div class="header-info">
+            <h1><input name="name" type="text" value="{{item.name}}" placeholder="Nome da Habilidade" /></h1>
+            <div class="header-meta">
+                <select name="system.job" class="job-select">
+                    <option value="">{{localize "FFXIV.AnyJob"}}</option>
+                    {{selectOptions config.jobs selected=system.job labelAttr="name" valueAttr="id"}}
+                </select>
+                <span>Lv. <input type="number" name="system.level" value="{{system.level}}" min="1" max="60"
+                        class="level-input" /></span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="details">{{localize "FFXIV.Details"}}</a>
+        <a class="item" data-tab="description">{{localize "FFXIV.Description"}}</a>
+    </nav>
+
+    <section class="sheet-body">
+
+        {{!-- Detalhes da habilidade --}}
+        <div class="tab" data-tab="details">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>{{localize "FFXIV.ActionType"}}</label>
+                    <select name="system.actionType">
+                        <option value="primary" {{#if (eq system.actionType "primary" )}}selected{{/if}}>{{localize
+                            "FFXIV.ActionPrimary"}}</option>
+                        <option value="secondary" {{#if (eq system.actionType "secondary" )}}selected{{/if}}>{{localize
+                            "FFXIV.ActionSecondary"}}</option>
+                        <option value="instant" {{#if (eq system.actionType "instant" )}}selected{{/if}}>{{localize
+                            "FFXIV.ActionInstant"}}</option>
+                        <option value="passive" {{#if (eq system.actionType "passive" )}}selected{{/if}}>{{localize
+                            "FFXIV.ActionPassive"}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "FFXIV.Range"}}</label>
+                    <select name="system.range">
+                        <option value="melee" {{#if (eq system.range "melee" )}}selected{{/if}}>{{localize
+                            "FFXIV.RangeMelee"}}</option>
+                        <option value="short" {{#if (eq system.range "short" )}}selected{{/if}}>{{localize
+                            "FFXIV.RangeShort"}}</option>
+                        <option value="medium" {{#if (eq system.range "medium" )}}selected{{/if}}>{{localize
+                            "FFXIV.RangeMedium"}}</option>
+                        <option value="long" {{#if (eq system.range "long" )}}selected{{/if}}>{{localize
+                            "FFXIV.RangeLong"}}</option>
+                        <option value="self" {{#if (eq system.range "self" )}}selected{{/if}}>{{localize
+                            "FFXIV.RangeSelf"}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "FFXIV.Target"}}</label>
+                    <select name="system.target">
+                        <option value="single" {{#if (eq system.target "single" )}}selected{{/if}}>{{localize
+                            "FFXIV.TargetSingle"}}</option>
+                        <option value="self" {{#if (eq system.target "self" )}}selected{{/if}}>{{localize
+                            "FFXIV.TargetSelf"}}</option>
+                        <option value="all_allies" {{#if (eq system.target "all_allies" )}}selected{{/if}}>{{localize
+                            "FFXIV.TargetAllAllies"}}</option>
+                        <option value="all_enemies" {{#if (eq system.target "all_enemies" )}}selected{{/if}}>{{localize
+                            "FFXIV.TargetAllEnemies"}}</option>
+                        <option value="aoe" {{#if (eq system.target "aoe" )}}selected{{/if}}>{{localize
+                            "FFXIV.TargetAOE"}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "FFXIV.CostMP"}}</label>
+                    <input type="number" name="system.cost.mp" value="{{system.cost.mp}}" min="0" />
+                </div>
+
+                <div class="form-group">
+                    <label>{{localize "FFXIV.CostGauge"}}</label>
+                    <input type="number" name="system.cost.gauge" value="{{system.cost.gauge}}" min="0" />
+                </div>
+
+            </div>
+
+            {{!-- Dano --}}
+            <fieldset class="damage-section">
+                <legend>⚔️ {{localize "FFXIV.Damage"}}</legend>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>{{localize "FFXIV.DamageFormula"}}</label>
+                        <input type="text" name="system.damage.formula" value="{{system.damage.formula}}"
+                            placeholder="ex: 2d6" />
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "FFXIV.DamageType"}}</label>
+                        <select name="system.damage.type">
+                            {{#each config.damageTypes as |label key|}}
+                            <option value="{{key}}" {{#if (eq ../system.damage.type key)}}selected{{/if}}>{{localize
+                                label}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "FFXIV.Attribute"}}</label>
+                        <select name="system.damage.attribute">
+                            {{#each config.attributes as |label key|}}
+                            <option value="{{key}}" {{#if (eq ../system.damage.attribute key)}}selected{{/if}}>
+                                {{localize label}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            {{!-- Cura --}}
+            <fieldset class="heal-section">
+                <legend>💚 {{localize "FFXIV.Healing"}}</legend>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>{{localize "FFXIV.HealFormula"}}</label>
+                        <input type="text" name="system.healing.formula" value="{{system.healing.formula}}"
+                            placeholder="ex: 2d6" />
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "FFXIV.ShieldFormula"}}</label>
+                        <input type="text" name="system.shield.formula" value="{{system.shield.formula}}"
+                            placeholder="ex: 1d6" />
+                    </div>
+                </div>
+            </fieldset>
+
+            {{!-- Combo --}}
+            <fieldset class="combo-section">
+                <legend>🔗 {{localize "FFXIV.Combo"}}</legend>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>{{localize "FFXIV.ComboRequires"}}</label>
+                        <input type="text" name="system.combo.requires" value="{{system.combo.requires}}"
+                            placeholder="Nome da habilidade anterior" />
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "FFXIV.ComboEnables"}}</label>
+                        <input type="text" name="system.combo.enables" value="{{system.combo.enables}}"
+                            placeholder="Próximas habilidades (vírgula)" />
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "FFXIV.ComboIsOpener"}}</label>
+                        <input type="checkbox" name="system.combo.isOpener" {{#if
+                            system.combo.isOpener}}checked{{/if}} />
+                    </div>
+                </div>
+            </fieldset>
+
+            {{!-- Posicionais --}}
+            <fieldset class="positional-section">
+                <legend>📍 {{localize "FFXIV.Positionals"}}</legend>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>{{localize "FFXIV.Flank"}}</label>
+                        <input type="text" name="system.positional.flank" value="{{system.positional.flank}}"
+                            placeholder="ex: +1d6" />
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "FFXIV.Rear"}}</label>
+                        <input type="text" name="system.positional.rear" value="{{system.positional.rear}}"
+                            placeholder="ex: auto_crit" />
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+
+        {{!-- Descrição --}}
+        <div class="tab" data-tab="description">
+            {{editor system.description target="system.description" button=true editable=editable}}
+        </div>
+
+    </section>
+</form>

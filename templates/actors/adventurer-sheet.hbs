@@ -1,0 +1,335 @@
+{{!-- ============================================================
+  FFXIV TTRPG — Actor Sheet: Adventurer
+  Inspirado no HUD do FFXIV com tema escuro + dourado
+  ============================================================ --}}
+<form class="{{cssClass}} ffxiv-sheet ffxiv-adventurer" autocomplete="off">
+
+  {{!-- HEADER: Avatar, Nome, Job/Raça --}}
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="{{actor.name}}" />
+    <div class="header-info">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{actor.name}}" placeholder="Nome do Personagem" />
+      </h1>
+      <div class="header-meta">
+        <span class="job-badge" style="color: {{jobConfig.color}}">
+          <i class="{{jobConfig.icon}}"></i>
+          <input name="system.job.name" type="text" value="{{system.job.name}}" placeholder="Job" class="job-input" />
+        </span>
+        <span class="race-badge">
+          <input name="system.race.name" type="text" value="{{system.race.name}}" placeholder="Raça" class="race-input" />
+          /
+          <input name="system.race.tribe" type="text" value="{{system.race.tribe}}" placeholder="Tribo" class="tribe-input" />
+        </span>
+        <span class="level-badge">
+          Lv. <input name="system.job.level" type="number" value="{{system.job.level}}" min="1" max="60" class="level-input" />
+        </span>
+      </div>
+    </div>
+    {{!-- Rest Button --}}
+    {{#unless @root.inCombat}}
+    <button type="button" class="rest-button ffxiv-btn" title="{{localize 'FFXIV.Rest'}}">
+      <i class="fas fa-moon"></i>
+    </button>
+    {{/unless}}
+  </header>
+
+  {{!-- VITALS: HP, MP, Gauge --}}
+  <section class="vitals-section">
+    {{!-- HP Bar --}}
+    <div class="vital-group">
+      <div class="vital-label">
+        <span class="vital-icon hp-icon"><i class="fas fa-heart"></i></span>
+        <span class="vital-name">HP</span>
+      </div>
+      <div class="vital-bar-container">
+        <div class="vital-bar hp-bar {{hpColor}}" style="width: {{hpPercent}}%"></div>
+      </div>
+      <div class="vital-values">
+        <input type="number" name="system.derived.hp.value" class="hp-input" value="{{system.derived.hp.value}}" min="0" max="{{system.derived.hp.max}}" />
+        <span>/</span>
+        <input type="number" name="system.derived.hp.max" value="{{system.derived.hp.max}}" min="1" />
+      </div>
+    </div>
+
+    {{!-- MP Bar --}}
+    <div class="vital-group">
+      <div class="vital-label">
+        <span class="vital-icon mp-icon"><i class="fas fa-droplet"></i></span>
+        <span class="vital-name">MP</span>
+      </div>
+      <div class="vital-bar-container">
+        <div class="vital-bar mp-bar" style="width: {{mpPercent}}%"></div>
+      </div>
+      <div class="vital-values">
+        <input type="number" name="system.derived.mp.value" class="mp-input" value="{{system.derived.mp.value}}" min="0" max="{{system.derived.mp.max}}" />
+        <span>/</span>
+        <input type="number" name="system.derived.mp.max" value="{{system.derived.mp.max}}" min="0" />
+      </div>
+    </div>
+
+    {{!-- Job Gauge (se existir) --}}
+    {{#if system.gauge.max}}
+    <div class="vital-group gauge-group">
+      <div class="vital-label">
+        <span class="vital-icon gauge-icon"><i class="fas fa-circle-bolt"></i></span>
+        <span class="vital-name">{{system.gauge.label}}</span>
+      </div>
+      <div class="vital-bar-container">
+        <div class="vital-bar gauge-bar" style="width: {{gaugePercent}}%"></div>
+      </div>
+      <div class="vital-values">
+        <input type="number" name="system.gauge.current" class="gauge-input" value="{{system.gauge.current}}" min="0" max="{{system.gauge.max}}" />
+        <span>/</span>
+        <span>{{system.gauge.max}}</span>
+      </div>
+    </div>
+    {{/if}}
+  </section>
+
+  {{!-- ATRIBUTOS PRIMÁRIOS --}}
+  <section class="attributes-section">
+    {{#each attributes as |attr key|}}
+    <div class="attribute-box">
+      <label class="attr-label">{{attr.label}}</label>
+      <input type="number" name="system.attributes.{{key}}.value" value="{{attr.value}}" class="attr-input" min="1" max="30" data-dtype="Number" />
+      <span class="attr-mod attribute-roll" data-attr="{{key}}" title="Rolar {{attr.label}}">
+        {{#if (gte attr.modifier 0)}}+{{/if}}{{attr.modifier}}
+      </span>
+    </div>
+    {{/each}}
+  </section>
+
+  {{!-- ATRIBUTOS DERIVADOS --}}
+  <section class="derived-section">
+    <div class="derived-grid">
+      <div class="derived-item">
+        <label>{{localize "FFXIV.Defense"}}</label>
+        <input type="number" name="system.derived.defense.value" value="{{system.derived.defense.value}}" />
+      </div>
+      <div class="derived-item">
+        <label>{{localize "FFXIV.MagicDefense"}}</label>
+        <input type="number" name="system.derived.magicDefense.value" value="{{system.derived.magicDefense.value}}" />
+      </div>
+      <div class="derived-item">
+        <label>{{localize "FFXIV.Speed"}}</label>
+        <input type="number" name="system.derived.speed.value" value="{{system.derived.speed.value}}" />
+      </div>
+    </div>
+  </section>
+
+  {{!-- TABS DE CONTEÚDO --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="combat"><i class="fas fa-swords"></i> {{localize "FFXIV.TabCombat"}}</a>
+    <a class="item" data-tab="inventory"><i class="fas fa-bag-shopping"></i> {{localize "FFXIV.TabInventory"}}</a>
+    <a class="item" data-tab="effects"><i class="fas fa-star"></i> {{localize "FFXIV.TabEffects"}}</a>
+    <a class="item" data-tab="bio"><i class="fas fa-scroll"></i> {{localize "FFXIV.TabBio"}}</a>
+  </nav>
+
+  <section class="sheet-body">
+
+    {{!-- TAB: COMBAT (Habilidades) --}}
+    <div class="tab" data-tab="combat">
+
+      {{!-- Combo State Indicator --}}
+      {{#if comboState.lastAbility}}
+      <div class="combo-indicator">
+        <i class="fas fa-link"></i>
+        <span>{{localize "FFXIV.ComboChain"}}: <strong>{{comboState.lastAbility}}</strong></span>
+      </div>
+      {{/if}}
+
+      {{!-- Habilidades Primárias --}}
+      {{#if abilities.primary.length}}
+      <div class="ability-category">
+        <h3 class="category-header primary-header">
+          <i class="fas fa-circle"></i> {{localize "FFXIV.ActionPrimary"}}
+        </h3>
+        <ol class="ability-list items-list">
+          {{#each abilities.primary as |ability|}}
+          <li class="item flexrow" data-item-id="{{ability._id}}">
+            <img class="item-image" src="{{ability.img}}" alt="{{ability.name}}" />
+            <div class="item-name ability-use" style="cursor:pointer" title="Usar {{ability.name}}">
+              <h4>{{ability.name}}</h4>
+              <small class="ability-meta">
+                Lv.{{ability.system.level}} |
+                {{#if ability.system.cost.mp}}<span class="mp-cost">{{ability.system.cost.mp}} MP</span>{{/if}}
+                {{#if ability.system.cost.gauge}}<span class="gauge-cost">{{ability.system.cost.gauge}} Gauge</span>{{/if}}
+              </small>
+            </div>
+            <div class="item-controls flexrow">
+              <a class="item-control item-edit" title="Editar"><i class="fas fa-edit"></i></a>
+              <a class="item-control item-delete" title="Deletar"><i class="fas fa-trash"></i></a>
+            </div>
+          </li>
+          {{/each}}
+        </ol>
+      </div>
+      {{/if}}
+
+      {{!-- Habilidades Secundárias --}}
+      {{#if abilities.secondary.length}}
+      <div class="ability-category">
+        <h3 class="category-header secondary-header">
+          <i class="fas fa-circle-half-stroke"></i> {{localize "FFXIV.ActionSecondary"}}
+        </h3>
+        <ol class="ability-list items-list">
+          {{#each abilities.secondary as |ability|}}
+          <li class="item flexrow" data-item-id="{{ability._id}}">
+            <img class="item-image" src="{{ability.img}}" alt="{{ability.name}}" />
+            <div class="item-name ability-use" style="cursor:pointer">
+              <h4>{{ability.name}}</h4>
+              <small class="ability-meta">Lv.{{ability.system.level}} | Secundária</small>
+            </div>
+            <div class="item-controls flexrow">
+              <a class="item-control item-edit"><i class="fas fa-edit"></i></a>
+              <a class="item-control item-delete"><i class="fas fa-trash"></i></a>
+            </div>
+          </li>
+          {{/each}}
+        </ol>
+      </div>
+      {{/if}}
+
+      {{!-- Habilidades Instantâneas --}}
+      {{#if abilities.instant.length}}
+      <div class="ability-category">
+        <h3 class="category-header instant-header">
+          <i class="fas fa-bolt"></i> {{localize "FFXIV.ActionInstant"}}
+        </h3>
+        <ol class="ability-list items-list">
+          {{#each abilities.instant as |ability|}}
+          <li class="item flexrow" data-item-id="{{ability._id}}">
+            <img class="item-image" src="{{ability.img}}" alt="{{ability.name}}" />
+            <div class="item-name ability-use" style="cursor:pointer">
+              <h4>{{ability.name}}</h4>
+              <small class="ability-meta">Lv.{{ability.system.level}} | Instant</small>
+            </div>
+            <div class="item-controls flexrow">
+              <a class="item-control item-edit"><i class="fas fa-edit"></i></a>
+              <a class="item-control item-delete"><i class="fas fa-trash"></i></a>
+            </div>
+          </li>
+          {{/each}}
+        </ol>
+      </div>
+      {{/if}}
+
+      {{!-- Passivas --}}
+      {{#if abilities.passive.length}}
+      <div class="ability-category">
+        <h3 class="category-header passive-header">
+          <i class="fas fa-infinity"></i> {{localize "FFXIV.ActionPassive"}}
+        </h3>
+        <ol class="ability-list items-list">
+          {{#each abilities.passive as |ability|}}
+          <li class="item flexrow" data-item-id="{{ability._id}}">
+            <img class="item-image" src="{{ability.img}}" alt="{{ability.name}}" />
+            <div class="item-name">
+              <h4>{{ability.name}}</h4>
+              <small class="ability-meta">Lv.{{ability.system.level}} | Passivo</small>
+            </div>
+            <div class="item-controls flexrow">
+              <a class="item-control item-edit"><i class="fas fa-edit"></i></a>
+              <a class="item-control item-delete"><i class="fas fa-trash"></i></a>
+            </div>
+          </li>
+          {{/each}}
+        </ol>
+      </div>
+      {{/if}}
+
+      <div class="item-add-row">
+        <button type="button" class="item-create ffxiv-btn-small" data-type="ability">
+          <i class="fas fa-plus"></i> {{localize "FFXIV.AddAbility"}}
+        </button>
+      </div>
+    </div>
+
+    {{!-- TAB: INVENTÁRIO --}}
+    <div class="tab" data-tab="inventory">
+      {{#if weapons.length}}
+      <h3>{{localize "FFXIV.Weapons"}}</h3>
+      <ol class="items-list">
+        {{#each weapons as |weapon|}}
+        <li class="item flexrow" data-item-id="{{weapon._id}}">
+          <img class="item-image" src="{{weapon.img}}" alt="{{weapon.name}}" />
+          <div class="item-name"><h4>{{weapon.name}}</h4></div>
+          <div class="item-controls flexrow">
+            <a class="item-control item-edit"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ol>
+      {{/if}}
+
+      {{#if consumables.length}}
+      <h3>{{localize "FFXIV.Consumables"}}</h3>
+      <ol class="items-list">
+        {{#each consumables as |item|}}
+        <li class="item flexrow" data-item-id="{{item._id}}">
+          <img class="item-image" src="{{item.img}}" alt="{{item.name}}" />
+          <div class="item-name"><h4>{{item.name}}</h4><small>x{{item.system.quantity}}</small></div>
+          <div class="item-controls flexrow">
+            <a class="item-control item-edit"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+      </ol>
+      {{/if}}
+    </div>
+
+    {{!-- TAB: EFEITOS ATIVOS --}}
+    <div class="tab" data-tab="effects">
+      <ol class="effects-list">
+        {{#each effects as |effect|}}
+        <li class="effect-item flexrow" data-effect-id="{{effect.id}}">
+          <img class="effect-icon" src="{{effect.icon}}" alt="{{effect.label}}" />
+          <div class="effect-info">
+            <span class="effect-name">{{effect.label}}</span>
+            {{#if effect.duration.rounds}}
+            <span class="effect-duration">{{effect.duration.rounds}} {{localize "FFXIV.Rounds"}}</span>
+            {{/if}}
+          </div>
+          <div class="item-controls flexrow">
+            <a class="item-control effect-toggle" title="Toggle"><i class="fas fa-{{#if effect.disabled}}eye-slash{{else}}eye{{/if}}"></i></a>
+            <a class="item-control effect-delete" title="Remover"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+        {{#unless effects.length}}
+        <li class="no-effects"><i class="fas fa-check-circle"></i> {{localize "FFXIV.NoActiveEffects"}}</li>
+        {{/unless}}
+      </ol>
+    </div>
+
+    {{!-- TAB: BIOGRAFIA --}}
+    <div class="tab" data-tab="bio">
+      <div class="profile-grid">
+        <div class="profile-field">
+          <label>{{localize "FFXIV.ProfileAge"}}</label>
+          <input type="text" name="system.profile.age" value="{{system.profile.age}}" />
+        </div>
+        <div class="profile-field">
+          <label>{{localize "FFXIV.ProfileHeight"}}</label>
+          <input type="text" name="system.profile.height" value="{{system.profile.height}}" />
+        </div>
+        <div class="profile-field">
+          <label>{{localize "FFXIV.ProfileDeity"}}</label>
+          <input type="text" name="system.profile.deity" value="{{system.profile.deity}}" />
+        </div>
+        <div class="profile-field">
+          <label>{{localize "FFXIV.ProfileHomeland"}}</label>
+          <input type="text" name="system.profile.homeland" value="{{system.profile.homeland}}" />
+        </div>
+      </div>
+      <div class="biography-field">
+        <label>{{localize "FFXIV.Biography"}}</label>
+        {{editor system.biography target="system.biography" button=true editable=editable}}
+      </div>
+    </div>
+
+  </section>
+</form>

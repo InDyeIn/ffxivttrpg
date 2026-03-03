@@ -1,0 +1,84 @@
+{{!-- FFXIV TTRPG — Chat Card: Uso de Habilidade --}}
+<div class="ffxiv-chat-card ability-card">
+
+    {{!-- Cabeçalho com nome do ator e habilidade --}}
+    <div class="card-header">
+        <img class="card-icon" src="{{ability.img}}" alt="{{ability.name}}" />
+        <div class="card-title">
+            <strong class="actor-name">{{actor.name}}</strong>
+            <span class="uses-text"> usa </span>
+            <strong class="ability-name">{{ability.name}}</strong>
+        </div>
+        <div class="card-tags">
+            <span class="tag action-tag">
+                <i class="fas fa-{{actionTypeIcon ability.system.actionType}}"></i>
+                {{localize (concat "FFXIV.Action" ability.system.actionType)}}
+            </span>
+            {{#if ability.system.cost.mp}}
+            <span class="tag mp-tag">{{ability.system.cost.mp}} MP</span>
+            {{/if}}
+        </div>
+    </div>
+
+    {{!-- Descrição da habilidade --}}
+    {{#if ability.system.description}}
+    <div class="card-description">
+        {{{ability.system.description}}}
+    </div>
+    {{/if}}
+
+    {{!-- Resultados por alvo --}}
+    {{#each results as |result targetId|}}
+    <div class="card-result {{#if result.isCrit}}is-crit{{/if}} {{#if result.isDirectHit}}is-direct{{/if}}">
+
+        <div class="result-target">
+            <i class="fas fa-{{#if result.isHeal}}heart{{else}}sword{{/if}}"></i>
+            <strong>{{result.targetName}}</strong>
+        </div>
+
+        {{!-- Resultado de Ataque --}}
+        {{#unless result.isHeal}}
+        {{#if result.isHit}}
+        <div class="result-row hit">
+            <span class="result-label">{{#if result.isCrit}}⚔️ CRITICAL HIT!{{else if result.isDirectHit}}✧ Direct
+                Hit!{{else}}Acertou{{/if}}</span>
+        </div>
+        <div class="result-row damage">
+            <span class="damage-label">Dano:</span>
+            <span class="damage-value" style="color: {{damageTypeColor ability.system.damage.type}}">
+                <strong>{{result.damageTotal}}</strong>
+            </span>
+            <span class="damage-type">({{localize (concat "FFXIV.Damage" ability.system.damage.type)}})</span>
+        </div>
+        {{else}}
+        <div class="result-row miss">
+            <span>❌ Errou! ({{result.attackRoll.total}} vs DEF {{result.defense}})</span>
+        </div>
+        {{/if}}
+        {{/unless}}
+
+        {{!-- Resultado de Cura --}}
+        {{#if result.isHeal}}
+        <div class="result-row heal">
+            <span class="heal-label">💚 Curou:</span>
+            <span class="heal-value"><strong>{{result.healTotal}}</strong> HP</span>
+        </div>
+        {{/if}}
+
+        {{!-- Shield --}}
+        {{#if result.isShield}}
+        <div class="result-row shield">
+            <span class="shield-label">🛡️ Shield:</span>
+            <span class="shield-value"><strong>{{result.shieldTotal}}</strong></span>
+        </div>
+        {{/if}}
+
+    </div>
+    {{/each}}
+
+    {{!-- Nota de Flavor --}}
+    {{#if flavor}}
+    <div class="card-flavor"><em>{{flavor}}</em></div>
+    {{/if}}
+
+</div>

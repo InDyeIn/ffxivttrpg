@@ -1,0 +1,262 @@
+{
+    "Actor": {
+        "types": [
+            "adventurer",
+            "enemy"
+        ],
+        "htmlFields": [],
+        "templates": {
+            "base": {
+                "biography": ""
+            }
+        },
+        "adventurer": {
+            "templates": [
+                "base"
+            ],
+            "attributes": {
+                "str": {
+                    "value": 10
+                },
+                "dex": {
+                    "value": 10
+                },
+                "vit": {
+                    "value": 10
+                },
+                "int": {
+                    "value": 10
+                },
+                "mnd": {
+                    "value": 10
+                }
+            },
+            "derived": {
+                "hp": {
+                    "value": 20,
+                    "max": 20,
+                    "temp": 0
+                },
+                "mp": {
+                    "value": 5,
+                    "max": 5
+                },
+                "defense": {
+                    "value": 10
+                },
+                "magicDefense": {
+                    "value": 10
+                },
+                "speed": {
+                    "value": 3
+                }
+            },
+            "job": {
+                "name": "",
+                "role": "",
+                "level": 1,
+                "milestone": 0
+            },
+            "race": {
+                "name": "",
+                "tribe": ""
+            },
+            "gauge": {
+                "type": "none",
+                "current": 0,
+                "max": 100,
+                "label": ""
+            },
+            "limitBreak": {
+                "current": 0,
+                "max": 3
+            },
+            "enmity": {},
+            "comboState": {
+                "lastAbility": "",
+                "enabled": []
+            },
+            "currency": 0,
+            "profile": {
+                "age": "",
+                "height": "",
+                "weight": "",
+                "clan": "",
+                "deity": "",
+                "homeland": "",
+                "notes": ""
+            }
+        },
+        "enemy": {
+            "templates": [
+                "base"
+            ],
+            "hp": {
+                "value": 50,
+                "max": 50
+            },
+            "defense": {
+                "value": 12
+            },
+            "magicDefense": {
+                "value": 10
+            },
+            "speed": {
+                "value": 3
+            },
+            "tier": "standard",
+            "phase": {
+                "current": 1,
+                "max": 1,
+                "thresholds": []
+            },
+            "enrage": {
+                "active": false,
+                "round": 0,
+                "maxRounds": 10
+            },
+            "enmityTable": {},
+            "loot": "",
+            "cr": 1,
+            "xpReward": 0
+        }
+    },
+    "Item": {
+        "types": [
+            "ability",
+            "weapon",
+            "armor",
+            "consumable",
+            "trait",
+            "status"
+        ],
+        "htmlFields": [
+            "description"
+        ],
+        "templates": {
+            "description": {
+                "description": "",
+                "source": ""
+            }
+        },
+        "ability": {
+            "templates": [
+                "description"
+            ],
+            "job": "",
+            "actionType": "primary",
+            "level": 1,
+            "tags": [],
+            "cost": {
+                "mp": 0,
+                "gauge": 0,
+                "gaugeType": ""
+            },
+            "range": "melee",
+            "rangeValue": 1,
+            "target": "single",
+            "aoe": {
+                "shape": "none",
+                "size": 0
+            },
+            "damage": {
+                "formula": "",
+                "type": "physical",
+                "attribute": "str"
+            },
+            "healing": {
+                "formula": "",
+                "attribute": "mnd"
+            },
+            "shield": {
+                "formula": ""
+            },
+            "effect": {
+                "type": "none",
+                "label": "",
+                "duration": 0,
+                "value": ""
+            },
+            "combo": {
+                "requires": "",
+                "enables": [],
+                "isOpener": false
+            },
+            "positional": {
+                "flank": "",
+                "rear": ""
+            },
+            "conditions": {
+                "requires": "",
+                "onlyDuring": ""
+            },
+            "chat": {
+                "flavor": ""
+            }
+        },
+        "weapon": {
+            "templates": [
+                "description"
+            ],
+            "weaponType": "sword",
+            "roles": [],
+            "damage": {
+                "formula": "1d6",
+                "type": "physical"
+            },
+            "defense": 0,
+            "speed": 0,
+            "equipped": false,
+            "price": 0,
+            "rarity": "common"
+        },
+        "armor": {
+            "templates": [
+                "description"
+            ],
+            "armorType": "light",
+            "roles": [],
+            "defense": 0,
+            "magicDefense": 0,
+            "speed": 0,
+            "equipped": false,
+            "price": 0,
+            "rarity": "common"
+        },
+        "consumable": {
+            "templates": [
+                "description"
+            ],
+            "consumableType": "potion",
+            "quantity": 1,
+            "uses": {
+                "value": 1,
+                "max": 1
+            },
+            "effect": "",
+            "price": 0
+        },
+        "trait": {
+            "templates": [
+                "description"
+            ],
+            "traitType": "racial",
+            "race": "",
+            "tribe": "",
+            "passive": true,
+            "effect": ""
+        },
+        "status": {
+            "templates": [
+                "description"
+            ],
+            "statusType": "buff",
+            "duration": {
+                "rounds": 1
+            },
+            "effect": "",
+            "stackable": false,
+            "maxStacks": 1
+        }
+    }
+}

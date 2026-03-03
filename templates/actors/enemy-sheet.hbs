@@ -1,0 +1,145 @@
+{{!-- FFXIV TTRPG — Actor Sheet: Enemy --}}
+<form class="{{cssClass}} ffxiv-sheet ffxiv-enemy" autocomplete="off">
+
+    <header class="sheet-header enemy-header">
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="{{actor.name}}" />
+        <div class="header-info">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{actor.name}}" />
+            </h1>
+            <div class="header-meta">
+                <select name="system.tier" class="tier-select">
+                    {{selectOptions config.enemyTiers selected=system.tier nameAttr="name" valueAttr="name"}}
+                </select>
+                <span class="cr-badge">CR <input type="number" name="system.cr" value="{{system.cr}}" min="0"
+                        class="cr-input" /></span>
+            </div>
+        </div>
+    </header>
+
+    {{!-- HP Bar do Enemy —nica barra grande --}}
+    <section class="enemy-hp-section">
+        <div class="enemy-hp-label">
+            <i class="fas fa-skull" style="color:#e74c3c"></i>
+            <span>HP</span>
+            <strong>{{system.hp.value}} / {{system.hp.max}}</strong>
+        </div>
+        <div class="enemy-hp-bar-container">
+            <div class="enemy-hp-bar {{hpColor}}" style="width: {{hpPercent}}%"></div>
+        </div>
+        <div class="enemy-hp-inputs">
+            <input type="number" name="system.hp.value" value="{{system.hp.value}}" min="0" max="{{system.hp.max}}" />
+            <span>/</span>
+            <input type="number" name="system.hp.max" value="{{system.hp.max}}" min="1" />
+        </div>
+
+        {{!-- Phase indicator (Boss) --}}
+        {{#if (gt system.phase.max 1)}}
+        <div class="boss-phase">
+            <span>{{localize "FFXIV.BossPhase"}}</span>
+            <strong>{{system.phase.current}} / {{system.phase.max}}</strong>
+        </div>
+        {{/if}}
+
+        {{!-- Enrage timer --}}
+        {{#if system.enrage.active}}
+        <div class="enrage-indicator">
+            <i class="fas fa-fire" style="color:#e74c3c"></i>
+            <span class="enrage-text">{{localize "FFXIV.ENRAGE"}}</span>
+        </div>
+        {{/if}}
+    </section>
+
+    {{!-- Defesas --}}
+    <section class="enemy-defenses">
+        <div class="defense-item">
+            <label>{{localize "FFXIV.Defense"}}</label>
+            <input type="number" name="system.defense" value="{{system.defense}}" />
+        </div>
+        <div class="defense-item">
+            <label>{{localize "FFXIV.MagicDefense"}}</label>
+            <input type="number" name="system.magicDefense" value="{{system.magicDefense}}" />
+        </div>
+        <div class="defense-item">
+            <label>{{localize "FFXIV.Speed"}}</label>
+            <input type="number" name="system.speed" value="{{system.speed}}" />
+        </div>
+    </section>
+
+    {{!-- Tabs --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="main"><i class="fas fa-skull"></i> {{localize "FFXIV.TabAbilities"}}</a>
+        <a class="item" data-tab="enmity"><i class="fas fa-eye"></i> {{localize "FFXIV.TabEnmity"}}</a>
+        <a class="item" data-tab="info"><i class="fas fa-info"></i> {{localize "FFXIV.TabInfo"}}</a>
+    </nav>
+
+    <section class="sheet-body">
+
+        {{!-- TAB: Habilidades --}}
+        <div class="tab" data-tab="main">
+            {{!-- AOE Shortcuts --}}
+            <div class="aoe-shortcuts">
+                <span>{{localize "FFXIV.PlaceAOE"}}:</span>
+                <button type="button" class="place-aoe ffxiv-btn-small" data-aoe="circle" title="Círculo">
+                    <i class="fas fa-circle"></i>
+                </button>
+                <button type="button" class="place-aoe ffxiv-btn-small" data-aoe="cone" title="Cone">
+                    <i class="fas fa-triangle"></i>
+                </button>
+                <button type="button" class="place-aoe ffxiv-btn-small" data-aoe="line" title="Linha">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="place-aoe ffxiv-btn-small" data-aoe="donut" title="Donut">
+                    <i class="fas fa-ring"></i>
+                </button>
+            </div>
+
+            <ol class="ability-list items-list">
+                {{#each abilities as |ability|}}
+                <li class="item flexrow" data-item-id="{{ability._id}}">
+                    <img class="item-image" src="{{ability.img}}" alt="{{ability.name}}" />
+                    <div class="item-name ability-use" style="cursor:pointer">
+                        <h4>{{ability.name}}</h4>
+                        <small>{{ability.system.actionType}}</small>
+                    </div>
+                    <div class="item-controls flexrow">
+                        <a class="item-control item-edit"><i class="fas fa-edit"></i></a>
+                        <a class="item-control item-delete"><i class="fas fa-trash"></i></a>
+                    </div>
+                </li>
+                {{/each}}
+            </ol>
+
+            <button type="button" class="item-create ffxiv-btn-small">
+                <i class="fas fa-plus"></i> {{localize "FFXIV.AddAbility"}}
+            </button>
+        </div>
+
+        {{!-- TAB: Enmity Table --}}
+        <div class="tab" data-tab="enmity">
+            <div class="enmity-table">
+                <div class="enmity-header">{{localize "FFXIV.EnmityHeader"}}</div>
+                {{#each enmityTable as |entry|}}
+                <div class="enmity-row {{#if entry.isHighest}}highest-enmity{{/if}}">
+                    <span class="enmity-rank">{{entry.rank}}</span>
+                    <span class="enmity-name">{{entry.actor.name}}</span>
+                    <div class="enmity-bar-container">
+                        <div class="enmity-bar" style="width: {{entry.value}}px; max-width:100%"></div>
+                    </div>
+                    <span class="enmity-value">{{entry.value}}</span>
+                    {{#if entry.isHighest}}<i class="fas fa-sword enmity-target-icon"></i>{{/if}}
+                </div>
+                {{/each}}
+                {{#unless enmityTable.length}}
+                <div class="no-enmity">{{localize "FFXIV.NoEnmity"}}</div>
+                {{/unless}}
+            </div>
+        </div>
+
+        {{!-- TAB: Info --}}
+        <div class="tab" data-tab="info">
+            {{editor system.biography target="system.biography" button=true editable=editable}}
+        </div>
+
+    </section>
+</form>

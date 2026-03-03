@@ -1,0 +1,79 @@
+{{!-- FFXIV TTRPG — Item Sheet: Genérico (weapon, armor, consumable, trait, status) --}}
+<form class="{{cssClass}} ffxiv-sheet ffxiv-item" autocomplete="off">
+
+    <header class="sheet-header item-header">
+        <img class="item-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <div class="header-info">
+            <h1><input name="name" type="text" value="{{item.name}}" /></h1>
+            <div class="header-meta">
+                <span class="item-type-badge">{{item.type}}</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="sheet-body">
+        <div class="form-grid">
+
+            {{!-- Campos por tipo --}}
+            {{#if (eq item.type "weapon")}}
+            <div class="form-group">
+                <label>{{localize "FFXIV.WeaponType"}}</label>
+                <input type="text" name="system.weaponType" value="{{system.weaponType}}" />
+            </div>
+            <div class="form-group">
+                <label>{{localize "FFXIV.DamageFormula"}}</label>
+                <input type="text" name="system.damage.formula" value="{{system.damage.formula}}" />
+            </div>
+            <div class="form-group">
+                <label>{{localize "FFXIV.Price"}}</label>
+                <input type="number" name="system.price" value="{{system.price}}" min="0" />
+            </div>
+            {{/if}}
+
+            {{#if (eq item.type "armor")}}
+            <div class="form-group">
+                <label>{{localize "FFXIV.Defense"}}</label>
+                <input type="number" name="system.defense" value="{{system.defense}}" min="0" />
+            </div>
+            <div class="form-group">
+                <label>{{localize "FFXIV.MagicDefense"}}</label>
+                <input type="number" name="system.magicDefense" value="{{system.magicDefense}}" min="0" />
+            </div>
+            {{/if}}
+
+            {{#if (eq item.type "consumable")}}
+            <div class="form-group">
+                <label>{{localize "FFXIV.Quantity"}}</label>
+                <input type="number" name="system.quantity" value="{{system.quantity}}" min="0" />
+            </div>
+            <div class="form-group">
+                <label>{{localize "FFXIV.Effect"}}</label>
+                <input type="text" name="system.effect" value="{{system.effect}}" />
+            </div>
+            {{/if}}
+
+            {{#if (eq item.type "status")}}
+            <div class="form-group">
+                <label>{{localize "FFXIV.Duration"}} (rounds)</label>
+                <input type="number" name="system.duration.rounds" value="{{system.duration.rounds}}" min="1" />
+            </div>
+            <div class="form-group">
+                <label>{{localize "FFXIV.StatusType"}}</label>
+                <select name="system.statusType">
+                    <option value="buff" {{#if (eq system.statusType "buff" )}}selected{{/if}}>Buff</option>
+                    <option value="debuff" {{#if (eq system.statusType "debuff" )}}selected{{/if}}>Debuff</option>
+                    <option value="dot" {{#if (eq system.statusType "dot" )}}selected{{/if}}>DoT</option>
+                    <option value="hot" {{#if (eq system.statusType "hot" )}}selected{{/if}}>HoT</option>
+                </select>
+            </div>
+            {{/if}}
+
+        </div>
+
+        {{!-- Descrição --}}
+        <div class="description-field">
+            <label>{{localize "FFXIV.Description"}}</label>
+            {{editor system.description target="system.description" button=true editable=editable}}
+        </div>
+    </section>
+</form>

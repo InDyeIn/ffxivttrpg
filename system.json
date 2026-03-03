@@ -1,0 +1,79 @@
+{
+    "id": "ffxivttrpg",
+    "title": "FFXIV TTRPG",
+    "description": "Sistema oficial de FFXIV TTRPG para Foundry VTT. Suporta todos os 13 Jobs, 7 Raças, sistema de combate por fases, AOE telegrafado, Enmity Tracker e Limit Breaks.",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "FFXIV TTRPG System",
+            "discord": ""
+        }
+    ],
+    "esmodules": [
+        "module/ffxivttrpg.mjs"
+    ],
+    "styles": [
+        "css/ffxivttrpg.css"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        },
+        {
+            "lang": "pt-BR",
+            "name": "Português (Brasil)",
+            "path": "lang/pt-BR.json"
+        }
+    ],
+    "packs": [
+        {
+            "name": "races",
+            "label": "Raças",
+            "path": "packs/races.json",
+            "type": "Item",
+            "system": "ffxivttrpg"
+        },
+        {
+            "name": "jobs",
+            "label": "Jobs",
+            "path": "packs/jobs.json",
+            "type": "Item",
+            "system": "ffxivttrpg"
+        },
+        {
+            "name": "abilities",
+            "label": "Habilidades",
+            "path": "packs/abilities.json",
+            "type": "Item",
+            "system": "ffxivttrpg"
+        },
+        {
+            "name": "status-effects",
+            "label": "Efeitos de Status",
+            "path": "packs/status-effects.json",
+            "type": "Item",
+            "system": "ffxivttrpg"
+        },
+        {
+            "name": "enemies",
+            "label": "Inimigos",
+            "path": "packs/enemies.json",
+            "type": "Actor",
+            "system": "ffxivttrpg"
+        }
+    ],
+    "socket": false,
+    "initiative": "1d20",
+    "gridDistance": 1,
+    "gridUnits": "tile",
+    "compatibility": {
+        "minimum": "13",
+        "verified": "13",
+        "maximum": "13"
+    },
+    "url": "",
+    "manifest": "",
+    "download": ""
+}
