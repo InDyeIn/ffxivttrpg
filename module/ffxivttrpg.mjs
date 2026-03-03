@@ -1,9 +1,10 @@
 /**
  * FFXIV TTRPG — Sistema para Foundry VTT v13
- * Módulo principal de inicialização
- * Usa APIs do namespace correto do v13
+ * Módulo principal — Fase 2
  */
 
+import { FFXIVActor } from "./documents/actor.mjs";
+import { FFXIVItem } from "./documents/item.mjs";
 import { FFXIVAdventurerSheet } from "./sheets/actor-adventurer-sheet.mjs";
 import { FFXIVEnemySheet } from "./sheets/actor-enemy-sheet.mjs";
 import { FFXIVAbilitySheet } from "./sheets/item-ability-sheet.mjs";
@@ -11,6 +12,8 @@ import { FFXIVItemSheet } from "./sheets/item-generic-sheet.mjs";
 import { FFXIVCombat } from "./helpers/combat.mjs";
 import { FFXIVRoll } from "./helpers/roll.mjs";
 import { FFXIVEnmity } from "./helpers/enmity.mjs";
+import { LimitBreakTracker } from "./apps/limit-break-tracker.mjs";
+import { FFXIVCombatHUD } from "./hud/combat-hud.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { FFXIV } from "./config.mjs";
 
@@ -19,51 +22,46 @@ import { FFXIV } from "./config.mjs";
 /* -------------------------------------------- */
 
 Hooks.once("init", async function () {
-    console.log("FFXIV TTRPG | Initializing system...");
+    console.log("FFXIV TTRPG | Initializing system v1.1...");
 
-    // Expor no objeto global do jogo
     game.ffxivttrpg = {
+        FFXIVActor,
+        FFXIVItem,
         FFXIVAdventurerSheet,
         FFXIVEnemySheet,
         FFXIVRoll,
         FFXIVEnmity,
+        LimitBreakTracker,
+        FFXIVCombatHUD,
         rollItemMacro,
     };
 
-    // Configurações do sistema
     CONFIG.FFXIV = FFXIV;
-    CONFIG.Actor.documentClass = Actor;
-    CONFIG.Item.documentClass = Item;
+
+    // Documentos customizados — lógica de jogo no Actor e Item
+    CONFIG.Actor.documentClass = FFXIVActor;
+    CONFIG.Item.documentClass = FFXIVItem;
     CONFIG.Combat.documentClass = FFXIVCombat;
     CONFIG.ActiveEffect.legacyTransferral = false;
 
-    // ---- Registrar sheets — usando a API v13 via Actors/Items que ainda funciona ----
-    // Usamos o acesso directo que é backwards-compat até v15
+    // Sheets
     Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
     Actors.registerSheet("ffxivttrpg", FFXIVAdventurerSheet, {
-        types: ["adventurer"],
-        makeDefault: true,
-        label: "FFXIV.SheetAdventurer",
+        types: ["adventurer"], makeDefault: true, label: "FFXIV.SheetAdventurer",
     });
     Actors.registerSheet("ffxivttrpg", FFXIVEnemySheet, {
-        types: ["enemy"],
-        makeDefault: true,
-        label: "FFXIV.SheetEnemy",
+        types: ["enemy"], makeDefault: true, label: "FFXIV.SheetEnemy",
     });
 
     Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
     Items.registerSheet("ffxivttrpg", FFXIVAbilitySheet, {
-        types: ["ability"],
-        makeDefault: true,
-        label: "FFXIV.SheetAbility",
+        types: ["ability"], makeDefault: true, label: "FFXIV.SheetAbility",
     });
     Items.registerSheet("ffxivttrpg", FFXIVItemSheet, {
         types: ["weapon", "armor", "consumable", "trait", "status"],
-        makeDefault: true,
-        label: "FFXIV.SheetItem",
+        makeDefault: true, label: "FFXIV.SheetItem",
     });
 
-    // Settings e Helpers
     _registerSystemSettings();
     await preloadHandlebarsTemplates();
     _registerHandlebarsHelpers();
@@ -78,6 +76,42 @@ Hooks.once("init", async function () {
 Hooks.once("ready", async function () {
     console.log("FFXIV TTRPG | System ready.");
     FFXIVEnmity.initialize();
+
+    // Renderizar LB Tracker se houver combate ativo
+    if (game.combat?.active) {
+        LimitBreakTracker.getOrCreate().render(true);
+    }
+
+    // Socket para sincronização do LB entre jogadores
+    game.socket.on("system.ffxivttrpg", (data) => {
+        if (data.type === "limitBreakUpdate") {
+            LimitBreakTracker.getOrCreate()?.render();
+        }
+        if (data.type === "phaseChange") {
+            FFXIVCombatHUD.getOrCreate().setPhase(data.phase, data.round);
+        }
+    });
+});
+
+/* -------------------------------------------- */
+/*  Combat Hooks — Fases e LB                    */
+/* -------------------------------------------- */
+
+Hooks.on("createCombat", () => {
+    LimitBreakTracker.getOrCreate().render(true);
+});
+
+Hooks.on("deleteCombat", () => {
+    LimitBreakTracker.instance?.close();
+    LimitBreakTracker.instance = null;
+    FFXIVCombatHUD.instance?.close();
+    FFXIVCombatHUD.instance = null;
+});
+
+// Detectar mudança de combatente para mostrar fase
+Hooks.on("combatTurnChange", async (combat) => {
+    const phase = combat.getFlag("ffxivttrpg", "currentPhase") ?? "adventurer";
+    FFXIVCombatHUD.getOrCreate().render(true);
 });
 
 /* -------------------------------------------- */
@@ -96,48 +130,19 @@ Hooks.on("hotbarDrop", (bar, data, slot) => {
 /* -------------------------------------------- */
 
 function _registerSystemSettings() {
-    const settings = [
-        {
-            key: "enmityVisible",
-            name: "FFXIV.Settings.EnmityVisible",
-            hint: "FFXIV.Settings.EnmityVisibleHint",
-            default: true,
-            type: Boolean,
-        },
-        {
-            key: "autoApplyDamage",
-            name: "FFXIV.Settings.AutoApplyDamage",
-            hint: "FFXIV.Settings.AutoApplyDamageHint",
-            default: true,
-            type: Boolean,
-        },
-        {
-            key: "showPhaseTracker",
-            name: "FFXIV.Settings.ShowPhaseTracker",
-            hint: "FFXIV.Settings.ShowPhaseTrackerHint",
-            default: true,
-            type: Boolean,
-        },
-        {
-            key: "critThreshold",
-            name: "FFXIV.Settings.CritThreshold",
-            hint: "FFXIV.Settings.CritThresholdHint",
-            default: 20,
-            type: Number,
-        },
-    ];
+    const register = (key, opts) => game.settings.register("ffxivttrpg", key, {
+        scope: "world", config: true, requiresReload: false, ...opts,
+    });
 
-    for (const s of settings) {
-        game.settings.register("ffxivttrpg", s.key, {
-            name: s.name,
-            hint: s.hint,
-            scope: "world",
-            config: true,
-            requiresReload: false,
-            default: s.default,
-            type: s.type,
-        });
-    }
+    register("enmityVisible", { name: "FFXIV.Settings.EnmityVisible", hint: "FFXIV.Settings.EnmityVisibleHint", default: true, type: Boolean });
+    register("autoApplyDamage", { name: "FFXIV.Settings.AutoApplyDamage", hint: "FFXIV.Settings.AutoApplyDamageHint", default: true, type: Boolean });
+    register("showPhaseTracker", { name: "FFXIV.Settings.ShowPhaseTracker", hint: "FFXIV.Settings.ShowPhaseTrackerHint", default: true, type: Boolean });
+    register("critThreshold", { name: "FFXIV.Settings.CritThreshold", hint: "FFXIV.Settings.CritThresholdHint", default: 20, type: Number });
+
+    // Gauge de Limit Break — world-scoped para persistir entre jogadores
+    game.settings.register("ffxivttrpg", "limitBreakValue", {
+        scope: "world", config: false, default: 0, type: Number,
+    });
 }
 
 /* -------------------------------------------- */
@@ -146,7 +151,6 @@ function _registerSystemSettings() {
 
 function _registerHandlebarsHelpers() {
     const h = Handlebars.registerHelper.bind(Handlebars);
-
     h("eq", (a, b) => a === b);
     h("neq", (a, b) => a !== b);
     h("gt", (a, b) => a > b);
@@ -154,14 +158,15 @@ function _registerHandlebarsHelpers() {
     h("lt", (a, b) => a < b);
     h("and", (a, b) => a && b);
     h("or", (a, b) => a || b);
-
-    h("concat", function (...args) {
-        return args.filter(a => typeof a !== "object").join("");
-    });
-
+    h("concat", (...args) => args.filter(a => typeof a !== "object").join(""));
     h("toLowerCase", str => (str || "").toLowerCase());
-
     h("localize", key => game.i18n.localize(key));
+
+    // Range helper — cria array [0..n-1] para loops de esferas
+    h("range", (n) => Array.from({ length: n }, (_, i) => i));
+
+    // Gauge sphere helper — retorna "filled" ou "empty"
+    h("sphereFilled", (index, current) => index < current ? "filled" : "empty");
 
     h("damageTypeColor", type => ({
         physical: "#c8a84b", magic: "#7b5ea7", holy: "#f0e68c",
@@ -176,37 +181,22 @@ function _registerHandlebarsHelpers() {
 /* -------------------------------------------- */
 
 async function createItemMacro(data, slot) {
-    if (data.type !== "Item") return;
-    if (!("uuid" in data)) {
-        return ui.notifications.warn(game.i18n.localize("FFXIV.MacroWarning"));
-    }
-
+    if (!("uuid" in data)) return ui.notifications.warn(game.i18n.localize("FFXIV.MacroWarning"));
     const item = await fromUuid(data.uuid);
     if (!item) return ui.notifications.warn(game.i18n.localize("FFXIV.MacroNoItem"));
 
     const command = `game.ffxivttrpg.rollItemMacro("${data.uuid}");`;
     let macro = game.macros.find(m => m.name === item.name && m.command === command);
-    if (!macro) {
-        macro = await Macro.create({
-            name: item.name,
-            type: "script",
-            img: item.img,
-            command,
-            flags: { "ffxivttrpg.itemMacro": true },
-        });
-    }
+    if (!macro) macro = await Macro.create({ name: item.name, type: "script", img: item.img, command });
     game.user.assignHotbarMacro(macro, slot);
 }
 
 async function rollItemMacro(uuid) {
     const item = await fromUuid(uuid);
-    if (!item || item.type !== "ability") {
-        return ui.notifications.warn(game.i18n.localize("FFXIV.MacroNotAbility"));
-    }
+    if (!item || item.type !== "ability") return ui.notifications.warn(game.i18n.localize("FFXIV.MacroNotAbility"));
 
     const speaker = ChatMessage.getSpeaker();
-    let actor;
-    if (speaker.token) actor = game.actors.tokens[speaker.token];
+    let actor = speaker.token ? game.actors.tokens[speaker.token] : null;
     if (!actor) actor = game.actors.get(speaker.actor);
     if (!actor) return ui.notifications.warn(game.i18n.localize("FFXIV.MacroNoActor"));
 

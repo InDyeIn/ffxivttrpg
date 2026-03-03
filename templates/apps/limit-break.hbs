@@ -1,0 +1,51 @@
+{{!-- FFXIV TTRPG — Limit Break Tracker --}}
+<div class="lb-tracker-body">
+
+    <div class="lb-title-row">
+        ⚡ LIMIT BREAK
+        {{#if isGM}}
+        <button type="button" class="lb-add ffxiv-btn-small" title="Adicionar 25 de LB">+25</button>
+        <button type="button" class="lb-reset ffxiv-btn-small" title="Resetar LB">↺</button>
+        {{/if}}
+    </div>
+
+    <div class="lb-bars">
+        <div class="lb-bar-row">
+            <span class="lb-bar-label">I</span>
+            <div class="lb-bar-track">
+                <div class="lb-bar-fill bar1" style="width: {{bar1}}%"></div>
+            </div>
+            <span class="lb-bar-val">{{bar1}}%</span>
+        </div>
+        <div class="lb-bar-row">
+            <span class="lb-bar-label">II</span>
+            <div class="lb-bar-track">
+                <div class="lb-bar-fill bar2" style="width: {{bar2}}%"></div>
+            </div>
+            <span class="lb-bar-val">{{bar2}}%</span>
+        </div>
+        <div class="lb-bar-row">
+            <span class="lb-bar-label">III</span>
+            <div class="lb-bar-track">
+                <div class="lb-bar-fill bar3" style="width: {{bar3}}%"></div>
+            </div>
+            <span class="lb-bar-val">{{bar3}}%</span>
+        </div>
+    </div>
+
+    <div class="lb-buttons">
+        <button type="button" class="lb-use-btn lb1-btn {{#unless canLB1}}disabled{{/unless}}" data-level="1" {{#unless
+            canLB1}}disabled{{/unless}}>
+            LB I
+        </button>
+        <button type="button" class="lb-use-btn lb2-btn {{#unless canLB2}}disabled{{/unless}}" data-level="2" {{#unless
+            canLB2}}disabled{{/unless}}>
+            LB II
+        </button>
+        <button type="button" class="lb-use-btn lb3-btn {{#unless canLB3}}disabled{{/unless}}" data-level="3" {{#unless
+            canLB3}}disabled{{/unless}}>
+            LB III
+        </button>
+    </div>
+
+</div>

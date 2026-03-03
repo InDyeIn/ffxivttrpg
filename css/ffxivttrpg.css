@@ -119,7 +119,9 @@
   font-weight: bold;
 }
 
-.job-input, .race-input, .tribe-input {
+.job-input,
+.race-input,
+.tribe-input {
   font-size: 12px;
   width: 80px;
 }
@@ -161,8 +163,13 @@
   font-size: 12px;
 }
 
-.hp-icon { color: #4caf50; }
-.mp-icon { color: #2196f3; }
+.hp-icon {
+  color: #4caf50;
+}
+
+.mp-icon {
+  color: #2196f3;
+}
 
 .vital-name {
   font-size: 10px;
@@ -174,10 +181,10 @@
 .vital-bar-container {
   flex: 1;
   height: 12px;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .vital-bar {
@@ -186,16 +193,37 @@
   transition: width 0.5s ease;
 }
 
-.hp-bar.healthy { background: linear-gradient(90deg, #2e7d32, #4caf50); }
-.hp-bar.injured { background: linear-gradient(90deg, #f57f17, #ffeb3b); }
-.hp-bar.critical { background: linear-gradient(90deg, #b71c1c, #f44336); animation: pulse-red 1.5s infinite; }
+.hp-bar.healthy {
+  background: linear-gradient(90deg, #2e7d32, #4caf50);
+}
 
-.mp-bar { background: linear-gradient(90deg, #0d47a1, #2196f3); }
-.gauge-bar { background: linear-gradient(90deg, var(--ffxiv-gold-dark), var(--ffxiv-gold)); }
+.hp-bar.injured {
+  background: linear-gradient(90deg, #f57f17, #ffeb3b);
+}
+
+.hp-bar.critical {
+  background: linear-gradient(90deg, #b71c1c, #f44336);
+  animation: pulse-red 1.5s infinite;
+}
+
+.mp-bar {
+  background: linear-gradient(90deg, #0d47a1, #2196f3);
+}
+
+.gauge-bar {
+  background: linear-gradient(90deg, var(--ffxiv-gold-dark), var(--ffxiv-gold));
+}
 
 @keyframes pulse-red {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
 }
 
 .vital-values {
@@ -241,7 +269,7 @@
   text-align: center;
   font-size: 14px;
   font-weight: bold;
-  background: rgba(0,0,0,0.4) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
 }
 
 .attr-mod {
@@ -337,10 +365,21 @@
   margin-bottom: 6px;
 }
 
-.primary-header { color: #c8a84b; }
-.secondary-header { color: #9e9e9e; }
-.instant-header { color: #64b5f6; }
-.passive-header { color: #a5d6a7; }
+.primary-header {
+  color: #c8a84b;
+}
+
+.secondary-header {
+  color: #9e9e9e;
+}
+
+.instant-header {
+  color: #64b5f6;
+}
+
+.passive-header {
+  color: #a5d6a7;
+}
 
 .items-list {
   list-style: none;
@@ -383,8 +422,13 @@
   color: var(--ffxiv-text-muted);
 }
 
-.mp-cost { color: #64b5f6; }
-.gauge-cost { color: var(--ffxiv-gold); }
+.mp-cost {
+  color: #64b5f6;
+}
+
+.gauge-cost {
+  color: var(--ffxiv-gold);
+}
 
 .item-controls {
   margin-left: auto;
@@ -407,8 +451,13 @@
   font-size: 11px;
 }
 
-.item-control:hover { color: var(--ffxiv-gold); }
-.item-control.item-delete:hover { color: #f44336; }
+.item-control:hover {
+  color: var(--ffxiv-gold);
+}
+
+.item-control.item-delete:hover {
+  color: #f44336;
+}
 
 /* ---- Combo Indicator ---- */
 .combo-indicator {
@@ -477,7 +526,7 @@
   padding: 5px 6px;
   border-radius: var(--ffxiv-radius);
   margin-bottom: 4px;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .effect-icon {
@@ -548,10 +597,10 @@
 
 .enemy-hp-bar-container {
   height: 18px;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 9px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .enemy-hp-bar {
@@ -560,9 +609,18 @@
   transition: width 0.5s ease;
 }
 
-.enemy-hp-bar.healthy { background: linear-gradient(90deg, #1b5e20, #4caf50); }
-.enemy-hp-bar.injured { background: linear-gradient(90deg, #e65100, #ff9800); }
-.enemy-hp-bar.critical { background: linear-gradient(90deg, #b71c1c, #f44336); animation: pulse-red 1s infinite; }
+.enemy-hp-bar.healthy {
+  background: linear-gradient(90deg, #1b5e20, #4caf50);
+}
+
+.enemy-hp-bar.injured {
+  background: linear-gradient(90deg, #e65100, #ff9800);
+}
+
+.enemy-hp-bar.critical {
+  background: linear-gradient(90deg, #b71c1c, #f44336);
+  animation: pulse-red 1s infinite;
+}
 
 .enemy-hp-inputs {
   display: flex;
@@ -669,12 +727,14 @@
   font-size: 11px;
 }
 
-.enmity-name { flex: 1; }
+.enmity-name {
+  flex: 1;
+}
 
 .enmity-bar-container {
   width: 80px;
   height: 8px;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -770,12 +830,12 @@
   padding: 8px 10px;
   font-size: 11px;
   color: var(--ffxiv-text-muted);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .card-result {
   padding: 8px 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .card-result.is-crit {
@@ -803,13 +863,37 @@
   font-size: 12px;
 }
 
-.result-row.hit .result-label { color: var(--ffxiv-gold-light); font-weight: bold; }
-.result-row.miss { color: var(--ffxiv-text-muted); }
+.result-row.hit .result-label {
+  color: var(--ffxiv-gold-light);
+  font-weight: bold;
+}
 
-.damage-value { font-size: 18px; font-weight: bold; }
-.damage-label, .heal-label, .shield-label { color: var(--ffxiv-text-muted); }
-.heal-value { font-size: 18px; font-weight: bold; color: #4caf50; }
-.shield-value { font-size: 16px; font-weight: bold; color: #64b5f6; }
+.result-row.miss {
+  color: var(--ffxiv-text-muted);
+}
+
+.damage-value {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.damage-label,
+.heal-label,
+.shield-label {
+  color: var(--ffxiv-text-muted);
+}
+
+.heal-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.shield-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #64b5f6;
+}
 
 .card-flavor {
   padding: 6px 10px;
@@ -856,9 +940,21 @@
   font-weight: bold;
 }
 
-.enmity-low { background: rgba(76, 175, 80, 0.2); color: #4caf50; }
-.enmity-medium { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
-.enmity-high { background: rgba(244, 67, 54, 0.2); color: #f44336; animation: pulse-red 1.5s infinite; }
+.enmity-low {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+
+.enmity-medium {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.enmity-high {
+  background: rgba(244, 67, 54, 0.2);
+  color: #f44336;
+  animation: pulse-red 1.5s infinite;
+}
 
 .ffxiv-target-indicator {
   color: #f44336;
@@ -866,7 +962,9 @@
 }
 
 /* ---- AOE/Efeitos especiais no chat ---- */
-.ffxiv-dot-tick, .ffxiv-hot-tick, .ffxiv-aoe-resolve {
+.ffxiv-dot-tick,
+.ffxiv-hot-tick,
+.ffxiv-aoe-resolve {
   padding: 5px 10px;
   border-radius: var(--ffxiv-radius);
   font-size: 12px;
@@ -875,9 +973,20 @@
   gap: 6px;
 }
 
-.ffxiv-dot-tick { background: rgba(196, 0, 0, 0.1); border-left: 3px solid #c40000; }
-.ffxiv-hot-tick { background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4caf50; }
-.ffxiv-aoe-resolve { background: rgba(244, 67, 54, 0.1); border-left: 3px solid #f44336; }
+.ffxiv-dot-tick {
+  background: rgba(196, 0, 0, 0.1);
+  border-left: 3px solid #c40000;
+}
+
+.ffxiv-hot-tick {
+  background: rgba(76, 175, 80, 0.1);
+  border-left: 3px solid #4caf50;
+}
+
+.ffxiv-aoe-resolve {
+  background: rgba(244, 67, 54, 0.1);
+  border-left: 3px solid #f44336;
+}
 
 .ffxiv-enemy-attack {
   padding: 6px 10px;
@@ -974,8 +1083,329 @@ legend {
   .form-grid {
     grid-template-columns: 1fr;
   }
+
   .attributes-section {
     flex-wrap: wrap;
     gap: 8px;
   }
+}
+
+/* ================================================================
+   FASE 2 — Job Gauges, Limit Break Tracker, Phase Banner
+   ================================================================ */
+
+/* ---- Gauge por Job (barra dinâmica) ---- */
+.gauge-bar[style] {
+  /* Cor sobrescrita via inline style com var --gauge-color */
+  background: linear-gradient(90deg, color-mix(in srgb, var(--gauge-color, #c8a84b) 60%, #000), var(--gauge-color, #c8a84b));
+}
+
+/* Gauge Warrior — laranja */
+.gauge-warrior {
+  background: linear-gradient(90deg, #a05010, #e07820) !important;
+}
+
+/* Gauge DRK — roxo */
+.gauge-darkknight {
+  background: linear-gradient(90deg, #44003a, #8b0066) !important;
+}
+
+/* Gauge BLM — azul */
+.gauge-blackmage {
+  background: linear-gradient(90deg, #0d3f7f, #2980b9) !important;
+}
+
+/* Gauge Ninja */
+.gauge-ninja {
+  background: linear-gradient(90deg, #155a2a, #2ecc71) !important;
+}
+
+/* Gauge Bard */
+.gauge-bard {
+  background: linear-gradient(90deg, #154b7a, #3498db) !important;
+}
+
+/* Gauge Machinist */
+.gauge-machinist {
+  background: linear-gradient(90deg, #9e6000, #f39c12) !important;
+}
+
+/* Gauge Summoner */
+.gauge-summoner {
+  background: linear-gradient(90deg, #4a1a6a, #9b59b6) !important;
+}
+
+/* ---- Gauge de Esferas (Monk Chakra, Scholar Aetherflow, White Mage Lily) ---- */
+.gauge-spheres-container {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.gauge-sphere {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.gauge-sphere.filled {
+  box-shadow: 0 0 8px currentColor;
+}
+
+.gauge-sphere.filled.chakra {
+  background: radial-gradient(circle, #ffe082, #ffd700);
+  border-color: #ffd700;
+  color: #ffd700;
+}
+
+.gauge-sphere.filled.aetherflow {
+  background: radial-gradient(circle, #66bb6a, #27ae60);
+  border-color: #27ae60;
+  color: #27ae60;
+}
+
+.gauge-sphere.filled.lily {
+  background: radial-gradient(circle, #ef9a9a, #e53935);
+  border-color: #e53935;
+  color: #e53935;
+}
+
+.gauge-sphere.filled.arcanum {
+  background: radial-gradient(circle, #ffe082, #f1c40f);
+  border-color: #f1c40f;
+  color: #f1c40f;
+}
+
+.gauge-sphere.empty {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ---- Limit Break Tracker ---- */
+.limit-break-tracker {
+  background: linear-gradient(135deg, #0a0a1a, #1a0a2e);
+  border: 2px solid rgba(200, 168, 75, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(200, 168, 75, 0.3);
+}
+
+.lb-tracker-body {
+  padding: 12px;
+}
+
+.lb-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffd700;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+  margin-bottom: 10px;
+}
+
+.lb-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.lb-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lb-bar-label {
+  font-size: 11px;
+  color: rgba(255, 215, 0, 0.7);
+  width: 14px;
+  text-align: center;
+}
+
+.lb-bar-track {
+  flex: 1;
+  height: 14px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 7px;
+  overflow: hidden;
+  border: 1px solid rgba(200, 168, 75, 0.3);
+}
+
+.lb-bar-fill {
+  height: 100%;
+  border-radius: 7px;
+  background: linear-gradient(90deg, #8c6500, #ffd700, #fff7c0);
+  transition: width 0.6s ease;
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.lb-bar-fill.bar1 {
+  background: linear-gradient(90deg, #7a4f00, #ffd700);
+}
+
+.lb-bar-fill.bar2 {
+  background: linear-gradient(90deg, #7a4f00, #ffb300);
+}
+
+.lb-bar-fill.bar3 {
+  background: linear-gradient(90deg, #7a4f00, #ff8f00);
+}
+
+.lb-bar-val {
+  font-size: 10px;
+  color: rgba(255, 215, 0, 0.6);
+  width: 32px;
+  text-align: right;
+}
+
+.lb-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.lb-use-btn {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid rgba(200, 168, 75, 0.5);
+  border-radius: 6px;
+  background: rgba(200, 168, 75, 0.1);
+  color: #ffd700;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+
+.lb-use-btn:not(:disabled):hover {
+  background: rgba(200, 168, 75, 0.3);
+  box-shadow: 0 0 10px rgba(200, 168, 75, 0.4);
+}
+
+.lb-use-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Mensagem de Limit Break no chat */
+.ffxiv-lb-message {
+  background: linear-gradient(135deg, #1a0a00, #3d2a00);
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.ffxiv-lb-message .lb-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 0 16px rgba(255, 215, 0, 0.8);
+  letter-spacing: 3px;
+  margin-bottom: 4px;
+}
+
+.ffxiv-lb-message .lb-name {
+  font-size: 14px;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.ffxiv-lb-message .lb-desc {
+  font-size: 11px;
+  color: rgba(255, 215, 0, 0.7);
+}
+
+/* ---- Phase Banner (HUD de Combate no Canvas) ---- */
+#ffxiv-phase-banner {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 900;
+  text-align: center;
+  padding: 12px 40px;
+  border-radius: 8px;
+  border: 2px solid;
+  backdrop-filter: blur(8px);
+  animation: phase-in 0.5s ease, phase-fade 0.5s 3.5s forwards;
+  pointer-events: none;
+  min-width: 280px;
+}
+
+@keyframes phase-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes phase-fade {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.phase-banner .phase-text {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-shadow: 0 0 12px currentColor;
+}
+
+.phase-banner .phase-round {
+  font-size: 11px;
+  opacity: 0.7;
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+
+/* Banner — fase dos aventureiros */
+.phase-banner.phase-adventurer {
+  background: rgba(13, 40, 60, 0.85);
+  border-color: #c8a84b;
+  color: #e8d87b;
+}
+
+/* Banner — fase dos inimigos */
+.phase-banner.phase-enemy {
+  background: rgba(60, 10, 10, 0.85);
+  border-color: #f44336;
+  color: #ff8a80;
+}
+
+/* Banner — round-up */
+.phase-banner.phase-roundup {
+  background: rgba(30, 20, 50, 0.85);
+  border-color: #9c27b0;
+  color: #ce93d8;
+}
+
+/* ---- Vital inputs (fix para sheet) ---- */
+.vital-val {
+  width: 40px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.vital-sep {
+  color: var(--ffxiv-text-muted);
+  font-size: 12px;
 }
