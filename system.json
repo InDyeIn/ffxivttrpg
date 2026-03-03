@@ -2,7 +2,7 @@
     "id": "ffxivttrpg",
     "title": "FFXIV TTRPG",
     "description": "Sistema oficial de FFXIV TTRPG para Foundry VTT. Suporta todos os 13 Jobs, 7 Raças, sistema de combate por fases, AOE telegrafado, Enmity Tracker e Limit Breaks.",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "authors": [
         {
             "name": "FFXIV TTRPG System",
@@ -27,19 +27,13 @@
             "path": "lang/pt-BR.json"
         }
     ],
-    "packs": [
-        {
-            "name": "abilities",
-            "label": "Habilidades",
-            "path": "packs/abilities.json",
-            "type": "Item",
-            "system": "ffxivttrpg"
-        }
-    ],
+    "packs": [],
     "socket": false,
     "initiative": "1d20",
-    "gridDistance": 1,
-    "gridUnits": "tile",
+    "grid": {
+        "distance": 1,
+        "units": "tile"
+    },
     "compatibility": {
         "minimum": "13",
         "verified": "13",
