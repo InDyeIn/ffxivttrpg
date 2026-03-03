@@ -14,6 +14,7 @@ import { FFXIVRoll } from "./helpers/roll.mjs";
 import { FFXIVEnmity } from "./helpers/enmity.mjs";
 import { LimitBreakTracker } from "./apps/limit-break-tracker.mjs";
 import { FFXIVCombatHUD } from "./hud/combat-hud.mjs";
+import { FFXIVActionBar } from "./hud/action-bar.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { FFXIV } from "./config.mjs";
 
@@ -33,6 +34,7 @@ Hooks.once("init", async function () {
         FFXIVEnmity,
         LimitBreakTracker,
         FFXIVCombatHUD,
+        FFXIVActionBar,
         rollItemMacro,
     };
 
@@ -77,6 +79,11 @@ Hooks.once("ready", async function () {
     console.log("FFXIV TTRPG | System ready.");
     FFXIVEnmity.initialize();
 
+    // Inicia Action Bar (sempre visivel pra quem tem personagem)
+    if (game.user.character) {
+        new FFXIVActionBar().render(true);
+    }
+
     // Renderizar LB Tracker se houver combate ativo
     if (game.combat?.active) {
         LimitBreakTracker.getOrCreate().render(true);
@@ -112,6 +119,16 @@ Hooks.on("deleteCombat", () => {
 Hooks.on("combatTurnChange", async (combat) => {
     const phase = combat.getFlag("ffxivttrpg", "currentPhase") ?? "adventurer";
     FFXIVCombatHUD.getOrCreate().render(true);
+});
+
+// Update Action Bar on Token Selection for quick testing/GM usage
+Hooks.on("controlToken", (token, controlled) => {
+    // Busca todas renders da Action Bar abertas e força elas a atualizarem
+    if (Object.keys(game.ffxivttrpg.FFXIVActionBar.renders || {}).length > 0) {
+        Object.values(game.ffxivttrpg.FFXIVActionBar.renders)[0].render();
+    } else {
+        new game.ffxivttrpg.FFXIVActionBar().render(true);
+    }
 });
 
 // Intercepta e ativa listeners no chat para rolagens pós-ping

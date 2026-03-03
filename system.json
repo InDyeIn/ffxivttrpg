@@ -29,10 +29,59 @@
     ],
     "packs": [
         {
+            "name": "races",
+            "label": "FFXIV TTRPG — Raças",
+            "path": "packs/races",
+            "type": "Item",
+            "system": "ffxivttrpg"
+        },
+        {
+            "name": "jobs",
+            "label": "FFXIV TTRPG — Jobs",
+            "path": "packs/jobs",
+            "type": "Item",
+            "system": "ffxivttrpg"
+        },
+        {
             "name": "abilities",
             "label": "FFXIV TTRPG — Habilidades",
             "path": "packs/abilities",
             "type": "Item",
+            "system": "ffxivttrpg"
+        },
+        {
+            "name": "weapons",
+            "label": "FFXIV TTRPG — Armas",
+            "path": "packs/weapons",
+            "type": "Item",
+            "system": "ffxivttrpg"
+        },
+        {
+            "name": "armors",
+            "label": "FFXIV TTRPG — Armaduras",
+            "path": "packs/armors",
+            "type": "Item",
+            "system": "ffxivttrpg"
+        },
+        {
+            "name": "consumables",
+            "label": "FFXIV TTRPG — Consumíveis",
+            "path": "packs/consumables",
+            "type": "Item",
+            "system": "ffxivttrpg"
+        },
+        {
+            "name": "enemies",
+            "label": "FFXIV TTRPG — Inimigos",
+            "path": "packs/enemies",
+            "type": "Actor",
+            "system": "ffxivttrpg"
+        },
+        {
+            "name": "macros",
+            "label": "FFXIV TTRPG — Macros",
+            "path": "packs/macros",
+            "type": "Macro",
             "system": "ffxivttrpg"
         }
     ],

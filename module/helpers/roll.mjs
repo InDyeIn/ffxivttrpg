@@ -204,8 +204,14 @@ export class FFXIVRoll {
             for (const target of (targets || [])) {
                 const targetActor = target.actor || target;
 
-                // Roll de ataque d20 + mod
-                const attackRoll = await new Roll(`1d20 + ${modifier}`).evaluate();
+                // Penalidade para cegueira (Blind) -> -2 no acerto
+                let attackerMods = modifier;
+                if (actor.effects.find(e => e.flags?.ffxivttrpg?.type === "blind" || e.flags?.ffxivttrpg?.type === "cegueira")) {
+                    attackerMods -= 2;
+                }
+
+                // Roll de ataque d20 + mod + (potenciais penalties/buffs)
+                const attackRoll = await new Roll(`1d20 + ${attackerMods}`).evaluate();
                 const d20Result = attackRoll.dice[0].results[0].result;
 
                 // Determinar defense do alvo
@@ -234,6 +240,11 @@ export class FFXIVRoll {
                     damageRoll = await new Roll(formula).evaluate();
                     damageTotal = damageRoll.total;
 
+                    // Vulnerability Debuff aumenta dano recebido pelo TARGET em flat +2/stack (simplificando pra +2 flat)
+                    if (targetActor?.effects?.find(e => e.flags?.ffxivttrpg?.type === "vulnerabilidade" || e.flags?.ffxivttrpg?.type === "vulnerability")) {
+                        damageTotal += 2;
+                    }
+
                     // Crit = dano dobrado
                     if (isCrit) damageTotal *= 2;
 
@@ -247,9 +258,15 @@ export class FFXIVRoll {
                         damageTotal += posBonus.total;
                     }
 
-                    // Aplicar dano ao alvo se autoApply está ativo
-                    if (game.settings.get("ffxivttrpg", "autoApplyDamage") && targetActor?.id) {
-                        await this._applyDamageToActor(targetActor, damageTotal, abilityData.damage.type);
+                    // Se for AOE, invoca o Marker, NÃO aplica dano imediatamente. (Será aplicado no Round-Up Phase)
+                    if (abilityData.aoe?.shape !== "none") {
+                        await FFXIVAoeMarker.placeMarker(actor, ability, abilityData.aoe, formula);
+                        // Continua sem dar hit instantâneo
+                    } else {
+                        // Aplicar dano ao alvo se autoApply está ativo (não-AOE)
+                        if (game.settings.get("ffxivttrpg", "autoApplyDamage") && targetActor?.id) {
+                            await this._applyDamageToActor(targetActor, damageTotal, abilityData.damage.type);
+                        }
                     }
 
                     // Atualizar Enmity
@@ -558,3 +575,4 @@ export class FFXIVRoll {
 
 // Import lazy to avoid circular
 import { FFXIVEnmity } from "./enmity.mjs";
+import { FFXIVAoeMarker } from "../hud/aoe-marker.mjs";

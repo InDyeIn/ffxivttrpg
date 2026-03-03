@@ -1,0 +1,61 @@
+<div class="ffxiv-action-bar-container">
+    {{#if show}}
+    
+    <div class="action-bar-header">
+        <span class="job-indicator">{{job}}</span>
+        <div class="gauge-preview">
+            {{#if (neq gauge.type "none")}}
+            <span class="gauge-label">{{gauge.label}}: {{gauge.current}}/{{gauge.max}}</span>
+            {{/if}}
+        </div>
+    </div>
+
+    <!-- Custo Action Points -->
+    <div class="action-points-tracker">
+        <label>Actions Disponíveis:</label>
+        <div class="actions-list">
+            <span class="ap {{#if actions.primary}}active{{/if}}" title="Primary Action">P</span>
+            <span class="ap {{#if actions.secondary}}active{{/if}}" title="Secondary Action">S</span>
+            <span class="ap {{#if actions.movement}}active{{/if}}" title="Movement Action">M</span>
+            <span class="ap {{#if actions.instant}}active{{/if}}" title="Instant Action">I</span>
+        </div>
+    </div>
+
+    <div class="slots-container">
+        
+        <!-- Primary Skills -->
+        <div class="skill-group primary-skills">
+            {{#each primary}}
+            <div class="action-slot primary-slot" data-item-id="{{this.id}}">
+                <img src="{{this.img}}" alt="{{this.name}}" />
+                <span class="hotkey">{{@index}}</span>
+                <div class="tooltip-content">{{this.name}} <br> (MP: {{this.system.cost.mp}})</div>
+            </div>
+            {{/each}}
+        </div>
+        
+        <!-- Secondary Skills -->
+        <div class="skill-group secondary-skills">
+            {{#each secondary}}
+            <div class="action-slot secondary-slot" data-item-id="{{this.id}}">
+                <img src="{{this.img}}" alt="{{this.name}}" />
+                <span class="hotkey">S{{@index}}</span>
+                <div class="tooltip-content">{{this.name}} <br> (MP: {{this.system.cost.mp}})</div>
+            </div>
+            {{/each}}
+        </div>
+
+        <!-- Instant Skills -->
+        <div class="skill-group instant-skills">
+            {{#each instant}}
+            <div class="action-slot instant-slot" data-item-id="{{this.id}}">
+                <img src="{{this.img}}" alt="{{this.name}}" />
+                <span class="hotkey">oGCD</span>
+                <div class="tooltip-content">{{this.name}}</div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    {{/if}}
+</div>

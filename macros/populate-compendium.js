@@ -34,40 +34,87 @@ const JOB_ROLES = {
     "Limit Breaks - Melee DPS": "Limit Break", "Limit Breaks - Ranged DPS": "Limit Break", "Limit Breaks - Magic DPS": "Limit Break"
 };
 
-// Heurística visual para ícones pré-instalados no Foundry
+// Heurística visual detalhada usando tokens locais (Game-Icons)
 function getIconForAbility(job, name, desc) {
     const n = name.toLowerCase();
+    const d = desc.toLowerCase();
     const basePath = "systems/ffxivttrpg/assets/tokens/";
 
-    // 1. Palavras Chave Específicas
-    if (n.includes("cure") || n.includes("heal") || n.includes("medica") || n.includes("benefic") || n.includes("adloquium"))
-        return basePath + "healing.png";
-    if (n.includes("raise") || n.includes("resurrection") || n.includes("ascend"))
-        return basePath + "angel-wings.png";
-    if (n.includes("shield") || n.includes("rampart") || n.includes("wall") || n.includes("barrier") || n.includes("succor"))
-        return basePath + "shield.png";
-    if (n.includes("fire") || n.includes("fira") || n.includes("flare"))
-        return basePath + "fire.png";
-    if (n.includes("blizzard") || n.includes("freeze"))
-        return basePath + "ice-bolt.png";
-    if (n.includes("thunder") || n.includes("lightning"))
-        return basePath + "lightning-storm.png";
-    if (n.includes("aero") || n.includes("stone") || n.includes("glare") || n.includes("holy") || n.includes("ruin"))
-        return basePath + "magic-swirl.png";
-    if (n.includes("provoke") || n.includes("enmity") || n.includes("taunt"))
-        return basePath + "bullseye.png";
-    if (n.includes("limit break") || n.includes("lb"))
-        return basePath + "bright-explosion.png";
+    const matchMatches = (keywords) => keywords.some(k => n.includes(k) || d.includes(k));
 
-    // 2. Baseado no Job/Role
+    // Curas e Ressurreições
+    if (matchMatches(["raise", "resurrection", "ascend", "verraise", "revive"])) return basePath + "angel-wings.png";
+    if (matchMatches(["cure", "heal", "medica", "benefic", "adloquium", "physick", "lustrate", "essential dignity", "tetragrammaton", "regen"])) return basePath + "healing.png";
+    if (matchMatches(["potion", "ether", "elixir"])) return basePath + "health-potion.png";
+
+    // Defesas e Mitigações
+    if (matchMatches(["shield", "rampart", "wall", "barrier", "succor", "protect", "shell", "sentinel", "reprisal", "feint", "addle", "mitigation", "parry", "block"])) return basePath + "shield.png";
+    if (matchMatches(["invulnerable", "hallowed ground", "holmgang", "living dead", "superbolide"])) return basePath + "energy-shield.png";
+
+    // Provocações e Aggro
+    if (matchMatches(["provoke", "enmity", "taunt", "shirk", "aggro", "attention", "voke"])) return basePath + "bullseye.png";
+
+    // Magias Elementais
+    if (matchMatches(["fire", "fira", "firaga", "flare", "despair", "scorch"])) return basePath + "fire.png";
+    if (matchMatches(["blizzard", "freeze", "blizzara", "blizzaga", "umbral"])) return basePath + "ice-bolt.png";
+    if (matchMatches(["thunder", "lightning", "spark", "shock"])) return basePath + "lightning-storm.png";
+    if (matchMatches(["aero", "wind", "breeze", "tornado", "gale"])) return basePath + "magic-swirl.png";
+    if (matchMatches(["stone", "earth", "quake", "rock"])) return basePath + "falling-rocks.png";
+    if (matchMatches(["water", "fluid", "aqua", "splash"])) return basePath + "droplets.png";
+
+    // Magias Não-elementais e Luz/Trevas
+    if (matchMatches(["glare", "holy", "dia", "luz", "light"])) return basePath + "glowing-artifact.png";
+    if (matchMatches(["ruin", "broil", "dosis", "foul", "xenoglossy", "dark", "shadow"])) return basePath + "magic-swirl.png";
+    if (matchMatches(["bio", "miasma", "poison", "venom", "toxin", "bleed"])) return basePath + "poison-bottle.png";
+
+    // Ataques Físicos
+    if (matchMatches(["punch", "strike", "fist", "bootshine", "snap", "demolish"])) return basePath + "fist.png";
+    if (matchMatches(["kick", "sweep", "leg", "foot"])) return basePath + "high-kick.png";
+    if (matchMatches(["slash", "blade", "sword", "edge", "cleave", "riot", "savage", "goring", "royal", "fast blade"])) return basePath + "broadsword.png";
+    if (matchMatches(["stab", "pierce", "thrust", "fang", "claw"])) return basePath + "piercing-sword.png";
+    if (matchMatches(["spin", "whirl", "cyclone", "aoe"])) return basePath + "spinning-sword.png";
+    if (matchMatches(["shot", "shoot", "bullet", "burst", "slug", "clean", "heated", "gun"])) return basePath + "bullet-impacts.png";
+    if (matchMatches(["arrow", "bow", "nock", "bite"])) return basePath + "bow-arrow.png";
+    if (matchMatches(["axe", "tomahawk", "cleave", "fell"])) return basePath + "battle-axe.png";
+
+    // Buffs e Posturas
+    if (matchMatches(["stance", "oath", "grit", "defiance", "aura", "form", "dance", "song", "draw", "play"])) return basePath + "aura.png";
+    if (matchMatches(["buff", "increase", "boost", "power", "strength"])) return basePath + "muscle-up.png";
+    if (matchMatches(["jump", "leap", "dive", "spineshatter"])) return basePath + "jump-across.png";
+
+    // Limit Break
+    if (matchMatches(["limit break", "lb", "meteor", "braver"])) return basePath + "bright-explosion.png";
+
+    // Fallbacks baseados no Job (se o nome não combinou com nada acima)
     const role = JOB_ROLES[job];
+    if (job === "Paladin") return basePath + "attached-shield.png";
+    if (job === "Warrior") return basePath + "battered-axe.png";
+    if (job === "Dark Knight") return basePath + "shattered-sword.png";
+    if (job === "Gunbreaker") return basePath + "revolver.png";
     if (role === "Tank") return basePath + "broadsword.png";
+
+    if (job === "White Mage") return basePath + "fairy-wand.png";
+    if (job === "Scholar") return basePath + "book-cover.png";
+    if (job === "Astrologian") return basePath + "star-swirl.png";
     if (role === "Healer") return basePath + "health-potion.png";
+
+    if (job === "Monk") return basePath + "punch.png";
+    if (job === "Dragoon") return basePath + "spear-head.png";
+    if (job === "Ninja") return basePath + "shuriken.png";
+    if (job === "Samurai") return basePath + "katana.png";
     if (role === "Melee DPS") return basePath + "crossed-swords.png";
-    if (role === "Ranged DPS") return basePath + "bow-arrow.png";
+
+    if (job === "Bard") return basePath + "bow-arrow.png";
+    if (job === "Machinist") return basePath + "pistol-gun.png";
+    if (job === "Dancer") return basePath + "chakram.png";
+    if (role === "Ranged DPS") return basePath + "crosshair.png";
+
+    if (job === "Black Mage") return basePath + "wizard-staff.png";
+    if (job === "Summoner") return basePath + "evil-book.png";
+    if (job === "Red Mage") return basePath + "fencer.png";
     if (role === "Magic DPS") return basePath + "crystal-wand.png";
 
-    return basePath + "knapsack.png"; // Fallback final
+    return basePath + "knapsack.png"; // Fallback final genérico
 }
 
 // 1. Criar estrutura de Pastas no Compêndio (Agora com Subpastas por Nível)

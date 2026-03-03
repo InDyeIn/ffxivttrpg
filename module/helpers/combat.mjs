@@ -201,17 +201,27 @@ export class FFXIVCombat extends Combat {
      */
     async _resolvePendingAOEs() {
         const pendingAOEs = this.getFlag("ffxivttrpg", "pendingAOEs") || [];
+        const keptAOEs = [];
 
         for (const aoe of pendingAOEs) {
+
+            // Reduz delays de AOE multi-turno
+            if (aoe.delayRounds > 1) {
+                aoe.delayRounds -= 1;
+                keptAOEs.push(aoe);
+                continue;
+            }
+
             const damage = await new Roll(aoe.formula).evaluate();
 
-            // Encontrar tokens no template (AOE no canvas)
+            // Encontrar tokens no template (AOE no canvas usando V13 APIs)
             let affectedActors = [];
             if (aoe.templateId) {
-                const template = canvas.templates?.get(aoe.templateId);
-                if (template) {
-                    affectedActors = this._getActorsInTemplate(template);
-                    await template.delete(); // Remove o marcador visual
+                // Em V13, usamos scene.drawings para pegar a layer de marcação
+                const drawing = canvas.drawings?.get(aoe.templateId);
+                if (drawing) {
+                    affectedActors = this._getActorsInDrawing(drawing);
+                    await drawing.document.delete(); // Remove o marcador visual
                 }
             }
 
@@ -233,15 +243,22 @@ export class FFXIVCombat extends Combat {
             (${affectedActors.map(a => a.name).join(", ")})
           </div>`,
                 });
+            } else {
+                await ChatMessage.create({
+                    content: `<div class="ffxiv-aoe-resolve">
+            <i class="fas fa-burst"></i>
+            <strong>${aoe.name}</strong> resolveu no campo, mas ninguém foi atingido!
+          </div>`,
+                });
             }
         }
 
-        // Limpar AOEs pendentes
-        await this.setFlag("ffxivttrpg", "pendingAOEs", []);
+        // Limpar AOEs resolvidos, mantendo os que tem delay
+        await this.setFlag("ffxivttrpg", "pendingAOEs", keptAOEs);
     }
 
     /**
-     * Processar DoTs (Damage over Time) e HoTs (Heal over Time)
+     * Processar DoTs (Damage over Time), HoTs (Heal over Time) e avisos de Status
      */
     async _processDotsAndHots() {
         for (const combatant of this.combatants) {
@@ -252,7 +269,7 @@ export class FFXIVCombat extends Combat {
                 const effectType = effect.flags?.ffxivttrpg?.type;
                 if (!effectType) continue;
 
-                if (effectType === "dot") {
+                if (effectType === "dot" || effectType === "poison") {
                     const formula = effect.flags.ffxivttrpg.value;
                     if (!formula) continue;
 
@@ -268,9 +285,7 @@ export class FFXIVCombat extends Combat {
               <strong>${actor.name}</strong> ${game.i18n.localize("FFXIV.TakesDOT")}: <strong>${roll.total}</strong> (${effect.label})
             </div>`,
                     });
-                }
-
-                if (effectType === "hot") {
+                } else if (effectType === "hot" || effectType === "regen") {
                     const formula = effect.flags.ffxivttrpg.value;
                     if (!formula) continue;
 
@@ -287,6 +302,16 @@ export class FFXIVCombat extends Combat {
               <strong>${actor.name}</strong> ${game.i18n.localize("FFXIV.ReceivesHOT")}: <strong>${roll.total}</strong> (${effect.label})
             </div>`,
                     });
+                } else {
+                    // Outros status como Blind, Bind, Vulnerability apenas recebem notificação visual de tick se estiverem acabando
+                    if (effect.duration?.rounds === 1) {
+                        await ChatMessage.create({
+                            content: `<div class="ffxiv-hot-tick" style="color: #666;">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>${effect.label}</strong> em <strong>${actor.name}</strong> vai terminar na próxima rodada!
+                            </div>`,
+                        });
+                    }
                 }
             }
 
@@ -374,13 +399,21 @@ export class FFXIVCombat extends Combat {
     }
 
     /**
-     * Obtém os atores dentro de um template de AOE
+     * Obtém os atores dentro de um V13 Drawing de AOE
      */
-    _getActorsInTemplate(template) {
+    _getActorsInDrawing(drawing) {
         const actors = [];
+        const shape = drawing.shape;
+        // Foundry V13 math wrapper for checking points in polygons/geometry
         for (const token of canvas.tokens.objects.children) {
             if (!token.actor || token.actor.type !== "adventurer") continue;
-            if (template.object?.contains(token.center)) {
+            // Simple bound box check or PIXI geometry check
+            const isInBounds = shape.contains(
+                token.center.x - drawing.x,
+                token.center.y - drawing.y
+            );
+
+            if (isInBounds) {
                 actors.push(token.actor);
             }
         }

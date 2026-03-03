@@ -1517,4 +1517,179 @@ legend {
 .vital-sep {
   color: var(--ffxiv-text-muted);
   font-size: 12px;
+}/* ---- Action Bar HUD ---- */
+.ffxiv-action-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background: rgba(13, 13, 26, 0.85);
+  border: 1px solid var(--ffxiv-border);
+  border-top: 2px solid var(--ffxiv-gold);
+  border-radius: 12px 12px 0 0;
+  box-shadow: var(--ffxiv-shadow);
+  pointer-events: auto;
+  min-width: 400px;
+}
+
+#ffxiv-action-bar {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 100 !important;
+  pointer-events: none; /* Let clicks pass to canvas unless over children */
+}
+
+/* Header & Gauges */
+.action-bar-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--ffxiv-gold-light);
+  border-bottom: 1px solid rgba(200, 168, 75, 0.3);
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+}
+
+.job-indicator {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Action Points Tracker */
+.action-points-tracker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--ffxiv-gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.actions-list {
+  display: flex;
+  gap: 6px;
+}
+
+.ap {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--ffxiv-text-muted);
+  color: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+  font-size: 10px;
+  background: var(--ffxiv-bg-dark);
+}
+
+.ap.active {
+  color: var(--ffxiv-gold-light);
+  border-color: var(--ffxiv-gold);
+  background: linear-gradient(135deg, rgba(200,168,75,0.2), transparent);
+  box-shadow: 0 0 6px rgba(200,168,75,0.4);
+}
+
+/* Slots */
+.slots-container {
+  display: flex;
+  gap: 16px;
+}
+
+.skill-group {
+  display: flex;
+  gap: 4px;
+}
+
+.action-slot {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  background: #111;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.action-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.action-slot:hover {
+  border-color: var(--ffxiv-gold);
+  box-shadow: 0 0 8px var(--ffxiv-gold);
+  transform: scale(1.05);
+}
+
+.action-slot .hotkey {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ffxiv-bg-dark);
+  color: white;
+  font-size: 9px;
+  font-weight: bold;
+  padding: 1px 4px;
+  border: 1px solid var(--ffxiv-border);
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* Tooltips Falsas (Hover CSS) */
+.tooltip-content {
+  visibility: hidden;
+  position: absolute;
+  bottom: 55px; /* Acima do ícone */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  border: 1px solid var(--ffxiv-gold);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  text-align: center;
+}
+
+.action-slot:hover .tooltip-content {
+  visibility: visible;
+}
+
+/* Estilos Específicos de Slot */
+.primary-slot { border-color: rgba(200, 168, 75, 0.5); }
+.secondary-slot { border-color: rgba(158, 158, 158, 0.5); }
+.instant-slot { 
+   border-color: rgba(100, 181, 246, 0.5); 
+   border-radius: 50%; /* Faz instants ficarem redondos pra destacar */
+}
+
+.instant-slot img {
+   border-radius: 50%;
+}
+
+.ffxiv-phase-banner.roundup-phase {
+  background: linear-gradient(90deg, #e67e22, #d35400) !important;
+}
+
+.ffxiv-aoe-resolve {
+  background: rgba(230, 126, 34, 0.1);
+  border-left: 3px solid #e67e22;
+  padding: 8px;
+  margin-top: 5px;
+  font-size: 13px;
 }
