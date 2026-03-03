@@ -1483,6 +1483,30 @@ legend {
   box-shadow: 0 0 8px var(--ffxiv-gold);
 }
 
+/* Tooltip container for native Foundry dice within custom cards */
+.dice-tooltip-container {
+  margin-top: 4px;
+  width: 100%;
+}
+
+.dice-tooltip-container .dice-roll {
+  margin: 2px 0;
+  font-size: 12px;
+}
+
+.dice-tooltip-container .dice-formula {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: var(--ffxiv-border);
+  color: var(--ffxiv-text);
+}
+
+.dice-tooltip-container .dice-total {
+  background: rgba(200, 168, 75, 0.2);
+  border-color: var(--ffxiv-gold-dark);
+  color: var(--ffxiv-gold-light);
+  font-weight: bold;
+}
+
 .vital-sep {
   color: var(--ffxiv-text-muted);
   font-size: 12px;

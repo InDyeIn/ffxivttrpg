@@ -40,8 +40,13 @@
         {{#unless result.isHeal}}
         {{#if result.isHit}}
         <div class="result-row hit">
-            <span class="result-label">{{#if result.isCrit}}⚔️ CRITICAL HIT!{{else if result.isDirectHit}}✧ Direct
-                Hit!{{else}}Acertou{{/if}}</span>
+            <span class="result-label">
+                {{#if result.isCrit}}⚔️ CRITICAL HIT!{{else if result.isDirectHit}}✧ Direct Hit!{{else}}Acertou (DEF
+                {{result.defense}}){{/if}}
+            </span>
+            <div class="dice-tooltip-container">
+                {{{result.attackTooltip}}}
+            </div>
         </div>
         <div class="result-row damage">
             <span class="damage-label">Dano:</span>
@@ -49,10 +54,18 @@
                 <strong>{{result.damageTotal}}</strong>
             </span>
             <span class="damage-type">({{localize (concat "FFXIV.Damage" ability.system.damage.type)}})</span>
+            {{#if result.damageTooltip}}
+            <div class="dice-tooltip-container">
+                {{{result.damageTooltip}}}
+            </div>
+            {{/if}}
         </div>
         {{else}}
         <div class="result-row miss">
-            <span>❌ Errou! ({{result.attackRoll.total}} vs DEF {{result.defense}})</span>
+            <span>❌ Errou! (Faltou para DEF {{result.defense}})</span>
+            <div class="dice-tooltip-container">
+                {{{result.attackTooltip}}}
+            </div>
         </div>
         {{/if}}
         {{/unless}}
@@ -62,6 +75,11 @@
         <div class="result-row heal">
             <span class="heal-label">💚 Curou:</span>
             <span class="heal-value"><strong>{{result.healTotal}}</strong> HP</span>
+            {{#if result.healTooltip}}
+            <div class="dice-tooltip-container">
+                {{{result.healTooltip}}}
+            </div>
+            {{/if}}
         </div>
         {{/if}}
 
@@ -70,6 +88,11 @@
         <div class="result-row shield">
             <span class="shield-label">🛡️ Shield:</span>
             <span class="shield-value"><strong>{{result.shieldTotal}}</strong></span>
+            {{#if result.shieldTooltip}}
+            <div class="dice-tooltip-container">
+                {{{result.shieldTooltip}}}
+            </div>
+            {{/if}}
         </div>
         {{/if}}
 

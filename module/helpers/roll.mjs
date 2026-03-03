@@ -496,6 +496,14 @@ export class FFXIVRoll {
     static async _createChatMessage(ability, actor, targets, results) {
         const flavor = ability.system.chat?.flavor || "";
 
+        // Gerar os tooltips interativos de dados do Foundry
+        for (const res of Object.values(results)) {
+            if (res.attackRoll) res.attackTooltip = await res.attackRoll.getTooltip();
+            if (res.damageRoll) res.damageTooltip = await res.damageRoll.getTooltip();
+            if (res.healRoll) res.healTooltip = await res.healRoll.getTooltip();
+            if (res.shieldRoll) res.shieldTooltip = await res.shieldRoll.getTooltip();
+        }
+
         const templateData = {
             ability,
             actor,
