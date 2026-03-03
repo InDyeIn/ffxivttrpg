@@ -771,7 +771,7 @@
 
 /* ---- Chat Cards ---- */
 .ffxiv-chat-card {
-  background: linear-gradient(135deg, #0d0d1a, #1a1a2e);
+  background: linear-gradient(135deg, #05050a, #0d0d1a);
   border: 1px solid var(--ffxiv-border);
   border-radius: var(--ffxiv-radius-lg);
   overflow: hidden;
@@ -844,13 +844,13 @@
 }
 
 .card-result.is-crit {
-  background: rgba(255, 235, 59, 0.05);
-  border-left: 3px solid #ffeb3b;
+  background: rgba(255, 235, 59, 0.02);
+  border-left: 3px solid #ffba00;
 }
 
 .card-result.is-direct {
-  background: rgba(33, 150, 243, 0.05);
-  border-left: 3px solid #2196f3;
+  background: rgba(33, 150, 243, 0.02);
+  border-left: 3px solid #1976d2;
 }
 
 .result-target {
@@ -920,20 +920,23 @@
 }
 
 .adventurer-phase {
-  background: rgba(76, 175, 80, 0.15);
-  border: 1px solid #4caf50;
+  background: rgba(76, 175, 80, 0.08);
+  /* Escurecido */
+  border: 1px solid #388e3c;
   color: #a5d6a7;
 }
 
 .enemy-phase {
-  background: rgba(244, 67, 54, 0.15);
-  border: 1px solid #f44336;
+  background: rgba(244, 67, 54, 0.08);
+  /* Escurecido */
+  border: 1px solid #d32f2f;
   color: #ef9a9a;
 }
 
 .roundup-phase {
-  background: rgba(255, 193, 7, 0.1);
-  border: 1px solid #ffc107;
+  background: rgba(255, 193, 7, 0.05);
+  /* Escurecido */
+  border: 1px solid #ffa000;
   color: #fff9c4;
 }
 
@@ -946,17 +949,20 @@
 }
 
 .enmity-low {
-  background: rgba(76, 175, 80, 0.2);
+  background: rgba(76, 175, 80, 0.05);
+  /* Escurecido */
   color: #4caf50;
 }
 
 .enmity-medium {
-  background: rgba(255, 193, 7, 0.2);
+  background: rgba(255, 193, 7, 0.05);
+  /* Escurecido */
   color: #ffc107;
 }
 
 .enmity-high {
-  background: rgba(244, 67, 54, 0.2);
+  background: rgba(244, 67, 54, 0.05);
+  /* Escurecido */
   color: #f44336;
   animation: pulse-red 1.5s infinite;
 }
@@ -979,23 +985,23 @@
 }
 
 .ffxiv-dot-tick {
-  background: rgba(196, 0, 0, 0.1);
+  background: rgba(196, 0, 0, 0.05);
   border-left: 3px solid #c40000;
 }
 
 .ffxiv-hot-tick {
-  background: rgba(76, 175, 80, 0.1);
+  background: rgba(76, 175, 80, 0.05);
   border-left: 3px solid #4caf50;
 }
 
 .ffxiv-aoe-resolve {
-  background: rgba(244, 67, 54, 0.1);
+  background: rgba(244, 67, 54, 0.05);
   border-left: 3px solid #f44336;
 }
 
 .ffxiv-enemy-attack {
   padding: 6px 10px;
-  background: rgba(244, 67, 54, 0.08);
+  background: rgba(244, 67, 54, 0.05);
   border-radius: var(--ffxiv-radius);
   border-left: 3px solid #f44336;
   font-size: 12px;
@@ -1003,7 +1009,7 @@
 
 .ffxiv-phase-transition {
   padding: 8px 12px;
-  background: rgba(255, 193, 7, 0.1);
+  background: rgba(255, 193, 7, 0.03);
   border: 1px solid #ffc107;
   border-radius: var(--ffxiv-radius);
   font-size: 14px;
@@ -1013,7 +1019,8 @@
 
 .ffxiv-enrage {
   padding: 10px 14px;
-  background: rgba(244, 67, 54, 0.2);
+  background: rgba(244, 67, 54, 0.08);
+  /* Escurecido do 0.2 */
   border: 2px solid #f44336;
   border-radius: var(--ffxiv-radius);
   font-size: 16px;
@@ -1383,22 +1390,22 @@ legend {
 
 /* Banner — fase dos aventureiros */
 .phase-banner.phase-adventurer {
-  background: rgba(13, 40, 60, 0.85);
-  border-color: #c8a84b;
+  background: rgba(5, 15, 25, 0.90);
+  border-color: #988035;
   color: #e8d87b;
 }
 
 /* Banner — fase dos inimigos */
 .phase-banner.phase-enemy {
-  background: rgba(60, 10, 10, 0.85);
-  border-color: #f44336;
+  background: rgba(30, 5, 5, 0.90);
+  border-color: #b71c1c;
   color: #ff8a80;
 }
 
 /* Banner — round-up */
 .phase-banner.phase-roundup {
-  background: rgba(30, 20, 50, 0.85);
-  border-color: #9c27b0;
+  background: rgba(15, 10, 25, 0.90);
+  border-color: #7b1fa2;
   color: #ce93d8;
 }
 
